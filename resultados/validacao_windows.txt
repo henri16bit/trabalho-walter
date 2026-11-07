@@ -1,0 +1,35 @@
+Python: 3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]
+Sistema: Windows-10-10.0.19045-SP0
+matplotlib: 3.11.2
+Python exigido pelo matplotlib: >=3.11
+OK: teste_conferencia_manual_por_acesso
+OK: teste_sequencia_conhecida_so_leituras
+OK: teste_fifo_nao_reordena_acerto
+OK: teste_lru_atualiza_ultimo_acesso
+OK: teste_clock_renova_referencia_e_avanca_ponteiro
+OK: teste_nru_classe_zero_e_desempate
+OK: teste_nru_classe_um_antes_da_dois
+OK: teste_nru_classe_dois_antes_da_tres
+OK: teste_nru_classe_tres_e_desempate
+OK: teste_nru_preserva_indice_da_moldura
+OK: teste_primeira_carga_nao_grava_em_disco
+OK: teste_leitura_preserva_dirty_e_escritas_nao_duplicam_swap
+OK: teste_escrita_em_pagina_residente
+OK: teste_pagina_limpa_nao_gera_swap_out
+OK: teste_pagina_recarregada_nao_herda_dirty_antigo
+OK: teste_uma_moldura_e_escritas
+OK: teste_pagina_repetida
+OK: teste_comparacao_3_4_8_16_molduras
+OK: teste_estados_independentes_e_entradas_preservadas
+OK: teste_entradas_invalidas
+OK: teste_csv_contem_os_16_resultados
+OK: teste_pngs_validos_sem_janela
+OK: teste_terminal_manual_e_pasta_com_espacos
+OK: teste_terminal_rejeita_erros_sem_gerar_arquivos
+OK: teste_sintaxe_python_da_carga_linux
+
+25/25 testes passaram.
+Código de saída dos testes: 0
+Código de saída do bash -n no Git Bash/Windows: 0
+Este laboratório deve ser executado exclusivamente em GNU/Linux.
+Código de saída ao tentar executar o laboratório no Windows (esperado 1): 1

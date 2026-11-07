@@ -1,0 +1,17 @@
+﻿algoritmo,molduras,acessos,page_faults,swap_outs
+FIFO,3,12,9,3
+LRU,3,12,10,4
+Segunda Chance,3,12,9,3
+NRU,3,12,9,3
+FIFO,4,12,10,4
+LRU,4,12,8,3
+Segunda Chance,4,12,10,4
+NRU,4,12,6,1
+FIFO,8,12,5,0
+LRU,8,12,5,0
+Segunda Chance,8,12,5,0
+NRU,8,12,5,0
+FIFO,16,12,5,0
+LRU,16,12,5,0
+Segunda Chance,16,12,5,0
+NRU,16,12,5,0

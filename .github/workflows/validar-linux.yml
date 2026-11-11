@@ -1,0 +1,58 @@
+name: Validar simulador em GNU-Linux
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validar:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Preparar Python, Tk e display de testes
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y python3-venv python3-tk xvfb xauth scrot fonts-dejavu-core
+          /usr/bin/python3 -m venv .venv
+          .venv/bin/python -m pip install -r requirements.txt
+      - name: Testar logica, interface real e terminal
+        run: |
+          mkdir -p resultados/validacao_linux
+          uname -a | tee resultados/validacao_linux/ambiente.txt
+          .venv/bin/python --version | tee -a resultados/validacao_linux/ambiente.txt
+          .venv/bin/python testes.py | tee resultados/validacao_linux/testes_logica.txt
+          xvfb-run -a -s '-screen 0 1280x900x24' .venv/bin/python testes.py --interface | tee resultados/validacao_linux/testes_interface.txt
+          .venv/bin/python main.py --saida resultados/validacao_linux | tee resultados/validacao_linux/terminal.txt
+      - name: Capturar a janela real do simulador no Linux
+        run: |
+          xvfb-run -a -s '-screen 0 1280x900x24' .venv/bin/python - <<'PY'
+          from pathlib import Path
+          import subprocess
+          import tkinter as tk
+          from interface import Interface
+
+          destino = Path('resultados/validacao_linux')
+          raiz = tk.Tk()
+          app = Interface(raiz)
+          raiz.geometry('1080x740+10+10')
+          app.executar()
+          app.selecionar_passo(3)
+          raiz.update()
+          subprocess.run(['scrot', str(destino / 'interface_simulacao.png')], check=True)
+          app.abas.select(app.aba_comparacao)
+          app.comparar()
+          raiz.update()
+          subprocess.run(['scrot', str(destino / 'interface_comparacao.png')], check=True)
+          raiz.destroy()
+
+          PY
+      - name: Disponibilizar testes, capturas e resultados
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: validacao-linux
+          path: resultados/validacao_linux/
+          retention-days: 30

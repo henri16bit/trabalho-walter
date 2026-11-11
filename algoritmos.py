@@ -16,41 +16,73 @@ def validar_entradas(molduras, paginas, operacoes):
         raise ValueError("Use L para leitura e E para escrita.")
 
 
-def montar_resultado(nome, molduras, acessos, faltas, gravacoes):
-    return {
+def montar_resultado(nome, molduras, acessos, faltas, gravacoes, historico=None):
+    resultado = {
         "algoritmo": nome,
         "molduras": molduras,
         "acessos": acessos,
         "page_faults": faltas,
         "swap_outs": gravacoes,
     }
+    if historico is not None:
+        resultado["historico"] = historico
+    return resultado
 
 
-def fifo(molduras, paginas, operacoes):
+def registrar_etapa(historico, pagina, operacao, memoria, molduras,
+                    falta, vitima, faltas, gravacoes, ponteiro=None):
+    if historico is None:
+        return
+    # Copia cada moldura: acessos futuros não podem alterar etapas já registradas.
+    estado = [None] * molduras
+    for indice, item in enumerate(memoria):
+        if item is not None:
+            estado[item.get("moldura", indice)] = {
+                "pagina": item["pagina"], "R": item.get("R"), "M": item["M"],
+            }
+    historico.append({
+        "acesso": len(historico) + 1, "pagina": pagina, "operacao": operacao,
+        "memoria": estado, "page_fault": falta,
+        "removida": vitima["pagina"] if vitima is not None else None,
+        "swap_out": bool(vitima is not None and vitima["M"]),
+        "page_faults": faltas, "swap_outs": gravacoes, "ponteiro": ponteiro,
+    })
+
+
+def fifo(molduras, paginas, operacoes, registrar_historico=False):
     validar_entradas(molduras, paginas, operacoes)
     memoria = []
     faltas = gravacoes = 0
+    historico = [] if registrar_historico else None
 
     for pagina, operacao in zip(paginas, operacoes):
         residente = next((item for item in memoria if item["pagina"] == pagina), None)
         if residente is not None:
             if operacao == "E":
                 residente["M"] = 1
+            registrar_etapa(historico, pagina, operacao, memoria, molduras,
+                            False, None, faltas, gravacoes)
             continue  # Um acerto não muda a ordem de entrada no FIFO.
 
         faltas += 1
+        vitima = None
+        indice = len(memoria)
         if len(memoria) == molduras:
             vitima = memoria.pop(0)
             gravacoes += vitima["M"]
-        memoria.append({"pagina": pagina, "M": int(operacao == "E")})
+            indice = vitima["moldura"]
+        memoria.append({"pagina": pagina, "M": int(operacao == "E"), "moldura": indice})
+        registrar_etapa(historico, pagina, operacao, memoria, molduras,
+                        True, vitima, faltas, gravacoes)
 
-    return montar_resultado("FIFO", molduras, len(paginas), faltas, gravacoes)
+    return montar_resultado("FIFO", molduras, len(paginas), faltas, gravacoes, historico)
 
 
-def lru(molduras, paginas, operacoes):
+def lru(molduras, paginas, operacoes, registrar_historico=False):
     validar_entradas(molduras, paginas, operacoes)
     memoria = []
     faltas = gravacoes = 0
+    historico = [] if registrar_historico else None
 
     for instante, (pagina, operacao) in enumerate(zip(paginas, operacoes)):
         residente = next((item for item in memoria if item["pagina"] == pagina), None)
@@ -58,27 +90,36 @@ def lru(molduras, paginas, operacoes):
             residente["ultimo_acesso"] = instante
             if operacao == "E":
                 residente["M"] = 1
+            registrar_etapa(historico, pagina, operacao, memoria, molduras,
+                            False, None, faltas, gravacoes)
             continue
 
         faltas += 1
+        vitima = None
+        indice = len(memoria)
         if len(memoria) == molduras:
             vitima = min(memoria, key=lambda item: item["ultimo_acesso"])
             gravacoes += vitima["M"]
             memoria.remove(vitima)
+            indice = vitima["moldura"]
         memoria.append({
             "pagina": pagina,
             "M": int(operacao == "E"),
             "ultimo_acesso": instante,
+            "moldura": indice,
         })
+        registrar_etapa(historico, pagina, operacao, memoria, molduras,
+                        True, vitima, faltas, gravacoes)
 
-    return montar_resultado("LRU", molduras, len(paginas), faltas, gravacoes)
+    return montar_resultado("LRU", molduras, len(paginas), faltas, gravacoes, historico)
 
 
-def segunda_chance(molduras, paginas, operacoes):
+def segunda_chance(molduras, paginas, operacoes, registrar_historico=False):
     validar_entradas(molduras, paginas, operacoes)
     memoria = [None] * molduras
     ponteiro = 0
     faltas = gravacoes = 0
+    historico = [] if registrar_historico else None
 
     for pagina, operacao in zip(paginas, operacoes):
         residente = next(
@@ -89,6 +130,8 @@ def segunda_chance(molduras, paginas, operacoes):
             residente["R"] = 1
             if operacao == "E":
                 residente["M"] = 1
+            registrar_etapa(historico, pagina, operacao, memoria, molduras,
+                            False, None, faltas, gravacoes, ponteiro)
             continue
 
         faltas += 1
@@ -96,18 +139,22 @@ def segunda_chance(molduras, paginas, operacoes):
             memoria[ponteiro]["R"] = 0
             ponteiro = (ponteiro + 1) % molduras
 
-        if memoria[ponteiro] is not None:
-            gravacoes += memoria[ponteiro]["M"]
+        vitima = memoria[ponteiro]
+        if vitima is not None:
+            gravacoes += vitima["M"]
         memoria[ponteiro] = {"pagina": pagina, "R": 1, "M": int(operacao == "E")}
         ponteiro = (ponteiro + 1) % molduras
+        registrar_etapa(historico, pagina, operacao, memoria, molduras,
+                        True, vitima, faltas, gravacoes, ponteiro)
 
-    return montar_resultado("Segunda Chance", molduras, len(paginas), faltas, gravacoes)
+    return montar_resultado("Segunda Chance", molduras, len(paginas), faltas, gravacoes, historico)
 
 
-def nru(molduras, paginas, operacoes):
+def nru(molduras, paginas, operacoes, registrar_historico=False):
     validar_entradas(molduras, paginas, operacoes)
     memoria = []
     faltas = gravacoes = 0
+    historico = [] if registrar_historico else None
 
     for instante, (pagina, operacao) in enumerate(zip(paginas, operacoes)):
         # Limpa R antes dos acessos 5, 9, 13...; o acesso atual volta a marcar R.
@@ -120,9 +167,12 @@ def nru(molduras, paginas, operacoes):
             residente["R"] = 1
             if operacao == "E":
                 residente["M"] = 1
+            registrar_etapa(historico, pagina, operacao, memoria, molduras,
+                            False, None, faltas, gravacoes)
             continue
 
         faltas += 1
+        vitima = None
         nova_pagina = {"pagina": pagina, "R": 1, "M": int(operacao == "E")}
         if len(memoria) < molduras:
             memoria.append(nova_pagina)
@@ -132,10 +182,13 @@ def nru(molduras, paginas, operacoes):
                 range(len(memoria)),
                 key=lambda i: (2 * memoria[i]["R"] + memoria[i]["M"], i),
             )
-            gravacoes += memoria[indice]["M"]
+            vitima = memoria[indice]
+            gravacoes += vitima["M"]
             memoria[indice] = nova_pagina
+        registrar_etapa(historico, pagina, operacao, memoria, molduras,
+                        True, vitima, faltas, gravacoes)
 
-    return montar_resultado("NRU", molduras, len(paginas), faltas, gravacoes)
+    return montar_resultado("NRU", molduras, len(paginas), faltas, gravacoes, historico)
 
 
 ALGORITMOS = (fifo, lru, segunda_chance, nru)

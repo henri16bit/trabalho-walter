@@ -467,7 +467,7 @@ def teste_gui_visualizacao_real_dos_png():
 
 def teste_gui_layout_minimo_sem_cortar_botoes():
     with abrir_interface_teste() as (raiz, app):
-        raiz.geometry("880x640")
+        raiz.geometry("860x620")
         for aba, controles in ((app.aba_simulacao, [app.botao_executar, app.botao_reiniciar, app.botao_proximo, app.ram, app.historico]),
                                (app.aba_comparacao, [app.botao_comparar, app.botao_salvar, app.botao_graficos, app.tabela_comparacao])):
             app.abas.select(aba)
@@ -478,6 +478,21 @@ def teste_gui_layout_minimo_sem_cortar_botoes():
                 assert widget.winfo_rooty() >= raiz.winfo_rooty()
                 assert widget.winfo_rootx() + widget.winfo_width() <= raiz.winfo_rootx() + raiz.winfo_width()
                 assert widget.winfo_rooty() + widget.winfo_height() <= raiz.winfo_rooty() + raiz.winfo_height()
+
+
+def teste_gui_estado_com_16_molduras_cabe_na_coluna():
+    from tkinter import font
+    from interface import descrever_memoria
+    with abrir_interface_teste() as (raiz, app):
+        app.molduras.set("16")
+        app.botao_executar.invoke()
+        app.selecionar_passo(11)
+        raiz.update()
+        assert len(app.ram.get_children()) == 16
+        fonte = font.nametofont("TkDefaultFont")
+        texto = descrever_memoria(app.resultado["historico"][-1]["memoria"])
+        assert int(app.historico.column("Molduras", "width")) >= fonte.measure(texto) + 20
+        assert linhas_tabela(app.historico)[-1][3] == texto
 
 
 def main():

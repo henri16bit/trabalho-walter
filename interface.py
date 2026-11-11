@@ -214,6 +214,10 @@ class Interface:
                    f"{100 * resultado['page_faults'] / resultado['acessos']:.1f}%")
         for campo, valor in zip(self.resumo, valores):
             campo.set(str(valor))
+        fonte = font.nametofont("TkDefaultFont")
+        largura_memoria = max(fonte.measure(descrever_memoria(passo["memoria"]))
+                             for passo in resultado["historico"])
+        self.historico.column("Molduras", width=max(190, largura_memoria + 24), stretch=False)
         for indice, passo in enumerate(resultado["historico"]):
             self.historico.insert("", "end", iid=str(indice), values=(
                 passo["acesso"], passo["pagina"], "Leitura" if passo["operacao"] == "L" else "Escrita",

@@ -1,0 +1,1207 @@
+Coleta real do laboratório GNU/Linux
+Pasta: /home/runner/work/trabalho-walter/trabalho-walter/evidencias/linux_20261113T205043Z_3277
+
+Comando: date -Is 
+Código de saída: 0
+2026-11-13T20:50:43+00:00
+
+Comando: uname -a 
+Código de saída: 0
+Linux runnervm8axu0 7.0.0-1017-azure #17~24.04.1-Ubuntu SMP PREEMPT Thu Sep 24 18:46:57 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+
+Comando: cat /etc/os-release 
+Código de saída: 0
+PRETTY_NAME="Ubuntu 24.04.5 LTS"
+NAME="Ubuntu"
+VERSION_ID="24.04"
+VERSION="24.04.5 LTS (Noble Numbat)"
+VERSION_CODENAME=noble
+ID=ubuntu
+ID_LIKE=debian
+HOME_URL="https://www.ubuntu.com/"
+SUPPORT_URL="https://help.ubuntu.com/"
+BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
+PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
+UBUNTU_CODENAME=noble
+LOGO=ubuntu-logo
+
+Comando: dpkg-query -W python3 procps strace memstat 
+Código de saída: 0
+memstat	1.1+nmu1build1
+procps	2:4.0.4-4ubuntu3.3
+python3	3.12.3-0ubuntu2.1
+strace	6.8-0ubuntu2
+
+Comando: systemd-detect-virt 
+Código de saída: 0
+microsoft
+
+Comando: lscpu 
+Código de saída: 0
+Architecture:                            x86_64
+CPU op-mode(s):                          32-bit, 64-bit
+Address sizes:                           48 bits physical, 57 bits virtual
+Byte Order:                              Little Endian
+CPU(s):                                  4
+On-line CPU(s) list:                     0-3
+Vendor ID:                               GenuineIntel
+Model name:                              INTEL(R) XEON(R) PLATINUM 8573C
+CPU family:                              6
+Model:                                   207
+Thread(s) per core:                      2
+Core(s) per socket:                      2
+Socket(s):                               1
+Stepping:                                2
+CPU(s) scaling MHz:                      135%
+CPU max MHz:                             2300.0000
+CPU min MHz:                             800.0000
+BogoMIPS:                                4600.00
+Flags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ss ht syscall nx pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid aperfmperf tsc_known_freq pni pclmulqdq vmx ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand hypervisor lahf_lm abm 3dnowprefetch tpr_shadow ept vpid fsgsbase tsc_adjust bmi1 hle avx2 smep bmi2 erms invpcid rtm avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves vnmi avx512vbmi umip avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq la57 rdpid fsrm arch_capabilities
+Virtualization:                          VT-x
+Hypervisor vendor:                       Microsoft
+Virtualization type:                     full
+L1d cache:                               96 KiB (2 instances)
+L1i cache:                               64 KiB (2 instances)
+L2 cache:                                4 MiB (2 instances)
+L3 cache:                                260 MiB (1 instance)
+NUMA node(s):                            1
+NUMA node0 CPU(s):                       0-3
+Vulnerability Gather data sampling:      Not affected
+Vulnerability Ghostwrite:                Not affected
+Vulnerability Indirect target selection: Mitigation; Aligned branch/return thunks
+Vulnerability Itlb multihit:             Not affected
+Vulnerability L1tf:                      Not affected
+Vulnerability Mds:                       Not affected
+Vulnerability Meltdown:                  Not affected
+Vulnerability Mmio stale data:           Not affected
+Vulnerability Old microcode:             Not affected
+Vulnerability Reg file data sampling:    Not affected
+Vulnerability Retbleed:                  Vulnerable
+Vulnerability Spec rstack overflow:      Not affected
+Vulnerability Spec store bypass:         Vulnerable
+Vulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization
+Vulnerability Spectre v2:                Mitigation; Retpolines; STIBP disabled; RSB filling; PBRSB-eIBRS Not affected; BHI Retpoline
+Vulnerability Srbds:                     Not affected
+Vulnerability Tsa:                       Not affected
+Vulnerability Tsx async abort:           Vulnerable: Clear CPU buffers attempted, no microcode; SMT Host state unknown
+Vulnerability Vmscape:                   Not affected
+
+Comando: getconf PAGESIZE 
+Código de saída: 0
+4096
+
+Comando: cat /proc/self/cgroup 
+Código de saída: 0
+0::/system.slice/hosted-compute-agent.service
+
+Comando: findmnt -t cgroup2 
+Código de saída: 0
+TARGET         SOURCE  FSTYPE  OPTIONS
+/sys/fs/cgroup cgroup2 cgroup2 rw,nosuid,nodev,noexec,relatime,nsdelegate,memory_recursiveprot
+
+Dependências Ubuntu/Debian: python3, procps (pmap, ps, top, free), strace, memstat.
+O script não instala pacotes nem configura swap.
+
+ATIVIDADE 1 — Mapa de memória
+PID observado: 3311
+ciclo=1 fase=computacao monotonic=35.318774
+
+Comando: pmap -x 3311 
+Código de saída: 0
+3311:   python3 -u -
+Address           Kbytes     RSS   Dirty Mode  Mapping
+0000000000400000     128     128       0 r---- python3.12
+0000000000420000    2956    2516       0 r-x-- python3.12
+0000000000703000    3220    1228       0 r---- python3.12
+0000000000a28000       4       4       4 r---- python3.12
+0000000000a29000    1528    1332    1184 rw--- python3.12
+0000000000ba7000      16       4       4 rw---   [ anon ]
+00000000083a4000    1020     896     896 rw---   [ anon ]
+00007fba7e8ff000    3076    2584    2584 rw---   [ anon ]
+00007fba7ec00000    2988      64       0 r---- locale-archive
+00007fba7ef45000     392      16      16 rw---   [ anon ]
+00007fba7efa7000     356     128       0 r---- LC_CTYPE
+00007fba7f000000     160     160       0 r---- libc.so.6
+00007fba7f028000    1572    1184       0 r-x-- libc.so.6
+00007fba7f1b1000     316     188       0 r---- libc.so.6
+00007fba7f200000      16      16      16 r---- libc.so.6
+00007fba7f204000       8       8       8 rw--- libc.so.6
+00007fba7f206000      52      20      20 rw---   [ anon ]
+00007fba7f224000       8       8       0 r---- resource.cpython-312-x86_64-linux-gnu.so
+00007fba7f226000       4       4       0 r-x-- resource.cpython-312-x86_64-linux-gnu.so
+00007fba7f227000       4       4       0 r---- resource.cpython-312-x86_64-linux-gnu.so
+00007fba7f228000       4       4       4 r---- resource.cpython-312-x86_64-linux-gnu.so
+00007fba7f229000       4       4       4 rw--- resource.cpython-312-x86_64-linux-gnu.so
+00007fba7f22a000      24      16      16 rw---   [ anon ]
+00007fba7f230000      16      16       0 r---- libexpat.so.1.9.1
+00007fba7f234000     124      64       0 r-x-- libexpat.so.1.9.1
+00007fba7f253000      32       0       0 r---- libexpat.so.1.9.1
+00007fba7f25b000       8       8       8 r---- libexpat.so.1.9.1
+00007fba7f25d000       4       4       4 rw--- libexpat.so.1.9.1
+00007fba7f25e000       8       8       0 r---- libz.so.1.3
+00007fba7f260000      72      64       0 r-x-- libz.so.1.3
+00007fba7f272000      24       0       0 r---- libz.so.1.3
+00007fba7f278000       4       4       4 r---- libz.so.1.3
+00007fba7f279000       4       4       4 rw--- libz.so.1.3
+00007fba7f27a000      64      64       0 r---- libm.so.6
+00007fba7f28a000     508     328       0 r-x-- libm.so.6
+00007fba7f309000     352       0       0 r---- libm.so.6
+00007fba7f361000       4       4       4 r---- libm.so.6
+00007fba7f362000       4       4       4 rw--- libm.so.6
+00007fba7f366000      28      28       0 r--s- gconv-modules.cache
+00007fba7f36d000       8       8       8 rw---   [ anon ]
+00007fba7f36f000      16       0       0 r----   [ anon ]
+00007fba7f373000       8       0       0 r----   [ anon ]
+00007fba7f375000       8       8       0 r-x--   [ anon ]
+00007fba7f377000       4       4       0 r---- ld-linux-x86-64.so.2
+00007fba7f378000     172     172       0 r-x-- ld-linux-x86-64.so.2
+00007fba7f3a3000      40      40       0 r---- ld-linux-x86-64.so.2
+00007fba7f3ad000       8       8       8 r---- ld-linux-x86-64.so.2
+00007fba7f3af000       8       8       8 rw--- ld-linux-x86-64.so.2
+00007ffd29a34000     136      80      80 rw---   [ stack ]
+ffffffffff600000       4       0       0 --x--   [ anon ]
+---------------- ------- ------- ------- 
+total kB           19524   11444    4888
+
+Comando: cat /proc/3311/maps 
+Código de saída: 0
+00400000-00420000 r--p 00000000 08:01 2110                               /usr/bin/python3.12
+00420000-00703000 r-xp 00020000 08:01 2110                               /usr/bin/python3.12
+00703000-00a28000 r--p 00303000 08:01 2110                               /usr/bin/python3.12
+00a28000-00a29000 r--p 00627000 08:01 2110                               /usr/bin/python3.12
+00a29000-00ba7000 rw-p 00628000 08:01 2110                               /usr/bin/python3.12
+00ba7000-00bab000 rw-p 00000000 00:00 0 
+083a4000-084a3000 rw-p 00000000 00:00 0                                  [heap]
+7fba7e8ff000-7fba7ec00000 rw-p 00000000 00:00 0 
+7fba7ec00000-7fba7eeeb000 r--p 00000000 08:01 7695                       /usr/lib/locale/locale-archive
+7fba7ef45000-7fba7efa7000 rw-p 00000000 00:00 0 
+7fba7efa7000-7fba7f000000 r--p 00000000 08:01 7701                       /usr/lib/locale/C.utf8/LC_CTYPE
+7fba7f000000-7fba7f028000 r--p 00000000 08:01 6455                       /usr/lib/x86_64-linux-gnu/libc.so.6
+7fba7f028000-7fba7f1b1000 r-xp 00028000 08:01 6455                       /usr/lib/x86_64-linux-gnu/libc.so.6
+7fba7f1b1000-7fba7f200000 r--p 001b1000 08:01 6455                       /usr/lib/x86_64-linux-gnu/libc.so.6
+7fba7f200000-7fba7f204000 r--p 001ff000 08:01 6455                       /usr/lib/x86_64-linux-gnu/libc.so.6
+7fba7f204000-7fba7f206000 rw-p 00203000 08:01 6455                       /usr/lib/x86_64-linux-gnu/libc.so.6
+7fba7f206000-7fba7f213000 rw-p 00000000 00:00 0 
+7fba7f224000-7fba7f226000 r--p 00000000 08:01 8225                       /usr/lib/python3.12/lib-dynload/resource.cpython-312-x86_64-linux-gnu.so
+7fba7f226000-7fba7f227000 r-xp 00002000 08:01 8225                       /usr/lib/python3.12/lib-dynload/resource.cpython-312-x86_64-linux-gnu.so
+7fba7f227000-7fba7f228000 r--p 00003000 08:01 8225                       /usr/lib/python3.12/lib-dynload/resource.cpython-312-x86_64-linux-gnu.so
+7fba7f228000-7fba7f229000 r--p 00003000 08:01 8225                       /usr/lib/python3.12/lib-dynload/resource.cpython-312-x86_64-linux-gnu.so
+7fba7f229000-7fba7f22a000 rw-p 00004000 08:01 8225                       /usr/lib/python3.12/lib-dynload/resource.cpython-312-x86_64-linux-gnu.so
+7fba7f22a000-7fba7f230000 rw-p 00000000 00:00 0 
+7fba7f230000-7fba7f234000 r--p 00000000 08:01 6191                       /usr/lib/x86_64-linux-gnu/libexpat.so.1.9.1
+7fba7f234000-7fba7f253000 r-xp 00004000 08:01 6191                       /usr/lib/x86_64-linux-gnu/libexpat.so.1.9.1
+7fba7f253000-7fba7f25b000 r--p 00023000 08:01 6191                       /usr/lib/x86_64-linux-gnu/libexpat.so.1.9.1
+7fba7f25b000-7fba7f25d000 r--p 0002b000 08:01 6191                       /usr/lib/x86_64-linux-gnu/libexpat.so.1.9.1
+7fba7f25d000-7fba7f25e000 rw-p 0002d000 08:01 6191                       /usr/lib/x86_64-linux-gnu/libexpat.so.1.9.1
+7fba7f25e000-7fba7f260000 r--p 00000000 08:01 5104                       /usr/lib/x86_64-linux-gnu/libz.so.1.3
+7fba7f260000-7fba7f272000 r-xp 00002000 08:01 5104                       /usr/lib/x86_64-linux-gnu/libz.so.1.3
+7fba7f272000-7fba7f278000 r--p 00014000 08:01 5104                       /usr/lib/x86_64-linux-gnu/libz.so.1.3
+7fba7f278000-7fba7f279000 r--p 0001a000 08:01 5104                       /usr/lib/x86_64-linux-gnu/libz.so.1.3
+7fba7f279000-7fba7f27a000 rw-p 0001b000 08:01 5104                       /usr/lib/x86_64-linux-gnu/libz.so.1.3
+7fba7f27a000-7fba7f28a000 r--p 00000000 08:01 6458                       /usr/lib/x86_64-linux-gnu/libm.so.6
+7fba7f28a000-7fba7f309000 r-xp 00010000 08:01 6458                       /usr/lib/x86_64-linux-gnu/libm.so.6
+7fba7f309000-7fba7f361000 r--p 0008f000 08:01 6458                       /usr/lib/x86_64-linux-gnu/libm.so.6
+7fba7f361000-7fba7f362000 r--p 000e7000 08:01 6458                       /usr/lib/x86_64-linux-gnu/libm.so.6
+7fba7f362000-7fba7f363000 rw-p 000e8000 08:01 6458                       /usr/lib/x86_64-linux-gnu/libm.so.6
+7fba7f366000-7fba7f36d000 r--s 00000000 08:01 5367                       /usr/lib/x86_64-linux-gnu/gconv/gconv-modules.cache
+7fba7f36d000-7fba7f36f000 rw-p 00000000 00:00 0 
+7fba7f36f000-7fba7f373000 r--p 00000000 00:00 0                          [vvar]
+7fba7f373000-7fba7f375000 r--p 00000000 00:00 0                          [vvar_vclock]
+7fba7f375000-7fba7f377000 r-xp 00000000 00:00 0                          [vdso]
+7fba7f377000-7fba7f378000 r--p 00000000 08:01 6452                       /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+7fba7f378000-7fba7f3a3000 r-xp 00001000 08:01 6452                       /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+7fba7f3a3000-7fba7f3ad000 r--p 0002c000 08:01 6452                       /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+7fba7f3ad000-7fba7f3af000 r--p 00036000 08:01 6452                       /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+7fba7f3af000-7fba7f3b1000 rw-p 00038000 08:01 6452                       /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+7ffd29a34000-7ffd29a56000 rw-p 00000000 00:00 0                          [stack]
+ffffffffff600000-ffffffffff601000 --xp 00000000 00:00 0                  [vsyscall]
+
+Comando: cat /proc/3311/status 
+Código de saída: 0
+Name:	python3
+Umask:	0022
+State:	S (sleeping)
+Tgid:	3311
+Ngid:	0
+Pid:	3311
+PPid:	3277
+TracerPid:	0
+Uid:	1001	1001	1001	1001
+Gid:	1001	1001	1001	1001
+FDSize:	256
+Groups:	4 100 118 999 1001 
+NStgid:	3311
+NSpid:	3311
+NSpgid:	3276
+NSsid:	2038
+Kthread:	0
+VmPeak:	   19520 kB
+VmSize:	   19520 kB
+VmLck:	       0 kB
+VmPin:	       0 kB
+VmHWM:	   11444 kB
+VmRSS:	   11444 kB
+RssAnon:	    4888 kB
+RssFile:	    6556 kB
+RssShmem:	       0 kB
+VmData:	    6148 kB
+VmStk:	     136 kB
+VmExe:	    2956 kB
+VmLib:	    2460 kB
+VmPTE:	      72 kB
+VmSwap:	       0 kB
+HugetlbPages:	       0 kB
+CoreDumping:	0
+THP_enabled:	1
+untag_mask:	0xffffffffffffffff
+Threads:	1
+SigQ:	1/58109
+SigPnd:	0000000000000000
+ShdPnd:	0000000000000000
+SigBlk:	0000000000000000
+SigIgn:	0000000001001006
+SigCgt:	0000000000000000
+CapInh:	0000000000000000
+CapPrm:	0000000000000000
+CapEff:	0000000000000000
+CapBnd:	000001ffffffffff
+CapAmb:	0000000000000000
+NoNewPrivs:	0
+Seccomp:	0
+Seccomp_filters:	0
+Speculation_Store_Bypass:	vulnerable
+SpeculationIndirectBranch:	always enabled
+Cpus_allowed:	f
+Cpus_allowed_list:	0-3
+Mems_allowed:	00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000001
+Mems_allowed_list:	0
+voluntary_ctxt_switches:	3
+nonvoluntary_ctxt_switches:	8
+x86_Thread_features:	
+x86_Thread_features_locked:	
+
+ATIVIDADE 2 — Processos e chamadas de sistema
+
+Comando: ps aux 
+Código de saída: 0
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root           1  6.1  0.0  22908 14324 ?        Ss   20:50   0:02 /sbin/init
+root           2  0.0  0.0      0     0 ?        S    20:50   0:00 [kthreadd]
+root           3  0.0  0.0      0     0 ?        S    20:50   0:00 [pool_workqueue_release]
+root           4  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-rcu_gp]
+root           5  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-sync_wq]
+root           6  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-kvfree_rcu_reclaim]
+root           7  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-slub_flushwq]
+root           8  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-netns]
+root           9  0.1  0.0      0     0 ?        I    20:50   0:00 [kworker/0:0-events]
+root          10  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/0:0H-kblockd]
+root          11  0.0  0.0      0     0 ?        I    20:50   0:00 [kworker/0:1-cgroup_free]
+root          12  0.1  0.0      0     0 ?        I    20:50   0:00 [kworker/u16:0-events_power_efficient]
+root          13  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-mm_percpu_wq]
+root          14  0.0  0.0      0     0 ?        S    20:50   0:00 [ksoftirqd/0]
+root          15  2.2  0.0      0     0 ?        S<   20:50   0:00 [pr/ttyS0]
+root          16  0.0  0.0      0     0 ?        I    20:50   0:00 [rcu_sched]
+root          17  0.0  0.0      0     0 ?        S    20:50   0:00 [rcu_exp_par_gp_kthread_worker/0]
+root          18  0.0  0.0      0     0 ?        S    20:50   0:00 [rcu_exp_gp_kthread_worker]
+root          19  0.0  0.0      0     0 ?        S    20:50   0:00 [migration/0]
+root          20  0.0  0.0      0     0 ?        S    20:50   0:00 [kprobe-optimizer]
+root          21  0.0  0.0      0     0 ?        S    20:50   0:00 [idle_inject/0]
+root          22  0.0  0.0      0     0 ?        S    20:50   0:00 [cpuhp/0]
+root          23  0.0  0.0      0     0 ?        S    20:50   0:00 [cpuhp/2]
+root          24  0.0  0.0      0     0 ?        S    20:50   0:00 [idle_inject/2]
+root          25  0.0  0.0      0     0 ?        S    20:50   0:00 [migration/2]
+root          26  0.0  0.0      0     0 ?        S    20:50   0:00 [ksoftirqd/2]
+root          27  0.0  0.0      0     0 ?        I    20:50   0:00 [kworker/2:0-events]
+root          28  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/2:0H-kblockd]
+root          29  0.0  0.0      0     0 ?        S    20:50   0:00 [cpuhp/1]
+root          30  0.0  0.0      0     0 ?        S    20:50   0:00 [idle_inject/1]
+root          31  0.0  0.0      0     0 ?        S    20:50   0:00 [migration/1]
+root          32  0.0  0.0      0     0 ?        S    20:50   0:00 [ksoftirqd/1]
+root          33  0.0  0.0      0     0 ?        I    20:50   0:00 [kworker/1:0-cgroup_free]
+root          34  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/1:0H-kblockd]
+root          35  0.0  0.0      0     0 ?        S    20:50   0:00 [cpuhp/3]
+root          36  0.0  0.0      0     0 ?        S    20:50   0:00 [idle_inject/3]
+root          37  0.0  0.0      0     0 ?        S    20:50   0:00 [migration/3]
+root          38  0.0  0.0      0     0 ?        S    20:50   0:00 [ksoftirqd/3]
+root          39  0.0  0.0      0     0 ?        I    20:50   0:00 [kworker/3:0-events]
+root          40  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/3:0H-kblockd]
+root          41  0.0  0.0      0     0 ?        S    20:50   0:00 [kdevtmpfs]
+root          42  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-inet_frag_wq]
+root          43  0.0  0.0      0     0 ?        I    20:50   0:00 [rcu_tasks_kthread]
+root          44  0.0  0.0      0     0 ?        I    20:50   0:00 [rcu_tasks_rude_kthread]
+root          45  0.0  0.0      0     0 ?        S    20:50   0:00 [kauditd]
+root          46  0.0  0.0      0     0 ?        S    20:50   0:00 [khungtaskd]
+root          47  0.0  0.0      0     0 ?        S    20:50   0:00 [oom_reaper]
+root          48  0.2  0.0      0     0 ?        I    20:50   0:00 [kworker/u16:1-flush-8:0]
+root          49  0.1  0.0      0     0 ?        I    20:50   0:00 [kworker/u16:2-flush-8:0]
+root          50  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-writeback]
+root          51  0.0  0.0      0     0 ?        I    20:50   0:00 [kworker/2:1-events]
+root          52  0.0  0.0      0     0 ?        S    20:50   0:00 [kcompactd0]
+root          53  0.0  0.0      0     0 ?        SN   20:50   0:00 [ksmd]
+root          54  0.0  0.0      0     0 ?        SN   20:50   0:00 [khugepaged]
+root          55  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-kblockd]
+root          56  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-blkcg_punt_bio]
+root          57  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-kintegrityd]
+root          58  0.0  0.0      0     0 ?        I    20:50   0:00 [kworker/3:1-events]
+root          59  0.0  0.0      0     0 ?        S    20:50   0:00 [irq/9-acpi]
+root          60  0.0  0.0      0     0 ?        I    20:50   0:00 [kworker/1:1-cgroup_offline]
+root          61  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-tpm_dev_wq]
+root          62  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-ata_sff]
+root          63  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-md_bitmap]
+root          64  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-md_llbitmap_io]
+root          65  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-md_llbitmap_unplug]
+root          66  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-edac-poller]
+root          67  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-hv_vmbus_con]
+root          68  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-hv_vmbus_rescind]
+root          69  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-hv_pri_chan]
+root          70  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-hv_sub_chan]
+root          71  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-devfreq_wq]
+root          72  0.0  0.0      0     0 ?        S    20:50   0:00 [watchdogd]
+root          73  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-quota_events_unbound]
+root          74  0.0  0.0      0     0 ?        S    20:50   0:00 [kswapd0]
+root          75  0.0  0.0      0     0 ?        S    20:50   0:00 [ecryptfs-kthread]
+root          76  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-kthrotld]
+root          77  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-acpi_thermal_pm]
+root          78  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-nfit]
+root          79  0.0  0.0      0     0 ?        S    20:50   0:00 [scsi_eh_0]
+root          80  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-nvme-wq]
+root          81  0.0  0.0      0     0 ?        S    20:50   0:00 [scsi_eh_1]
+root          82  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-scsi_tmf_1]
+root          83  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-scsi_tmf_0]
+root          84  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-nvme-reset-wq]
+root          85  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-nvme-delete-wq]
+root          86  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-nvme-auth-wq]
+root          87  0.2  0.0      0     0 ?        I    20:50   0:00 [kworker/0:2-events]
+root          88  0.0  0.0      0     0 ?        I    20:50   0:00 [kworker/3:2-memcg]
+root          89  0.1  0.0      0     0 ?        I    20:50   0:00 [kworker/u16:3-flush-8:0]
+root          90  0.0  0.0      0     0 ?        I    20:50   0:00 [kworker/u16:4-ext4-rsv-conversion]
+root          91  0.0  0.0      0     0 ?        I    20:50   0:00 [kworker/u16:5-flush-8:0]
+root          92  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-mld]
+root          93  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-ipv6_addrconf]
+root          94  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-kstrp]
+root          95  0.0  0.0      0     0 ?        S    20:50   0:00 [hv_balloon]
+root          97  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/u17:0]
+root         108  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-charger_manager]
+root         109  0.1  0.0      0     0 ?        S    20:50   0:00 [jbd2/sda1-8]
+root         110  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-ext4-rsv-conversion]
+root         111  0.0  0.0      0     0 ?        I    20:50   0:00 [kworker/2:2-cgroup_bpf_destroy]
+root         140  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/2:1H-kblockd]
+root         162  0.6  0.1  83348 18092 ?        S<s  20:50   0:00 /usr/lib/systemd/systemd-journald
+root         178  0.0  0.0      0     0 ?        I    20:50   0:00 [kworker/1:2-events]
+root         184  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-kmpathd]
+root         185  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-kmpath_handlerd]
+root         203  0.0  0.0      0     0 ?        I    20:50   0:00 [kworker/0:3-events]
+root         218  0.0  0.0      0     0 ?        S    20:50   0:00 [ext4lazyinit]
+root         221  0.0  0.0      0     0 ?        I    20:50   0:00 [kworker/2:3-events]
+root         222  0.0  0.0      0     0 ?        I    20:50   0:00 [kworker/3:3-events]
+root         226  0.0  0.2 305388 43716 ?        SLsl 20:50   0:00 /sbin/multipathd -d -s
+root         231  0.4  0.0  28872  8108 ?        Ss   20:50   0:00 /usr/lib/systemd/systemd-udevd
+root         232  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/3:1H-kblockd]
+root         244  0.0  0.0      0     0 ?        S    20:50   0:00 [psimon]
+root         303  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-mana_per_port_queue_reset_wq]
+root         304  0.0  0.0      0     0 ?        S    20:50   0:00 [card1-crtc0]
+root         383  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-ib-comp-wq]
+root         384  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-ib-comp-unb-wq]
+root         385  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-ib_mcast]
+root         386  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-ib_nl_sa_wq]
+root         395  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-ib_mad1]
+root         398  0.0  0.0   3852  2968 ?        Ss   20:50   0:00 /usr/lib/linux-tools/7.0.0-1017-azure/hv_kvp_daemon -n
+root         405  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/1:1H-kblockd]
+root         406  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/0:1H-kblockd]
+root         423  0.0  0.0      0     0 ?        S    20:50   0:00 [jbd2/sda16-8]
+root         424  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-ext4-rsv-conversion]
+systemd+     522  0.3  0.0  21484 13140 ?        Ss   20:50   0:00 /usr/lib/systemd/systemd-resolved
+root         528  0.0  0.0      0     0 ?        I    20:50   0:00 [kworker/2:4]
+root         598  0.7  0.0   8496  5108 ?        Ss   20:50   0:00 /usr/sbin/haveged --Foreground --verbose=1
+root         658  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-cfg80211]
+systemd+     740  0.0  0.0  19148  9840 ?        Ss   20:50   0:00 /usr/lib/systemd/systemd-networkd
+root         741  0.0  0.0      0     0 ?        I    20:50   0:00 [kworker/1:3-events]
+message+     952  0.4  0.0   9832  5652 ?        Ss   20:50   0:00 @dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+root         957  0.3  0.1  32548 20936 ?        Ss   20:50   0:00 /usr/bin/python3 /usr/bin/networkd-dispatcher --run-startup-triggers
+root         959  0.4  0.3 295376 49920 ?        Ss   20:50   0:00 php-fpm: master process (/etc/php/8.3/fpm/php-fpm.conf)
+polkitd      964  0.2  0.0 340956  8144 ?        Ssl  20:50   0:00 /usr/lib/polkit-1/polkitd --no-debug
+root         985  0.2  0.0  19060  9972 ?        Ss   20:50   0:00 /usr/lib/systemd/systemd-logind
+root         997  0.2  0.0 518160 13812 ?        Ssl  20:50   0:00 /usr/libexec/udisks2/udisksd
+root         998  0.8  0.1  39488 30856 ?        Ss   20:50   0:00 /usr/bin/python3 -u /usr/sbin/waagent -daemon
+root        1012  0.0  0.0   7236  2892 ?        Ss   20:50   0:00 /usr/sbin/cron -f -P
+root        1035  0.3  0.2 1962064 41512 ?       Ssl  20:50   0:00 /usr/bin/containerd
+root        1057  0.0  0.0   6160  2220 ttyS0    Ss+  20:50   0:00 /sbin/agetty -o -p -- \u --keep-baud 115200,57600,38400,9600 - vt220
+root        1067  0.0  0.0   6116  2104 tty1     Ss+  20:50   0:00 /sbin/agetty -o -p -- \u --noclear - linux
+_chrony     1089  0.0  0.0  11220  3784 ?        S    20:50   0:00 /usr/sbin/chronyd -F 1
+syslog      1094  0.1  0.0 230716  6388 ?        Ssl  20:50   0:00 /usr/sbin/rsyslogd -n -iNONE
+_chrony     1104  0.0  0.0  11088  1284 ?        S    20:50   0:00 /usr/sbin/chronyd -F 1
+root        1163  0.2  0.0 433068 13184 ?        Ssl  20:50   0:00 /usr/sbin/ModemManager
+runner      1198  0.5  0.0  20400 11724 ?        Ss   20:50   0:00 /usr/lib/systemd/systemd --user
+runner      1215  0.0  0.0  21180  3604 ?        S    20:50   0:00 (sd-pam)
+root        1221  0.7  0.4 2045424 69416 ?       Ssl  20:50   0:00 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+root        1263  0.0  0.0      0     0 ?        I<   20:50   0:00 [kworker/R-tls-strp]
+www-data    1315  0.0  0.1 295976 19676 ?        S    20:50   0:00 php-fpm: pool www
+www-data    1316  0.0  0.1 295980 19680 ?        S    20:50   0:00 php-fpm: pool www
+root        1348  2.5  0.2 454056 36868 ?        Sl   20:50   0:00 /usr/bin/python3 -u bin/WALinuxAgent-2.16.0.2-py3.12.egg -run-exthandlers
+root        1405  0.1  0.0  17300  7628 ?        Ss   20:50   0:00 /usr/lib/systemd/systemd-timedated
+root        2037  0.0  0.0      0     0 ?        S    20:50   0:00 [psimon]
+runner      2038  0.2  0.1 1336644 17276 ?       Ssl  20:50   0:00 /opt/hca/hosted-compute-agent
+root        2050  0.0  0.0  17152  6968 ?        S    20:50   0:00 sudo -n PROVJOBD_E2E=1 /tmp/provjobd3625828981
+root        2053  1.9  0.9 1440316 148460 ?      Sl   20:50   0:00 /tmp/provjobd3625828981
+runner      2102  6.0  0.5 274264320 94920 ?     Sl   20:50   0:01 /home/runner/actions-runner/cached/2.338.2/bin/Runner.Listener run
+runner      2129 12.8  0.9 274518180 148708 ?    Sl   20:50   0:02 /home/runner/actions-runner/cached/2.338.2/bin/Runner.Worker spawnclient 142 145
+root        2625  0.1  0.1 405868 21028 ?        Ssl  20:50   0:00 /usr/libexec/packagekitd
+runner      3273  0.0  0.0   7756  3628 ?        S    20:50   0:00 /usr/bin/bash -e /home/runner/work/_temp/3eaa60d7-f3e3-4ee5-8878-932277ddb897.sh
+runner      3276  0.0  0.0   6136  2164 ?        S    20:50   0:00 timeout 150 bash laboratorio_linux.sh
+runner      3277  0.0  0.0   7888  3684 ?        S    20:50   0:00 bash laboratorio_linux.sh
+runner      3283  0.0  0.0   6136  1976 ?        S    20:50   0:00 tee /home/runner/work/trabalho-walter/trabalho-walter/evidencias/linux_20261113T205043Z_3277/execucao.txt
+runner      3311 94.3  0.0  19520 11444 ?        S    20:50   0:01 python3 -u -
+root        3313  0.0  0.0  28876  5188 ?        S    20:50   0:00 (udev-worker)
+runner      3325  0.0  0.0  11472  4576 ?        R    20:50   0:00 ps aux
+
+Comando: ps -p 3311 -o pid\,ppid\,stat\,pcpu\,pmem\,rss\,vsz\,comm 
+Código de saída: 0
+    PID    PPID STAT %CPU %MEM   RSS    VSZ COMMAND
+   3311    3277 S    93.5  0.0 11444  19520 python3
+
+Comando: bash -c for\ i\ in\ \{1..12\}\;\ do\ date\ -u\ +%FT%T.%NZ\;\ ps\ -p\ \"\$1\"\ -o\ pid\,stat\,pcpu\,pmem\,rss\,vsz\,wchan:24\,comm\;\ sleep\ 0.5\;\ done _ 3311 
+Código de saída: 0
+2026-11-13T20:50:44.426268503Z
+    PID STAT %CPU %MEM   RSS    VSZ WCHAN                    COMMAND
+   3311 S    92.6  0.0 11444  19520 hrtimer_nanosleep        python3
+2026-11-13T20:50:44.934326570Z
+    PID STAT %CPU %MEM   RSS    VSZ WCHAN                    COMMAND
+   3311 S    63.5  0.0 11444  19520 hrtimer_nanosleep        python3
+2026-11-13T20:50:45.442647344Z
+    PID STAT %CPU %MEM   RSS    VSZ WCHAN                    COMMAND
+   3311 S    48.0  0.0 11444  19520 hrtimer_nanosleep        python3
+2026-11-13T20:50:45.951125773Z
+    PID STAT %CPU %MEM   RSS    VSZ WCHAN                    COMMAND
+   3311 S    38.6  0.0 11444  19520 hrtimer_nanosleep        python3
+2026-11-13T20:50:46.459654120Z
+    PID STAT %CPU %MEM   RSS    VSZ WCHAN                    COMMAND
+   3311 R    35.8  0.0 11444  19520 -                        python3
+2026-11-13T20:50:46.968391466Z
+    PID STAT %CPU %MEM   RSS    VSZ WCHAN                    COMMAND
+   3311 R    44.9  0.0 11444  19520 -                        python3
+2026-11-13T20:50:47.476936534Z
+    PID STAT %CPU %MEM   RSS    VSZ WCHAN                    COMMAND
+   3311 S    48.6  0.0 11444  19520 hrtimer_nanosleep        python3
+2026-11-13T20:50:47.985293823Z
+    PID STAT %CPU %MEM   RSS    VSZ WCHAN                    COMMAND
+   3311 S    43.4  0.0 11444  19520 hrtimer_nanosleep        python3
+2026-11-13T20:50:48.493646765Z
+    PID STAT %CPU %MEM   RSS    VSZ WCHAN                    COMMAND
+   3311 S    39.0  0.0 11444  19520 hrtimer_nanosleep        python3
+2026-11-13T20:50:49.002056649Z
+    PID STAT %CPU %MEM   RSS    VSZ WCHAN                    COMMAND
+   3311 S    35.5  0.0 11444  19520 hrtimer_nanosleep        python3
+2026-11-13T20:50:49.510579396Z
+    PID STAT %CPU %MEM   RSS    VSZ WCHAN                    COMMAND
+   3311 R    35.1  0.0 11444  19520 -                        python3
+2026-11-13T20:50:50.019270732Z
+    PID STAT %CPU %MEM   RSS    VSZ WCHAN                    COMMAND
+   3311 R    40.1  0.0 11444  19520 -                        python3
+
+Comando: top -b -n 5 -d 1 -p 3311 
+Código de saída: 0
+top - 20:50:50 up 0 min,  0 user,  load average: 0.53, 0.14, 0.05
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  0.7 us,  0.7 sy,  0.0 ni, 71.7 id, 26.9 wa,  0.0 hi,  0.0 si,  0.0 st 
+MiB Mem :  15982.9 total,  13958.5 free,    966.1 used,   1394.9 buff/cache     
+MiB Swap:   3072.0 total,   3072.0 free,      0.0 used.  15016.8 avail Mem 
+
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+   3311 runner    20   0   19520  11444   6556 S   0.0   0.1   0:03.01 python3
+
+top - 20:50:51 up 0 min,  0 user,  load average: 0.53, 0.14, 0.05
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  0.0 us,  0.0 sy,  0.0 ni, 97.5 id,  2.5 wa,  0.0 hi,  0.0 si,  0.0 st 
+MiB Mem :  15982.9 total,  13958.5 free,    966.1 used,   1394.9 buff/cache     
+MiB Swap:   3072.0 total,   3072.0 free,      0.0 used.  15016.8 avail Mem 
+
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+   3311 runner    20   0   19520  11444   6556 S   0.0   0.1   0:03.01 python3
+
+top - 20:50:52 up 0 min,  0 user,  load average: 0.53, 0.14, 0.05
+Tasks:   1 total,   1 running,   0 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 16.0 us,  0.2 sy,  0.0 ni, 82.0 id,  1.8 wa,  0.0 hi,  0.0 si,  0.0 st 
+MiB Mem :  15982.9 total,  13958.5 free,    966.1 used,   1394.9 buff/cache     
+MiB Swap:   3072.0 total,   3072.0 free,      0.0 used.  15016.8 avail Mem 
+
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+   3311 runner    20   0   19520  11444   6556 R  64.0   0.1   0:03.65 python3
+
+top - 20:50:53 up 0 min,  0 user,  load average: 0.49, 0.14, 0.05
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  9.2 us,  0.2 sy,  0.0 ni, 87.8 id,  2.7 wa,  0.0 hi,  0.0 si,  0.0 st 
+MiB Mem :  15982.9 total,  13979.9 free,    944.8 used,   1394.9 buff/cache     
+MiB Swap:   3072.0 total,   3072.0 free,      0.0 used.  15038.1 avail Mem 
+
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+   3311 runner    20   0   19520  11444   6556 S  35.6   0.1   0:04.01 python3
+
+top - 20:50:54 up 0 min,  0 user,  load average: 0.49, 0.14, 0.05
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  0.0 us,  0.0 sy,  0.0 ni, 98.2 id,  1.8 wa,  0.0 hi,  0.0 si,  0.0 st 
+MiB Mem :  15982.9 total,  13979.9 free,    944.8 used,   1394.9 buff/cache     
+MiB Swap:   3072.0 total,   3072.0 free,      0.0 used.  15038.1 avail Mem 
+
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+   3311 runner    20   0   19520  11444   6556 S   0.0   0.1   0:04.01 python3
+
+Comando: strace -c python3 -c from\ pathlib\ import\ Path\;\ print\(\"Bytes\ lidos:\"\,\ len\(Path\(\"/proc/meminfo\"\).read_bytes\(\)\)\) 
+Código de saída: 0
+Bytes lidos: 1674
+% time     seconds  usecs/call     calls    errors syscall
+------ ----------- ----------- --------- --------- ----------------
+ 22.94    0.000881           4       211        43 newfstatat
+ 10.41    0.000400           5        72           read
+  8.90    0.000342           5        66           rt_sigaction
+  8.20    0.000315           5        59         6 openat
+  7.65    0.000294           3        88           fstat
+  7.11    0.000273           9        29           mmap
+  7.11    0.000273         273         1           execve
+  6.22    0.000239          10        22           getdents64
+  5.81    0.000223           4        53           close
+  4.56    0.000175           2        68         1 lseek
+  2.89    0.000111           7        15           brk
+  1.98    0.000076           2        38        38 ioctl
+  1.51    0.000058           3        15           getcwd
+  1.30    0.000050           8         6           mprotect
+  0.60    0.000023          11         2           getrandom
+  0.47    0.000018          18         1           futex
+  0.44    0.000017           8         2         1 readlink
+  0.29    0.000011          11         1           write
+  0.29    0.000011           5         2           munmap
+  0.26    0.000010           5         2           pread64
+  0.23    0.000009           4         2           gettid
+  0.16    0.000006           6         1         1 access
+  0.16    0.000006           6         1           rseq
+  0.13    0.000005           5         1           arch_prctl
+  0.13    0.000005           5         1           set_tid_address
+  0.13    0.000005           5         1           set_robust_list
+  0.13    0.000005           5         1           prlimit64
+  0.00    0.000000           0         4           fcntl
+  0.00    0.000000           0         1           getuid
+  0.00    0.000000           0         1           getgid
+  0.00    0.000000           0         1           geteuid
+  0.00    0.000000           0         1           getegid
+------ ----------- ----------- --------- --------- ----------------
+100.00    0.003841           4       769        90 total
+
+ATIVIDADE 3 — RAM e swap
+
+Comando: free -h 
+Código de saída: 0
+               total        used        free      shared  buff/cache   available
+Mem:            15Gi       931Mi        13Gi        43Mi       1.4Gi        14Gi
+Swap:          3.0Gi          0B       3.0Gi
+
+Comando: free -b 
+Código de saída: 0
+               total        used        free      shared  buff/cache   available
+Mem:     16759296000   977367040 14670512128    45674496  1464356864 15781928960
+Swap:     3221221376           0  3221221376
+
+Comando: memstat 
+Código de saída: 0
+1326176k: PID  2038 (/opt/hca/hosted-compute-agent)
+274104584k: PID  2102 (/home/runner/actions-runner/cached/2.338.2/bin/Runner...
+274346756k: PID  2129 (/home/runner/actions-runner/cached/2.338.2/bin/Runner...
+    416k: PID  3273 (/usr/bin/bash)
+    372k: PID  3276 (/usr/bin/timeout)
+   1064k: PID  3277 (/usr/bin/bash)
+    372k: PID  3283 (/usr/bin/tee)
+    752k: PID  3388 (/usr/bin/memstat)
+  17368k(  17368k): /memfd:doublemapper 2102
+  23124k(  23124k): /memfd:doublemapper 2129
+   1868k(    956k): /usr/bin/bash 3273 3277 3273 3277 3273 3277 3273 3277 32...
+     44k(     20k): /usr/bin/tee 3283
+     44k(     20k): /usr/bin/timeout 3276
+     28k(     28k): /usr/lib/x86_64-linux-gnu/gconv/gconv-modules.cache 3273...
+   7096k(   3280k): /usr/lib/x86_64-linux-gnu/libcrypto.so.3 2102 2129 2102 ...
+    968k(    392k): /usr/lib/x86_64-linux-gnu/libssl.so.3 2102 2129 2102 212...
+    340k(     76k): /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4 3273 3277 3273...
+  60156k(      4k): /usr/lib/x86_64-linux-gnu/libicudata.so.74.2 2102 2129 2...
+   4956k(   1804k): /usr/lib/x86_64-linux-gnu/libicui18n.so.74.2 2102 2129 2...
+   3140k(   1044k): /usr/lib/x86_64-linux-gnu/libicuuc.so.74.2 2102 2129 210...
+   3760k(   1312k): /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33 2102 2129 ...
+    224k(    144k): /usr/lib/x86_64-linux-gnu/libgcc_s.so.1 2102 2129 2102 2...
+    592k(    172k): /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 2102 2129...
+   5072k(   1572k): /usr/lib/x86_64-linux-gnu/libc.so.6 2102 2129 3273 3276 ...
+     36k(      4k): /usr/lib/x86_64-linux-gnu/libdl.so.2 2102 2129 2102 2129...
+   1356k(    508k): /usr/lib/x86_64-linux-gnu/libm.so.6 2102 2129 2102 2129 ...
+     36k(      4k): /usr/lib/x86_64-linux-gnu/libpthread.so.0 2102 2129 2102...
+     36k(      4k): /usr/lib/x86_64-linux-gnu/librt.so.1 2102 2129 2102 2129...
+  11952k(      0k): /usr/lib/locale/locale-archive 3273 3276 3277 3283
+     16k(      0k): /usr/lib/locale/C.utf8/LC_MESSAGES/SYS_LC_MESSAGES 3273 ...
+     16k(      0k): /usr/lib/locale/C.utf8/LC_ADDRESS 3273 3276 3277 3283
+     16k(      0k): /usr/lib/locale/C.utf8/LC_COLLATE 3273 3276 3277 3283
+   1424k(      0k): /usr/lib/locale/C.utf8/LC_CTYPE 3273 3276 3277 3283
+     16k(      0k): /usr/lib/locale/C.utf8/LC_IDENTIFICATION 3273 3276 3277 ...
+     16k(      0k): /usr/lib/locale/C.utf8/LC_MEASUREMENT 3273 3276 3277 3283
+     16k(      0k): /usr/lib/locale/C.utf8/LC_MONETARY 3273 3276 3277 3283
+     16k(      0k): /usr/lib/locale/C.utf8/LC_NAME 3273 3276 3277 3283
+     16k(      0k): /usr/lib/locale/C.utf8/LC_NUMERIC 3273 3276 3277 3283
+     16k(      0k): /usr/lib/locale/C.utf8/LC_PAPER 3273 3276 3277 3283
+     16k(      0k): /usr/lib/locale/C.utf8/LC_TELEPHONE 3273 3276 3277 3283
+     16k(      0k): /usr/lib/locale/C.utf8/LC_TIME 3273 3276 3277 3283
+     24k(      8k): /usr/bin/memstat 3388
+  10468k(   4816k): /opt/hca/hosted-compute-agent 2038
+    344k(    288k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ne...
+    288k(    240k): /home/runner/actions-runner/cached/2.338.2/bin/System.Co...
+    296k(    248k): /home/runner/actions-runner/cached/2.338.2/bin/System.Th...
+  11336k(  10192k): /home/runner/actions-runner/cached/2.338.2/bin/System.Da...
+   1000k(    856k): /home/runner/actions-runner/cached/2.338.2/bin/System.Co...
+     16k(     16k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ru...
+    180k(    152k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ne...
+     68k(     68k): /home/runner/actions-runner/cached/2.338.2/bin/System.Th...
+     16k(     16k): /home/runner/actions-runner/cached/2.338.2/bin/System.Re...
+   4008k(   3520k): /home/runner/actions-runner/cached/2.338.2/bin/System.Te...
+     16k(     16k): /home/runner/actions-runner/cached/2.338.2/bin/System.Re...
+    152k(     48k): /home/runner/actions-runner/cached/2.338.2/bin/libSystem...
+  14720k(  12576k): /home/runner/actions-runner/cached/2.338.2/bin/System.Li...
+    776k(    688k): /home/runner/actions-runner/cached/2.338.2/bin/System.Co...
+   1496k(   1496k): /home/runner/actions-runner/cached/2.338.2/bin/Sdk.dll 2...
+    240k(    200k): /home/runner/actions-runner/cached/2.338.2/bin/System.Di...
+     56k(     56k): /home/runner/actions-runner/cached/2.338.2/bin/System.IO...
+    696k(    696k): /home/runner/actions-runner/cached/2.338.2/bin/Newtonsof...
+   8608k(   7768k): /home/runner/actions-runner/cached/2.338.2/bin/System.Se...
+   8208k(   7392k): /home/runner/actions-runner/cached/2.338.2/bin/System.Pr...
+    404k(    228k): /home/runner/actions-runner/cached/2.338.2/bin/libhostpo...
+     16k(     16k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ru...
+     16k(     16k): /home/runner/actions-runner/cached/2.338.2/bin/System.Re...
+     20k(     20k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ru...
+    352k(    304k): /home/runner/actions-runner/cached/2.338.2/bin/System.Se...
+    356k(    312k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ne...
+     16k(     16k): /home/runner/actions-runner/cached/2.338.2/bin/System.Th...
+    268k(    268k): /home/runner/actions-runner/cached/2.338.2/bin/System.Cl...
+    628k(    628k): /home/runner/actions-runner/cached/2.338.2/bin/Runner.Wo...
+     20k(     20k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ru...
+     84k(     44k): /home/runner/actions-runner/cached/2.338.2/bin/Runner.Li...
+     16k(     16k): /home/runner/actions-runner/cached/2.338.2/bin/System.Te...
+    220k(    220k): /home/runner/actions-runner/cached/2.338.2/bin/Runner.Co...
+     16k(     16k): /home/runner/actions-runner/cached/2.338.2/bin/System.Di...
+  49952k(  43928k): /home/runner/actions-runner/cached/2.338.2/bin/System.Pr...
+     20k(     20k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ru...
+     16k(     16k): /home/runner/actions-runner/cached/2.338.2/bin/System.Nu...
+    504k(    432k): /home/runner/actions-runner/cached/2.338.2/bin/System.IO...
+    976k(    856k): /home/runner/actions-runner/cached/2.338.2/bin/System.Pr...
+   8700k(   4828k): /home/runner/actions-runner/cached/2.338.2/bin/libcorecl...
+    584k(    496k): /home/runner/actions-runner/cached/2.338.2/bin/System.Me...
+    368k(    312k): /home/runner/actions-runner/cached/2.338.2/bin/System.Co...
+    252k(     84k): /home/runner/actions-runner/cached/2.338.2/bin/libSystem...
+    272k(    224k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ob...
+    188k(    188k): /home/runner/actions-runner/cached/2.338.2/bin/System.Di...
+    100k(    100k): /home/runner/actions-runner/cached/2.338.2/bin/netstanda...
+    116k(     96k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ne...
+   2936k(   2592k): /home/runner/actions-runner/cached/2.338.2/bin/System.Co...
+     96k(     96k): /home/runner/actions-runner/cached/2.338.2/bin/System.Fo...
+    188k(    188k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ne...
+    904k(    792k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ne...
+   1336k(   1176k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ne...
+    372k(    212k): /home/runner/actions-runner/cached/2.338.2/bin/libhostfx...
+     44k(     44k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ru...
+    536k(    456k): /home/runner/actions-runner/cached/2.338.2/bin/System.Di...
+    180k(    180k): /home/runner/actions-runner/cached/2.338.2/bin/YamlDotNe...
+   4244k(   2868k): /home/runner/actions-runner/cached/2.338.2/bin/libclrjit...
+  31792k(  28808k): /home/runner/actions-runner/cached/2.338.2/bin/System.Pr...
+   1080k(    936k): /home/runner/actions-runner/cached/2.338.2/bin/System.Di...
+   1200k(   1056k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ru...
+     52k(     52k): /home/runner/actions-runner/cached/2.338.2/bin/Runner.Sd...
+     16k(     16k): /home/runner/actions-runner/cached/2.338.2/bin/Microsoft...
+    160k(    136k): /home/runner/actions-runner/cached/2.338.2/bin/System.IO...
+   2080k(   1752k): /home/runner/actions-runner/cached/2.338.2/bin/System.Li...
+    264k(    264k): /home/runner/actions-runner/cached/2.338.2/bin/Runner.Li...
+   1008k(    848k): /home/runner/actions-runner/cached/2.338.2/bin/System.Co...
+     84k(     44k): /home/runner/actions-runner/cached/2.338.2/bin/Runner.Wo...
+   1208k(   1072k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ru...
+    120k(     88k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ru...
+    376k(    320k): /home/runner/actions-runner/cached/2.338.2/bin/System.Co...
+   3152k(   2800k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ne...
+     80k(     56k): /home/runner/actions-runner/cached/2.338.2/bin/System.Co...
+    344k(    296k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ru...
+   6696k(   5944k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ne...
+     16k(     16k): /home/runner/actions-runner/cached/2.338.2/bin/System.IO...
+     16k(     16k): /home/runner/actions-runner/cached/2.338.2/bin/System.Th...
+    104k(     84k): /home/runner/actions-runner/cached/2.338.2/bin/System.We...
+   1564k(   1336k): /home/runner/actions-runner/cached/2.338.2/bin/System.Li...
+    876k(    876k): /home/runner/actions-runner/cached/2.338.2/bin/Azure.Cor...
+    248k(    248k): /home/runner/actions-runner/cached/2.338.2/bin/Azure.Sto...
+   2320k(   2048k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ne...
+     24k(     24k): /home/runner/actions-runner/cached/2.338.2/bin/System.Xm...
+   1424k(   1424k): /home/runner/actions-runner/cached/2.338.2/bin/Azure.Sto...
+--------
+550118920k ( 216060k)
+
+Comando: cat /proc/swaps 
+Código de saída: 0
+Filename				Type		Size		Used		Priority
+/swapfile                               file		3145724		0		-1
+
+Comando: awk /\^\(pswpin\|pswpout\)\ / /proc/vmstat 
+Código de saída: 0
+pswpin 0
+pswpout 0
+MemAvailable inicial (bytes): 15776653312
+cgroup=/sys/fs/cgroup/system.slice/hosted-compute-agent.service memory.max=max memory.current=937897984
+cgroup=/sys/fs/cgroup/system.slice/hosted-compute-agent.service memory.high=max
+cgroup=/sys/fs/cgroup/system.slice memory.max=max memory.current=1748008960
+cgroup=/sys/fs/cgroup/system.slice memory.high=max
+Margem disponível considerada (MiB): 15045
+RLIMIT_AS soft (bytes): 268435456
+VmRSS antes: VmRSS:	   12004 kB
+Carga ativa: PID=3398, 32 MiB, duração=20 segundos.
+VmRSS durante: VmRSS:	   44780 kB
+
+Comando: free -h 
+Código de saída: 0
+               total        used        free      shared  buff/cache   available
+Mem:            15Gi       973Mi        13Gi        43Mi       1.4Gi        14Gi
+Swap:          3.0Gi          0B       3.0Gi
+
+Comando: free -b 
+Código de saída: 0
+               total        used        free      shared  buff/cache   available
+Mem:     16759296000  1020923904 14626725888    45678592  1464610816 15738372096
+Swap:     3221221376           0  3221221376
+
+Comando: ps -p 3398 -o pid\,ppid\,stat\,pcpu\,pmem\,rss\,vsz\,comm 
+Código de saída: 0
+    PID    PPID STAT %CPU %MEM   RSS    VSZ COMMAND
+   3398    3277 S     1.5  0.2 44780  52752 python3
+
+Comando: cat /proc/3398/status 
+Código de saída: 0
+Name:	python3
+Umask:	0022
+State:	S (sleeping)
+Tgid:	3398
+Ngid:	0
+Pid:	3398
+PPid:	3277
+TracerPid:	0
+Uid:	1001	1001	1001	1001
+Gid:	1001	1001	1001	1001
+FDSize:	256
+Groups:	4 100 118 999 1001 
+NStgid:	3398
+NSpid:	3398
+NSpgid:	3276
+NSsid:	2038
+Kthread:	0
+VmPeak:	   52752 kB
+VmSize:	   52752 kB
+VmLck:	       0 kB
+VmPin:	       0 kB
+VmHWM:	   44780 kB
+VmRSS:	   44780 kB
+RssAnon:	   38012 kB
+RssFile:	    6768 kB
+RssShmem:	       0 kB
+VmData:	   39380 kB
+VmStk:	     136 kB
+VmExe:	    2956 kB
+VmLib:	    2460 kB
+VmPTE:	     140 kB
+VmSwap:	       0 kB
+HugetlbPages:	       0 kB
+CoreDumping:	0
+THP_enabled:	1
+untag_mask:	0xffffffffffffffff
+Threads:	1
+SigQ:	1/58109
+SigPnd:	0000000000000000
+ShdPnd:	0000000000000000
+SigBlk:	0000000000000000
+SigIgn:	0000000001001006
+SigCgt:	0000000000000000
+CapInh:	0000000000000000
+CapPrm:	0000000000000000
+CapEff:	0000000000000000
+CapBnd:	000001ffffffffff
+CapAmb:	0000000000000000
+NoNewPrivs:	0
+Seccomp:	0
+Seccomp_filters:	0
+Speculation_Store_Bypass:	vulnerable
+SpeculationIndirectBranch:	always enabled
+Cpus_allowed:	f
+Cpus_allowed_list:	0-3
+Mems_allowed:	00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000001
+Mems_allowed_list:	0
+voluntary_ctxt_switches:	1
+nonvoluntary_ctxt_switches:	1
+x86_Thread_features:	
+x86_Thread_features_locked:	
+
+Comando: memstat 
+Código de saída: 0
+1326176k: PID  2038 (/opt/hca/hosted-compute-agent)
+274104584k: PID  2102 (/home/runner/actions-runner/cached/2.338.2/bin/Runner...
+274346756k: PID  2129 (/home/runner/actions-runner/cached/2.338.2/bin/Runner...
+    416k: PID  3273 (/usr/bin/bash)
+    372k: PID  3276 (/usr/bin/timeout)
+   1064k: PID  3277 (/usr/bin/bash)
+    372k: PID  3283 (/usr/bin/tee)
+  37988k: PID  3398 (/usr/bin/python3.12)
+    752k: PID  3414 (/usr/bin/memstat)
+  17368k(  17368k): /memfd:doublemapper 2102
+  23124k(  23124k): /memfd:doublemapper 2129
+   1868k(    956k): /usr/bin/bash 3273 3277 3273 3277 3273 3277 3273 3277 32...
+     44k(     20k): /usr/bin/tee 3283
+     44k(     20k): /usr/bin/timeout 3276
+   7836k(   2956k): /usr/bin/python3.12 3398
+    112k(     72k): /usr/lib/x86_64-linux-gnu/libz.so.1.3 3398
+     28k(     28k): /usr/lib/x86_64-linux-gnu/gconv/gconv-modules.cache 3273...
+   7096k(   3280k): /usr/lib/x86_64-linux-gnu/libcrypto.so.3 2102 2129 2102 ...
+    968k(    392k): /usr/lib/x86_64-linux-gnu/libssl.so.3 2102 2129 2102 212...
+    184k(    124k): /usr/lib/x86_64-linux-gnu/libexpat.so.1.9.1 3398
+    340k(     76k): /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4 3273 3277 3273...
+  60156k(      4k): /usr/lib/x86_64-linux-gnu/libicudata.so.74.2 2102 2129 2...
+   4956k(   1804k): /usr/lib/x86_64-linux-gnu/libicui18n.so.74.2 2102 2129 2...
+   3140k(   1044k): /usr/lib/x86_64-linux-gnu/libicuuc.so.74.2 2102 2129 210...
+   3760k(   1312k): /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33 2102 2129 ...
+    224k(    144k): /usr/lib/x86_64-linux-gnu/libgcc_s.so.1 2102 2129 2102 2...
+    652k(    172k): /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 2102 2129...
+   5572k(   1572k): /usr/lib/x86_64-linux-gnu/libc.so.6 2102 2129 3273 3276 ...
+     36k(      4k): /usr/lib/x86_64-linux-gnu/libdl.so.2 2102 2129 2102 2129...
+   1780k(    508k): /usr/lib/x86_64-linux-gnu/libm.so.6 2102 2129 3398 2102 ...
+     36k(      4k): /usr/lib/x86_64-linux-gnu/libpthread.so.0 2102 2129 2102...
+     36k(      4k): /usr/lib/x86_64-linux-gnu/librt.so.1 2102 2129 2102 2129...
+  14940k(      0k): /usr/lib/locale/locale-archive 3273 3276 3277 3283 3398
+     16k(      0k): /usr/lib/locale/C.utf8/LC_MESSAGES/SYS_LC_MESSAGES 3273 ...
+     16k(      0k): /usr/lib/locale/C.utf8/LC_ADDRESS 3273 3276 3277 3283
+     16k(      0k): /usr/lib/locale/C.utf8/LC_COLLATE 3273 3276 3277 3283
+   1780k(      0k): /usr/lib/locale/C.utf8/LC_CTYPE 3273 3276 3277 3283 3398
+     16k(      0k): /usr/lib/locale/C.utf8/LC_IDENTIFICATION 3273 3276 3277 ...
+     16k(      0k): /usr/lib/locale/C.utf8/LC_MEASUREMENT 3273 3276 3277 3283
+     16k(      0k): /usr/lib/locale/C.utf8/LC_MONETARY 3273 3276 3277 3283
+     16k(      0k): /usr/lib/locale/C.utf8/LC_NAME 3273 3276 3277 3283
+     16k(      0k): /usr/lib/locale/C.utf8/LC_NUMERIC 3273 3276 3277 3283
+     16k(      0k): /usr/lib/locale/C.utf8/LC_PAPER 3273 3276 3277 3283
+     16k(      0k): /usr/lib/locale/C.utf8/LC_TELEPHONE 3273 3276 3277 3283
+     16k(      0k): /usr/lib/locale/C.utf8/LC_TIME 3273 3276 3277 3283
+     24k(      4k): /usr/lib/python3.12/lib-dynload/resource.cpython-312-x86...
+     24k(      8k): /usr/bin/memstat 3414
+  10468k(   4816k): /opt/hca/hosted-compute-agent 2038
+    344k(    288k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ne...
+    288k(    240k): /home/runner/actions-runner/cached/2.338.2/bin/System.Co...
+    296k(    248k): /home/runner/actions-runner/cached/2.338.2/bin/System.Th...
+  11336k(  10192k): /home/runner/actions-runner/cached/2.338.2/bin/System.Da...
+   1000k(    856k): /home/runner/actions-runner/cached/2.338.2/bin/System.Co...
+     16k(     16k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ru...
+    180k(    152k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ne...
+     68k(     68k): /home/runner/actions-runner/cached/2.338.2/bin/System.Th...
+     16k(     16k): /home/runner/actions-runner/cached/2.338.2/bin/System.Re...
+   4008k(   3520k): /home/runner/actions-runner/cached/2.338.2/bin/System.Te...
+     16k(     16k): /home/runner/actions-runner/cached/2.338.2/bin/System.Re...
+    152k(     48k): /home/runner/actions-runner/cached/2.338.2/bin/libSystem...
+  14720k(  12576k): /home/runner/actions-runner/cached/2.338.2/bin/System.Li...
+    776k(    688k): /home/runner/actions-runner/cached/2.338.2/bin/System.Co...
+   1496k(   1496k): /home/runner/actions-runner/cached/2.338.2/bin/Sdk.dll 2...
+    240k(    200k): /home/runner/actions-runner/cached/2.338.2/bin/System.Di...
+     56k(     56k): /home/runner/actions-runner/cached/2.338.2/bin/System.IO...
+    696k(    696k): /home/runner/actions-runner/cached/2.338.2/bin/Newtonsof...
+   8608k(   7768k): /home/runner/actions-runner/cached/2.338.2/bin/System.Se...
+   8208k(   7392k): /home/runner/actions-runner/cached/2.338.2/bin/System.Pr...
+    404k(    228k): /home/runner/actions-runner/cached/2.338.2/bin/libhostpo...
+     16k(     16k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ru...
+     16k(     16k): /home/runner/actions-runner/cached/2.338.2/bin/System.Re...
+     20k(     20k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ru...
+    352k(    304k): /home/runner/actions-runner/cached/2.338.2/bin/System.Se...
+    356k(    312k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ne...
+     16k(     16k): /home/runner/actions-runner/cached/2.338.2/bin/System.Th...
+    268k(    268k): /home/runner/actions-runner/cached/2.338.2/bin/System.Cl...
+    628k(    628k): /home/runner/actions-runner/cached/2.338.2/bin/Runner.Wo...
+     20k(     20k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ru...
+     84k(     44k): /home/runner/actions-runner/cached/2.338.2/bin/Runner.Li...
+     16k(     16k): /home/runner/actions-runner/cached/2.338.2/bin/System.Te...
+    220k(    220k): /home/runner/actions-runner/cached/2.338.2/bin/Runner.Co...
+     16k(     16k): /home/runner/actions-runner/cached/2.338.2/bin/System.Di...
+  49952k(  43928k): /home/runner/actions-runner/cached/2.338.2/bin/System.Pr...
+     20k(     20k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ru...
+     16k(     16k): /home/runner/actions-runner/cached/2.338.2/bin/System.Nu...
+    504k(    432k): /home/runner/actions-runner/cached/2.338.2/bin/System.IO...
+    976k(    856k): /home/runner/actions-runner/cached/2.338.2/bin/System.Pr...
+   8700k(   4828k): /home/runner/actions-runner/cached/2.338.2/bin/libcorecl...
+    584k(    496k): /home/runner/actions-runner/cached/2.338.2/bin/System.Me...
+    368k(    312k): /home/runner/actions-runner/cached/2.338.2/bin/System.Co...
+    252k(     84k): /home/runner/actions-runner/cached/2.338.2/bin/libSystem...
+    272k(    224k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ob...
+    188k(    188k): /home/runner/actions-runner/cached/2.338.2/bin/System.Di...
+    100k(    100k): /home/runner/actions-runner/cached/2.338.2/bin/netstanda...
+    116k(     96k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ne...
+   2936k(   2592k): /home/runner/actions-runner/cached/2.338.2/bin/System.Co...
+     96k(     96k): /home/runner/actions-runner/cached/2.338.2/bin/System.Fo...
+    188k(    188k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ne...
+    904k(    792k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ne...
+   1336k(   1176k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ne...
+    372k(    212k): /home/runner/actions-runner/cached/2.338.2/bin/libhostfx...
+     44k(     44k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ru...
+    536k(    456k): /home/runner/actions-runner/cached/2.338.2/bin/System.Di...
+    180k(    180k): /home/runner/actions-runner/cached/2.338.2/bin/YamlDotNe...
+   4244k(   2868k): /home/runner/actions-runner/cached/2.338.2/bin/libclrjit...
+  31792k(  28808k): /home/runner/actions-runner/cached/2.338.2/bin/System.Pr...
+   1080k(    936k): /home/runner/actions-runner/cached/2.338.2/bin/System.Di...
+   1200k(   1056k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ru...
+     52k(     52k): /home/runner/actions-runner/cached/2.338.2/bin/Runner.Sd...
+     16k(     16k): /home/runner/actions-runner/cached/2.338.2/bin/Microsoft...
+    160k(    136k): /home/runner/actions-runner/cached/2.338.2/bin/System.IO...
+   2080k(   1752k): /home/runner/actions-runner/cached/2.338.2/bin/System.Li...
+    264k(    264k): /home/runner/actions-runner/cached/2.338.2/bin/Runner.Li...
+   1008k(    848k): /home/runner/actions-runner/cached/2.338.2/bin/System.Co...
+     84k(     44k): /home/runner/actions-runner/cached/2.338.2/bin/Runner.Wo...
+   1208k(   1072k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ru...
+    120k(     88k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ru...
+    376k(    320k): /home/runner/actions-runner/cached/2.338.2/bin/System.Co...
+   3152k(   2800k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ne...
+     80k(     56k): /home/runner/actions-runner/cached/2.338.2/bin/System.Co...
+    344k(    296k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ru...
+   6696k(   5944k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ne...
+     16k(     16k): /home/runner/actions-runner/cached/2.338.2/bin/System.IO...
+     16k(     16k): /home/runner/actions-runner/cached/2.338.2/bin/System.Th...
+    104k(     84k): /home/runner/actions-runner/cached/2.338.2/bin/System.We...
+   1564k(   1336k): /home/runner/actions-runner/cached/2.338.2/bin/System.Li...
+    876k(    876k): /home/runner/actions-runner/cached/2.338.2/bin/Azure.Cor...
+    248k(    248k): /home/runner/actions-runner/cached/2.338.2/bin/Azure.Sto...
+   2320k(   2048k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ne...
+     24k(     24k): /home/runner/actions-runner/cached/2.338.2/bin/System.Xm...
+   1424k(   1424k): /home/runner/actions-runner/cached/2.338.2/bin/Azure.Sto...
+--------
+550169392k ( 219216k)
+
+Comando: pmap -x 3398 
+Código de saída: 0
+3398:   python3 -u -
+Address           Kbytes     RSS   Dirty Mode  Mapping
+0000000000400000     128     128       0 r---- python3.12
+0000000000420000    2956    2576       0 r-x-- python3.12
+0000000000703000    3220    1288       0 r---- python3.12
+0000000000a28000       4       4       4 r---- python3.12
+0000000000a29000    1528    1332    1192 rw--- python3.12
+0000000000ba7000      16       4       4 rw---   [ anon ]
+000000002a304000    1484    1440    1440 rw---   [ anon ]
+00007fc79e9ff000   34820   34156   34156 rw---   [ anon ]
+00007fc7a0c00000    2988      64       0 r---- locale-archive
+00007fc7a0f00000    1024     996     996 rw---   [ anon ]
+00007fc7a1000000     160     160       0 r---- libc.so.6
+00007fc7a1028000    1572    1184       0 r-x-- libc.so.6
+00007fc7a11b1000     316     188       0 r---- libc.so.6
+00007fc7a1200000      16      16      16 r---- libc.so.6
+00007fc7a1204000       8       8       8 rw--- libc.so.6
+00007fc7a1206000      52      20      20 rw---   [ anon ]
+00007fc7a1273000       8       8       0 r---- resource.cpython-312-x86_64-linux-gnu.so
+00007fc7a1275000       4       4       0 r-x-- resource.cpython-312-x86_64-linux-gnu.so
+00007fc7a1276000       4       4       0 r---- resource.cpython-312-x86_64-linux-gnu.so
+00007fc7a1277000       4       4       4 r---- resource.cpython-312-x86_64-linux-gnu.so
+00007fc7a1278000       4       4       4 rw--- resource.cpython-312-x86_64-linux-gnu.so
+00007fc7a1279000     408      24      24 rw---   [ anon ]
+00007fc7a12df000     356     124       0 r---- LC_CTYPE
+00007fc7a1338000       8       8       8 rw---   [ anon ]
+00007fc7a133a000      16      16       0 r---- libexpat.so.1.9.1
+00007fc7a133e000     124      64       0 r-x-- libexpat.so.1.9.1
+00007fc7a135d000      32       0       0 r---- libexpat.so.1.9.1
+00007fc7a1365000       8       8       8 r---- libexpat.so.1.9.1
+00007fc7a1367000       4       4       4 rw--- libexpat.so.1.9.1
+00007fc7a1368000       8       8       0 r---- libz.so.1.3
+00007fc7a136a000      72      64       0 r-x-- libz.so.1.3
+00007fc7a137c000      24       0       0 r---- libz.so.1.3
+00007fc7a1382000       4       4       4 r---- libz.so.1.3
+00007fc7a1383000       4       4       4 rw--- libz.so.1.3
+00007fc7a1384000      64      64       0 r---- libm.so.6
+00007fc7a1394000     508     304       0 r-x-- libm.so.6
+00007fc7a1413000     352     128       0 r---- libm.so.6
+00007fc7a146b000       4       4       4 r---- libm.so.6
+00007fc7a146c000       4       4       4 rw--- libm.so.6
+00007fc7a1470000      28      28       0 r--s- gconv-modules.cache
+00007fc7a1477000       8       8       8 rw---   [ anon ]
+00007fc7a1479000      16       0       0 r----   [ anon ]
+00007fc7a147d000       8       0       0 r----   [ anon ]
+00007fc7a147f000       8       8       0 r-x--   [ anon ]
+00007fc7a1481000       4       4       0 r---- ld-linux-x86-64.so.2
+00007fc7a1482000     172     172       0 r-x-- ld-linux-x86-64.so.2
+00007fc7a14ad000      40      40       0 r---- ld-linux-x86-64.so.2
+00007fc7a14b7000       8       8       8 r---- ld-linux-x86-64.so.2
+00007fc7a14b9000       8       8       8 rw--- ld-linux-x86-64.so.2
+00007fffa4f4f000     136      84      84 rw---   [ stack ]
+ffffffffff600000       4       0       0 --x--   [ anon ]
+---------------- ------- ------- ------- 
+total kB           52756   44780   38012
+
+Comando: cat /proc/swaps 
+Código de saída: 0
+Filename				Type		Size		Used		Priority
+/swapfile                               file		3145724		0		-1
+
+Comando: awk /\^\(pswpin\|pswpout\)\ / /proc/vmstat 
+Código de saída: 0
+pswpin 0
+pswpout 0
+Código de saída do processo de carga: 0
+MemAvailable inicial (bytes): 15776653312
+cgroup=/sys/fs/cgroup/system.slice/hosted-compute-agent.service memory.max=max memory.current=937897984
+cgroup=/sys/fs/cgroup/system.slice/hosted-compute-agent.service memory.high=max
+cgroup=/sys/fs/cgroup/system.slice memory.max=max memory.current=1748008960
+cgroup=/sys/fs/cgroup/system.slice memory.high=max
+Margem disponível considerada (MiB): 15045
+RLIMIT_AS soft (bytes): 268435456
+VmRSS antes: VmRSS:	   12004 kB
+Carga ativa: PID=3398, 32 MiB, duração=20 segundos.
+VmRSS durante: VmRSS:	   44780 kB
+Duração observada (s): 20.002
+VmRSS depois: VmRSS:	   12008 kB
+Carga liberada; processo encerrando.
+
+Comando: free -h 
+Código de saída: 0
+               total        used        free      shared  buff/cache   available
+Mem:            15Gi       944Mi        13Gi        43Mi       1.4Gi        14Gi
+Swap:          3.0Gi          0B       3.0Gi
+
+Comando: free -b 
+Código de saída: 0
+               total        used        free      shared  buff/cache   available
+Mem:     16759296000   991166464 14656331776    45727744  1464832000 15768129536
+Swap:     3221221376           0  3221221376
+
+Comando: memstat 
+Código de saída: 0
+1326176k: PID  2038 (/opt/hca/hosted-compute-agent)
+274104600k: PID  2102 (/home/runner/actions-runner/cached/2.338.2/bin/Runner...
+274346724k: PID  2129 (/home/runner/actions-runner/cached/2.338.2/bin/Runner...
+    416k: PID  3273 (/usr/bin/bash)
+    372k: PID  3276 (/usr/bin/timeout)
+   1064k: PID  3277 (/usr/bin/bash)
+    372k: PID  3283 (/usr/bin/tee)
+    752k: PID  3436 (/usr/bin/memstat)
+  17368k(  17368k): /memfd:doublemapper 2102
+  23128k(  23128k): /memfd:doublemapper 2129
+   1868k(    956k): /usr/bin/bash 3273 3277 3273 3277 3273 3277 3273 3277 32...
+     44k(     20k): /usr/bin/tee 3283
+     44k(     20k): /usr/bin/timeout 3276
+     28k(     28k): /usr/lib/x86_64-linux-gnu/gconv/gconv-modules.cache 3273...
+   7096k(   3280k): /usr/lib/x86_64-linux-gnu/libcrypto.so.3 2102 2129 2102 ...
+    968k(    392k): /usr/lib/x86_64-linux-gnu/libssl.so.3 2102 2129 2102 212...
+    340k(     76k): /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4 3273 3277 3273...
+  60156k(      4k): /usr/lib/x86_64-linux-gnu/libicudata.so.74.2 2102 2129 2...
+   4956k(   1804k): /usr/lib/x86_64-linux-gnu/libicui18n.so.74.2 2102 2129 2...
+   3140k(   1044k): /usr/lib/x86_64-linux-gnu/libicuuc.so.74.2 2102 2129 210...
+   3760k(   1312k): /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33 2102 2129 ...
+    224k(    144k): /usr/lib/x86_64-linux-gnu/libgcc_s.so.1 2102 2129 2102 2...
+    592k(    172k): /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 2102 2129...
+   5072k(   1572k): /usr/lib/x86_64-linux-gnu/libc.so.6 2102 2129 3273 3276 ...
+     36k(      4k): /usr/lib/x86_64-linux-gnu/libdl.so.2 2102 2129 2102 2129...
+   1356k(    508k): /usr/lib/x86_64-linux-gnu/libm.so.6 2102 2129 2102 2129 ...
+     36k(      4k): /usr/lib/x86_64-linux-gnu/libpthread.so.0 2102 2129 2102...
+     36k(      4k): /usr/lib/x86_64-linux-gnu/librt.so.1 2102 2129 2102 2129...
+  11952k(      0k): /usr/lib/locale/locale-archive 3273 3276 3277 3283
+     16k(      0k): /usr/lib/locale/C.utf8/LC_MESSAGES/SYS_LC_MESSAGES 3273 ...
+     16k(      0k): /usr/lib/locale/C.utf8/LC_ADDRESS 3273 3276 3277 3283
+     16k(      0k): /usr/lib/locale/C.utf8/LC_COLLATE 3273 3276 3277 3283
+   1424k(      0k): /usr/lib/locale/C.utf8/LC_CTYPE 3273 3276 3277 3283
+     16k(      0k): /usr/lib/locale/C.utf8/LC_IDENTIFICATION 3273 3276 3277 ...
+     16k(      0k): /usr/lib/locale/C.utf8/LC_MEASUREMENT 3273 3276 3277 3283
+     16k(      0k): /usr/lib/locale/C.utf8/LC_MONETARY 3273 3276 3277 3283
+     16k(      0k): /usr/lib/locale/C.utf8/LC_NAME 3273 3276 3277 3283
+     16k(      0k): /usr/lib/locale/C.utf8/LC_NUMERIC 3273 3276 3277 3283
+     16k(      0k): /usr/lib/locale/C.utf8/LC_PAPER 3273 3276 3277 3283
+     16k(      0k): /usr/lib/locale/C.utf8/LC_TELEPHONE 3273 3276 3277 3283
+     16k(      0k): /usr/lib/locale/C.utf8/LC_TIME 3273 3276 3277 3283
+     24k(      8k): /usr/bin/memstat 3436
+  10468k(   4816k): /opt/hca/hosted-compute-agent 2038
+    344k(    288k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ne...
+    288k(    240k): /home/runner/actions-runner/cached/2.338.2/bin/System.Co...
+    296k(    248k): /home/runner/actions-runner/cached/2.338.2/bin/System.Th...
+  11336k(  10192k): /home/runner/actions-runner/cached/2.338.2/bin/System.Da...
+   1000k(    856k): /home/runner/actions-runner/cached/2.338.2/bin/System.Co...
+     16k(     16k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ru...
+    180k(    152k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ne...
+     68k(     68k): /home/runner/actions-runner/cached/2.338.2/bin/System.Th...
+     16k(     16k): /home/runner/actions-runner/cached/2.338.2/bin/System.Re...
+   4008k(   3520k): /home/runner/actions-runner/cached/2.338.2/bin/System.Te...
+     16k(     16k): /home/runner/actions-runner/cached/2.338.2/bin/System.Re...
+    152k(     48k): /home/runner/actions-runner/cached/2.338.2/bin/libSystem...
+  14720k(  12576k): /home/runner/actions-runner/cached/2.338.2/bin/System.Li...
+    776k(    688k): /home/runner/actions-runner/cached/2.338.2/bin/System.Co...
+   1496k(   1496k): /home/runner/actions-runner/cached/2.338.2/bin/Sdk.dll 2...
+    240k(    200k): /home/runner/actions-runner/cached/2.338.2/bin/System.Di...
+     56k(     56k): /home/runner/actions-runner/cached/2.338.2/bin/System.IO...
+    696k(    696k): /home/runner/actions-runner/cached/2.338.2/bin/Newtonsof...
+   8608k(   7768k): /home/runner/actions-runner/cached/2.338.2/bin/System.Se...
+   8208k(   7392k): /home/runner/actions-runner/cached/2.338.2/bin/System.Pr...
+    404k(    228k): /home/runner/actions-runner/cached/2.338.2/bin/libhostpo...
+     16k(     16k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ru...
+     16k(     16k): /home/runner/actions-runner/cached/2.338.2/bin/System.Re...
+     20k(     20k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ru...
+    352k(    304k): /home/runner/actions-runner/cached/2.338.2/bin/System.Se...
+    356k(    312k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ne...
+     16k(     16k): /home/runner/actions-runner/cached/2.338.2/bin/System.Th...
+    268k(    268k): /home/runner/actions-runner/cached/2.338.2/bin/System.Cl...
+    628k(    628k): /home/runner/actions-runner/cached/2.338.2/bin/Runner.Wo...
+     20k(     20k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ru...
+     84k(     44k): /home/runner/actions-runner/cached/2.338.2/bin/Runner.Li...
+     16k(     16k): /home/runner/actions-runner/cached/2.338.2/bin/System.Te...
+    220k(    220k): /home/runner/actions-runner/cached/2.338.2/bin/Runner.Co...
+     16k(     16k): /home/runner/actions-runner/cached/2.338.2/bin/System.Di...
+  49952k(  43928k): /home/runner/actions-runner/cached/2.338.2/bin/System.Pr...
+     20k(     20k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ru...
+     16k(     16k): /home/runner/actions-runner/cached/2.338.2/bin/System.Nu...
+    504k(    432k): /home/runner/actions-runner/cached/2.338.2/bin/System.IO...
+    976k(    856k): /home/runner/actions-runner/cached/2.338.2/bin/System.Pr...
+   8700k(   4828k): /home/runner/actions-runner/cached/2.338.2/bin/libcorecl...
+    584k(    496k): /home/runner/actions-runner/cached/2.338.2/bin/System.Me...
+    368k(    312k): /home/runner/actions-runner/cached/2.338.2/bin/System.Co...
+    252k(     84k): /home/runner/actions-runner/cached/2.338.2/bin/libSystem...
+    272k(    224k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ob...
+    188k(    188k): /home/runner/actions-runner/cached/2.338.2/bin/System.Di...
+    100k(    100k): /home/runner/actions-runner/cached/2.338.2/bin/netstanda...
+    116k(     96k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ne...
+   2936k(   2592k): /home/runner/actions-runner/cached/2.338.2/bin/System.Co...
+     96k(     96k): /home/runner/actions-runner/cached/2.338.2/bin/System.Fo...
+    188k(    188k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ne...
+    904k(    792k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ne...
+   1336k(   1176k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ne...
+    372k(    212k): /home/runner/actions-runner/cached/2.338.2/bin/libhostfx...
+     44k(     44k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ru...
+    536k(    456k): /home/runner/actions-runner/cached/2.338.2/bin/System.Di...
+    180k(    180k): /home/runner/actions-runner/cached/2.338.2/bin/YamlDotNe...
+   4244k(   2868k): /home/runner/actions-runner/cached/2.338.2/bin/libclrjit...
+  31792k(  28808k): /home/runner/actions-runner/cached/2.338.2/bin/System.Pr...
+   1080k(    936k): /home/runner/actions-runner/cached/2.338.2/bin/System.Di...
+   1200k(   1056k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ru...
+     52k(     52k): /home/runner/actions-runner/cached/2.338.2/bin/Runner.Sd...
+     16k(     16k): /home/runner/actions-runner/cached/2.338.2/bin/Microsoft...
+    160k(    136k): /home/runner/actions-runner/cached/2.338.2/bin/System.IO...
+   2080k(   1752k): /home/runner/actions-runner/cached/2.338.2/bin/System.Li...
+    264k(    264k): /home/runner/actions-runner/cached/2.338.2/bin/Runner.Li...
+   1008k(    848k): /home/runner/actions-runner/cached/2.338.2/bin/System.Co...
+     84k(     44k): /home/runner/actions-runner/cached/2.338.2/bin/Runner.Wo...
+   1208k(   1072k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ru...
+    120k(     88k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ru...
+    376k(    320k): /home/runner/actions-runner/cached/2.338.2/bin/System.Co...
+   3152k(   2800k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ne...
+     80k(     56k): /home/runner/actions-runner/cached/2.338.2/bin/System.Co...
+    344k(    296k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ru...
+   6696k(   5944k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ne...
+     16k(     16k): /home/runner/actions-runner/cached/2.338.2/bin/System.IO...
+     16k(     16k): /home/runner/actions-runner/cached/2.338.2/bin/System.Th...
+    104k(     84k): /home/runner/actions-runner/cached/2.338.2/bin/System.We...
+   1564k(   1336k): /home/runner/actions-runner/cached/2.338.2/bin/System.Li...
+    876k(    876k): /home/runner/actions-runner/cached/2.338.2/bin/Azure.Cor...
+    248k(    248k): /home/runner/actions-runner/cached/2.338.2/bin/Azure.Sto...
+   2320k(   2048k): /home/runner/actions-runner/cached/2.338.2/bin/System.Ne...
+     24k(     24k): /home/runner/actions-runner/cached/2.338.2/bin/System.Xm...
+   1424k(   1424k): /home/runner/actions-runner/cached/2.338.2/bin/Azure.Sto...
+--------
+550118908k ( 216064k)
+
+Comando: cat /proc/swaps 
+Código de saída: 0
+Filename				Type		Size		Used		Priority
+/swapfile                               file		3145724		0		-1
+
+Comando: awk /\^\(pswpin\|pswpout\)\ / /proc/vmstat 
+Código de saída: 0
+pswpin 0
+pswpout 0
+
+Coleta encerrada. Revise os códigos de saída e as limitações em execucao.txt.
+Capture as telas reais e preencha evidencias/observacoes.md e a seção 5 do relatório.
+Swap inalterado é um resultado possível; não aumente a carga para forçar swap.

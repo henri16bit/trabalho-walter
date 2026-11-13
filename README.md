@@ -1,147 +1,217 @@
 # Gerência de memória virtual — UNIRP
 
-Trabalho de Sistemas Operacionais do curso de Análise e Desenvolvimento de Sistemas, professor Walter Gomes Pedroso Junior. Simulador de terminal em Python, com FIFO, LRU, Segunda Chance (Clock) e NRU.
+Trabalho de Sistemas Operacionais do curso de Análise e Desenvolvimento de Sistemas, professor Walter Gomes Pedroso Junior. Simulador em Python para **Linux**, com interface gráfica Tkinter/ttk e execução pelo terminal. Implementa FIFO, LRU, Segunda Chance (Clock) e NRU.
 
 Repositório público: [henri16bit/trabalho-walter](https://github.com/henri16bit/trabalho-walter).
 
-## Comece por aqui — instalação para a dupla
+## Comece por aqui — passo a passo para a dupla no Linux
 
-Este projeto é executado pelo terminal. Você precisa baixar os arquivos, ter Python instalado e preparar as dependências no seu próprio computador. A pasta `.venv` da máquina em que o projeto foi desenvolvido **não acompanha o repositório**.
+O roteiro abaixo usa **Ubuntu 24.04**, ambiente em que o código foi validado com Python **3.12.3** e matplotlib **3.11.2**. O projeto exige Python **3.11 ou superior**. Os comandos devem ser executados no terminal do Linux. Para ver e usar a janela, abra o terminal em uma sessão Linux com ambiente gráfico.
 
-### 1. Instalar ou conferir o Python
+Se estiver em um servidor Linux sem tela, use a versão de terminal descrita abaixo. A janela não aparece em um terminal remoto comum nem em uma página do navegador.
 
-Requer **Python 3.11 ou superior**. A versão efetivamente testada foi Python **3.12.14**, com matplotlib **3.11.2**; Python 3.12 é uma escolha para reproduzir esse ambiente. Outras versões compatíveis não foram testadas nesta entrega.
+### 1. Instalar os programas necessários
 
-No Windows, obtenha o Python no [site oficial](https://www.python.org/downloads/windows/). Se usar o instalador tradicional e a opção aparecer, marque **Add python.exe to PATH**. Depois da instalação, feche e abra o PowerShell e confira:
+No terminal do Ubuntu 24.04:
 
-```powershell
-python --version
+```bash
+sudo apt-get update
+sudo apt-get install -y git python3 python3-venv python3-tk
+python3 --version
 ```
 
-Se `python` não for encontrado ou abrir a Microsoft Store, teste `py -3 --version`. Se esse comando funcionar, use `py -3 -m venv .venv` no lugar de `python -m venv .venv` na etapa 3. Se nenhum funcionar, conclua a instalação do Python antes de continuar. Não baixe apenas o pacote embutível (*embeddable package*), pois esse não é o caminho de instalação deste roteiro.
+Confira se a versão exibida é pelo menos 3.11. O `sudo` pode pedir a senha do usuário; o terminal não mostra os caracteres enquanto você digita.
 
-### 2. Baixar o projeto e abrir a pasta certa
+O pacote [python3-venv](https://packages.ubuntu.com/noble/python3-venv) permite criar o ambiente Python do projeto; [python3-tk](https://packages.ubuntu.com/noble/python3-tk) fornece o Tkinter. Em outras distribuições Linux, os comandos de instalação dos pacotes podem mudar; os passos seguintes usam o mesmo Python do ambiente virtual.
 
-**Sem instalar Git:** abra o [repositório](https://github.com/henri16bit/trabalho-walter), clique em **Code → Download ZIP** e extraia o ZIP. Abra a pasta extraída que contém `main.py`, `README.md` e `requirements.txt`. Na barra de endereço do Explorador de Arquivos, digite `powershell` e pressione Enter para abrir o terminal nessa pasta. Não execute os arquivos de dentro do ZIP. Consulte também o [guia oficial de download do GitHub](https://docs.github.com/en/repositories/working-with-files/using-files/downloading-source-code-archives).
+### 2. Baixar o projeto
 
-**Se já tiver Git instalado:** abra o PowerShell na pasta em que deseja guardar o projeto e execute:
+Estes comandos criam a pasta `Projetos` dentro da sua pasta pessoal e baixam o código:
 
-```powershell
+```bash
+mkdir -p ~/Projetos
+cd ~/Projetos
 git clone https://github.com/henri16bit/trabalho-walter.git
 cd trabalho-walter
+ls
 ```
 
-Escolha uma das duas formas de download. Antes de continuar, execute `Get-ChildItem` e confira se `main.py` e `requirements.txt` aparecem na listagem.
+Na listagem devem aparecer `interface.py`, `main.py`, `requirements.txt` e `testes.py`. Por ser um repositório público, não é preciso entrar na conta do GitHub para cloná-lo. Se essa pasta já existir por uma instalação anterior, siga a seção de atualização abaixo.
 
-### 3. Preparar as dependências no Windows
+Também é possível usar **Code → Download ZIP** no GitHub. Extraia o ZIP e abra o terminal na pasta que contém esses arquivos. Nesse caso, adapte o caminho nos comandos `cd` deste guia e baixe um novo ZIP quando quiser atualizar.
 
-Na pasta do projeto:
+### 3. Criar o ambiente e instalar as dependências
 
-```powershell
-python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+Com o terminal dentro da pasta do projeto:
+
+```bash
+python3 -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt
 ```
 
-A instalação das dependências precisa de internet. A `.venv` é uma pasta com o ambiente Python do projeto; ela deve ser criada em cada computador. Não é necessário ativá-la com `Activate.ps1`, pois os comandos usam diretamente seu executável. Veja a [documentação oficial de venv](https://docs.python.org/3/library/venv.html).
+A instalação precisa de internet. A pasta `.venv` deve ser criada no próprio Linux; ela não acompanha o repositório e não deve ser copiada de outro computador. Não é necessário ativar o ambiente, pois os comandos deste guia usam diretamente `.venv/bin/python`, conforme a [documentação do venv](https://docs.python.org/3/library/venv.html).
 
-### 4. Executar e conferir
+### 4. Abrir a interface gráfica
 
-```powershell
-.\.venv\Scripts\python.exe main.py
-.\.venv\Scripts\python.exe testes.py
+```bash
+.venv/bin/python interface.py
 ```
 
-O primeiro comando executa a sequência pronta com 3, 4, 8 e 16 molduras, mostra uma tabela e grava `resultados/comparacao.csv`, `resultados/page_faults.png` e `resultados/swap_outs.png`. Nenhuma janela gráfica é aberta; os PNG podem ser abertos normalmente no visualizador de imagens. O segundo comando executa os testes. A versão entregue obteve **25/25 testes passaram** no Windows; confira a saída real no seu computador.
+A janela do simulador será aberta. Para uma primeira execução:
 
-Depois da primeira instalação, basta abrir a pasta e repetir os dois comandos acima. Não é necessário reinstalar as dependências a cada execução.
+1. Mantenha a sequência que já aparece nos campos **Páginas** e **Operações**.
+2. Na aba **Simulação**, selecione um algoritmo e a quantidade de **Molduras**, por exemplo FIFO e 3.
+3. Clique em **Executar simulação**.
+4. Use **Estado inicial**, **Anterior** e **Próximo**, ou clique nas linhas do histórico, para acompanhar cada acesso e o estado da RAM.
+5. Confira os totais de acessos, page faults, swap outs e a taxa de faltas. Os totais no topo são da simulação completa; a linha abaixo das tabelas mostra os valores acumulados até o passo selecionado.
 
-## Informar outra sequência
-
-Para escolher as molduras ou informar uma sequência diferente:
-
-```powershell
-.\.venv\Scripts\python.exe main.py --molduras 3 4 --saida resultados/comparacao_3_4
-.\.venv\Scripts\python.exe main.py --manual --molduras 3 4 8 16 --saida resultados/manual
-```
-
-No modo manual, digite, por exemplo:
+Para informar outra sequência, preencha os dois campos com valores separados por espaços ou vírgulas. As páginas são inteiros não negativos. Use **L para leitura** e **E para escrita**, com exatamente uma operação para cada página. Exemplo:
 
 ```text
 Páginas:   1, 2, 1, 3, 1, 2
 Operações: E, L, L, E, L, L
 ```
 
-Digite somente os valores, sem os rótulos `Páginas:` e `Operações:`. Espaços e vírgulas são aceitos como separadores; letras minúsculas também são aceitas. Cada página deve ser um inteiro não negativo. Deve haver exatamente uma operação por acesso: **L = leitura; E = escrita**. Molduras devem ser inteiros maiores que zero.
+Digite apenas os valores, sem os rótulos `Páginas:` e `Operações:`. Depois de editar, execute a simulação novamente.
 
-Cada execução substitui os três arquivos na pasta de saída escolhida. As tabelas do relatório correspondem à sequência pronta com **3, 4, 8 e 16** molduras. Para preservar as figuras dessa comparação, use `--saida resultados/manual` nos demais experimentos. Para restaurá-las, execute `main.py` sem argumentos.
+### 5. Comparar os algoritmos e salvar os resultados
 
-## Executar o simulador em Linux
+1. Abra a aba **Comparação**. Ela usa as mesmas páginas e operações dos campos no topo.
+2. Clique em **Comparar algoritmos**. Serão calculados 16 resultados: quatro algoritmos com **3, 4, 8 e 16 molduras**. O campo Molduras da aba Simulação não altera essas quantidades.
+3. Clique em **Visualizar gráficos** para abrir os gráficos de page faults e swap outs.
+4. Clique em **Salvar CSV e PNG** e escolha uma pasta. Serão gravados `comparacao.csv`, `page_faults.png` e `swap_outs.png`.
 
-O simulador usa bibliotecas disponíveis no Windows e no Linux; sua execução em Linux ainda está pendente. Em um Linux remoto, com os arquivos já baixados e o terminal na pasta do projeto, confira `python3 --version` (deve ser 3.11 ou superior) e execute:
+Para experiências próprias, escolha uma pasta como `resultados/manual`. Se os arquivos já existirem, a interface pede confirmação antes de substituí-los. Visualizar os gráficos, por si só, não salva uma cópia permanente.
+
+### 6. Conferir a instalação com os testes
+
+Na pasta do projeto, execute os dois comandos separadamente:
 
 ```bash
-python3 -m venv .venv
-.venv/bin/python -m pip install -r requirements.txt
-.venv/bin/python main.py
 .venv/bin/python testes.py
+.venv/bin/python testes.py --interface
 ```
 
-No Ubuntu/Debian, a criação de ambientes Python pode exigir o pacote `python3-venv`. O laboratório abaixo usa apenas Python padrão e comandos Linux, sem matplotlib.
+O primeiro executa **33 testes sem abrir janelas**; o segundo executa **9 testes gráficos**, que abrem e fecham janelas automaticamente e precisam de uma sessão gráfica. O primeiro conjunto também importa o Tkinter, por isso o pacote `python3-tk` é necessário mesmo sem abrir uma janela.
+
+Na [validação do código no Ubuntu 24.04](https://github.com/henri16bit/trabalho-walter/actions/runs/43100556246), os resultados foram **33/33** e **9/9**, totalizando **42 testes aprovados** no commit `97c3264`. Os testes gráficos usaram um display virtual Xvfb. Confira a saída real na sua máquina para confirmar a instalação.
+
+### 7. Abrir novamente e atualizar
+
+Depois da instalação, para abrir o programa em outro dia:
+
+```bash
+cd ~/Projetos/trabalho-walter
+.venv/bin/python interface.py
+```
+
+Não é necessário recriar o ambiente nem reinstalar os pacotes a cada execução. Se baixou o ZIP ou escolheu outra pasta, use o caminho correspondente.
+
+Para receber novas alterações em uma cópia baixada com `git clone`, feche o programa e execute:
+
+```bash
+cd ~/Projetos/trabalho-walter
+git pull --ff-only
+.venv/bin/python -m pip install -r requirements.txt
+```
+
+Se o Git informar que suas alterações locais impedem a atualização, preserve esses arquivos e resolva a mensagem antes de continuar. Não é preciso apagar a pasta do projeto.
+
+## Executar pelo terminal
+
+A versão de terminal funciona sem abrir janelas. Na pasta do projeto:
+
+```bash
+.venv/bin/python main.py
+```
+
+O comando usa a sequência pronta, compara os quatro algoritmos com 3, 4, 8 e 16 molduras e mostra a tabela no terminal. Também grava `resultados/comparacao.csv`, `resultados/page_faults.png` e `resultados/swap_outs.png`.
+
+Para escolher as molduras ou digitar páginas e operações:
+
+```bash
+.venv/bin/python main.py --molduras 3 4 --saida resultados/comparacao_3_4
+.venv/bin/python main.py --manual --molduras 3 4 8 16 --saida resultados/manual
+```
+
+No modo `--manual`, digite os valores quando cada pergunta aparecer, usando o mesmo formato explicado para a interface. Cada execução do terminal substitui os três arquivos na pasta de saída escolhida, sem pedir confirmação. Use uma pasta diferente em `--saida` para guardar comparações distintas.
+
+## Testes gráficos em Linux sem tela
+
+Em um Ubuntu sem ambiente gráfico, é possível testar a interface com Xvfb:
+
+```bash
+sudo apt-get install -y xvfb xauth
+xvfb-run -a -s '-screen 0 1280x900x24' .venv/bin/python testes.py --interface
+```
+
+Esse comando executa os testes em uma tela virtual; ele não mostra uma janela interativa para você usar. Para trabalhar normalmente sem tela, execute `main.py`. A automação completa está em [.github/workflows/validar-linux.yml](.github/workflows/validar-linux.yml).
 
 ## Se aparecer um erro
 
 | Situação | O que conferir ou executar |
 |---|---|
-| `python` não é reconhecido ou abre a Microsoft Store | Confira a instalação e teste `py -3 --version`, conforme a etapa 1. |
-| `.venv\Scripts\python.exe` não existe | Entre na pasta que contém `main.py` e crie o ambiente com `python -m venv .venv` ou `py -3 -m venv .venv`. |
-| `main.py` ou `requirements.txt` não foi encontrado | O terminal está na pasta errada. Use `Get-ChildItem` e entre na pasta extraída que contém esses arquivos. |
-| `No module named matplotlib` | Execute `.\.venv\Scripts\python.exe -m pip install -r requirements.txt` e rode o programa com esse mesmo Python. |
-| Não há versão compatível de matplotlib ou a instalação falha | Confira `.\.venv\Scripts\python.exe --version`, internet e a mensagem completa do pip. O projeto exige Python 3.11 ou superior. |
-| O PowerShell bloqueia `Activate.ps1` | Use os comandos deste README com `.\.venv\Scripts\python.exe`; a ativação não é necessária. |
-| Um comando Linux não funciona no Windows | Execute o laboratório no Linux remoto, seguindo a seção específica abaixo. |
+| `python3` ou `git` não foi encontrado | Execute a instalação da etapa 1 no terminal do Ubuntu. |
+| A versão do Python é menor que 3.11 | Use um ambiente Linux com Python 3.11 ou superior; o ambiente validado foi Ubuntu 24.04 com Python 3.12.3. |
+| Erro de `ensurepip` ou falha ao criar `.venv` | Instale `python3-venv` e repita `python3 -m venv .venv`. |
+| `.venv/bin/python` não existe | Confira a pasta com `pwd` e `ls -a`; execute a etapa 3 dentro da pasta do projeto. Uma `.venv` criada no Windows não serve para o Linux. |
+| `interface.py`, `main.py` ou `requirements.txt` não foi encontrado | Entre na pasta que contém esses arquivos antes de executar os comandos. Se baixou ZIP, extraia-o primeiro. |
+| `No module named tkinter` ou `_tkinter` | No Ubuntu, instale `python3-tk` para o Python usado na criação da `.venv`. Tkinter é um pacote do sistema, não uma dependência a instalar com pip. |
+| `No module named matplotlib` ou `PIL` | Execute `.venv/bin/python -m pip install -r requirements.txt` e use esse mesmo Python para abrir o programa. |
+| `externally-managed-environment` ao instalar dependências | Use `.venv/bin/python -m pip install -r requirements.txt`, depois de criar o ambiente da etapa 3. |
+| `no display name`, erro de `$DISPLAY` ou falha ao abrir a janela | Abra o terminal em uma sessão gráfica Linux. Em um servidor sem tela, use `main.py`; para testes gráficos, use Xvfb conforme a seção anterior. |
+| Entrada inválida | Informe molduras maiores que zero, páginas inteiras não negativas e uma operação L/E por página. |
 
-Se precisar de ajuda, envie o comando executado, a mensagem completa de erro, o sistema operacional e a versão do Python. Não altere a versão de uma dependência ou os algoritmos antes de identificar a causa do erro.
+Para verificar somente o Tkinter em uma sessão gráfica, execute `.venv/bin/python -m tkinter`; uma pequena janela de demonstração deve abrir. Esse diagnóstico está descrito na [documentação oficial do Tkinter](https://docs.python.org/3/library/tkinter.html).
+
+Se precisar de ajuda, copie o comando executado e a mensagem completa do erro, junto da distribuição Linux e da saída de `python3 --version`. Isso ajuda a identificar a causa antes de alterar dependências ou algoritmos.
 
 ## Texto pronto para pedir ajuda a uma IA
 
-Abra a pasta do projeto na ferramenta de IA, ou forneça os arquivos solicitados por ela. Copie o texto abaixo e preencha os campos. Se a IA não puder acessar o repositório, envie pelo menos `README.md`, `requirements.txt`, `main.py`, `algoritmos.py`, `graficos.py` e `testes.py`; para o laboratório e o relatório, envie também `laboratorio_linux.sh` e `relatorio.md`.
+Abra a pasta do projeto na ferramenta de IA ou forneça os arquivos necessários. Se ela não puder acessar o repositório, envie `README.md`, `requirements.txt`, `interface.py`, `main.py`, `algoritmos.py`, `graficos.py` e `testes.py`. Copie e preencha:
 
 ```text
-Estou trabalhando em dupla no projeto acadêmico de Sistemas Operacionais da
-UNIRP, professor Walter Gomes Pedroso Junior.
-Repositório: https://github.com/henri16bit/trabalho-walter
+Estou trabalhando em dupla no simulador de memória virtual da UNIRP.
+Repositório público: https://github.com/henri16bit/trabalho-walter
 
-Meu sistema operacional: [preencher]
-Versão do Python, se já estiver instalado: [preencher]
-Meu objetivo agora: [instalar / executar / entender o código / resolver um erro /
-realizar o laboratório GNU/Linux / preencher o relatório]
-Comando executado e erro completo, se houver: [preencher]
+Minha distribuição Linux e versão: [preencher]
+Versão do Python (python3 --version): [preencher]
+Ambiente: [Linux com interface gráfica / servidor Linux sem tela]
+Meu objetivo: [instalar / executar / entender o código / resolver um erro]
+Comando executado e mensagem completa de erro: [preencher, se houver]
 
-Leia primeiro o README e os arquivos relacionados ao objetivo. Ajude-me com
-passos curtos e comandos adequados ao meu terminal. No Windows, crie uma .venv
-local e use .\.venv\Scripts\python.exe; instale requirements.txt, execute main.py
-e testes.py. A versão entregue passou em 25 testes no Windows. Confira a saída
-real antes de dizer que algo funcionou; se não puder executar, diga isso.
+Leia o README e o código atual antes de orientar mudanças. Ajude com passos
+curtos e comandos de terminal Linux. O ambiente validado é Ubuntu 24.04,
+Python 3.12.3, com python3-venv, python3-tk e requirements.txt instalado
+em uma .venv criada no próprio Linux.
 
-Mantenha o escopo acadêmico simples: Python pelo terminal, sem interface gráfica,
-web, banco de dados ou funcionalidades extras. Os quatro algoritmos são FIFO,
-LRU, Segunda Chance/Clock e NRU. No NRU, limpe R antes dos acessos 5, 9, 13...
-e desempate pelo menor índice de moldura. Leitura não apaga Dirty; só a retirada
-de uma página modificada conta como swap out. Preserve a independência dos estados.
+Use .venv/bin/python interface.py para a interface Tkinter/ttk existente
+e .venv/bin/python main.py para a versão de terminal. Sem ambiente gráfico,
+use main.py; Xvfb serve para testar a interface sem exibir uma janela ao usuário.
+Rode .venv/bin/python testes.py (33 testes) e, com display disponível,
+.venv/bin/python testes.py --interface (9 testes). Os 25 testes originais
+estão preservados dentro do primeiro conjunto. Não invente testes executados
+ou resultados: informe os comandos que realmente rodou e suas saídas.
 
-Use --saida resultados/manual em experiências diferentes para preservar os
-gráficos do relatório. Se mudar código ou entradas, explique a mudança e valide
-os resultados; não atualize tabelas sem executar a simulação correspondente.
+Ajude com instalação, execução e código, preservando o relatório acadêmico.
+Para o laboratório, leia evidencias/observacoes.md e use o workflow
+laboratorio-linux.yml em um Ubuntu remoto. As evidências existentes são reais;
+se repetir, preserve a nova coleta separadamente e registre suas limitações.
+Não instale WSL, Docker ou máquinas virtuais no computador Windows.
 
-Os experimentos GNU/Linux ainda estão pendentes nesta entrega. Faça-os somente
-em um Linux remoto disponível, seguindo laboratorio_linux.sh e o README.
-Não instale WSL, Docker, máquina virtual ou distribuição Linux no meu Windows.
-Não aumente a carga para forçar swap. Registre ferramentas ausentes, permissões
-negadas ou ausência de swap como limitações. Nunca invente capturas, saídas,
-resultados ou testes executados. As evidências reais vão para evidencias/.
+Preserve os quatro algoritmos: FIFO, LRU, Segunda Chance/Clock e NRU.
+No NRU, limpe R antes dos acessos 5, 9, 13... e desempate pelo menor índice
+de moldura. Leitura preserva Dirty; somente remover uma página modificada
+conta como swap out. Cada execução começa com estado independente.
 
-Ajude-me a compreender os algoritmos e os resultados para apresentar o trabalho.
-Antes de concluir, informe o que realmente executou e o que continua pendente.
+A interface já existe: preserve a navegação do histórico, a exibição da RAM
+e a comparação dos quatro algoritmos com 3, 4, 8 e 16 molduras. Os cálculos
+ficam em algoritmos.py, compartilhados pela interface e pelo terminal.
+Não recrie o programa nem troque a interface por web ou outro framework.
+
+Para experiências pelo terminal, use --saida resultados/manual ou outra
+pasta própria. Explique qualquer alteração no código e valide o comportamento.
+Ao concluir, diga o que funcionou e o que ainda precisa ser resolvido.
 ```
 
 ## Regras do simulador
@@ -163,110 +233,93 @@ Esses contadores representam um modelo didático. O programa não modifica a mem
 
 | Arquivo/pasta | Finalidade |
 |---|---|
+| `interface.py` | Janela Tkinter/ttk, histórico, RAM e comparação |
 | `main.py` | Entrada, execução dos algoritmos e tabela no terminal |
-| `algoritmos.py` | Quatro algoritmos e validação das entradas |
+| `algoritmos.py` | Quatro algoritmos, validação das entradas e histórico opcional |
 | `graficos.py` | CSV e dois gráficos PNG |
-| `testes.py` | 25 testes funcionais e de validação |
+| `testes.py` | 33 testes sem janela e 9 testes gráficos |
 | `requirements.txt` | Dependência matplotlib |
 | `laboratorio_linux.sh` | Coleta dos três exercícios em GNU/Linux |
-| `relatorio.md` | Relatório técnico com resultados reais do simulador |
-| `resultados/` | CSV, gráficos e registro da validação no Windows |
-| `evidencias/observacoes.md` | Campos para organizar as futuras evidências Linux |
+| `relatorio.md` | Rascunho acadêmico anterior; não atualizado nesta etapa |
+| `resultados/` | CSV e gráficos; também conserva o registro histórico da validação no Windows |
+| `evidencias/observacoes.md` | Saídas reais, interpretação técnica e limitações do laboratório |
+| `evidencias/REQUISITOS.md` | Relação entre requisitos, evidências e pendências |
+| `.github/workflows/laboratorio-linux.yml` | Executa a Parte II em um Ubuntu remoto |
+| `scripts/capturar_laboratorio.sh` | Captura um terminal real reexibindo as saídas coletadas |
+| `.github/workflows/validar-linux.yml` | Validação no Ubuntu com testes, CLI e capturas reais da interface |
 | `.gitignore` | Exclui ambiente Python e caches do controle de versão |
-| `.gitattributes` | Mantém quebras de linha LF, inclusive no script Bash, ao clonar o projeto |
+| `.gitattributes` | Mantém fontes com LF e preserva os bytes das evidências brutas |
 
 Para entregar o projeto, inclua os fontes, documentos, resultados e evidências; exclua `.venv` e `__pycache__`.
 
-## Laboratório em Linux remoto
+## Laboratório GNU/Linux remoto — Parte II
 
-**Situação atual:** os três exercícios Linux não foram executados. A sessão de desenvolvimento estava no Windows, sem terminal Linux remoto acessível. Não foram instalados WSL, Docker, máquina virtual ou distribuição Linux. A validação `bash -n` no Git Bash verifica somente a sintaxe; ela não equivale à realização do laboratório.
+**Execução real realizada em 13/11/2026**, em Ubuntu 24.04.5 no GitHub Actions: [ver execução e logs](https://github.com/henri16bit/trabalho-walter/actions/runs/43505223640). Isso é uma coleta dos comandos do sistema operacional, separada dos 33+9 testes do simulador.
 
-### 1. Abrir o ambiente
+| Atividade | Resultado observado |
+|---|---|
+| `pmap -x` e `/proc/PID/maps` | Mapeamentos reais do PID 3311, com código, dados, heap, stack, bibliotecas e permissões |
+| `ps`, `top`, `strace -c` | Transições `R`/`S` e 769 chamadas de sistema; nenhuma ferramenta bloqueada |
+| `free -h`, `memstat`, `/proc/swaps` e carga | Alocação real de 32 MiB por 20 segundos; RSS antes/durante/depois registrado |
+| Uso de swap sob pressão elevada | **Não demonstrado:** havia aproximadamente 3 GiB de swap, mas uso e contadores ficaram zerados |
 
-Use um Codespace disponível na sua conta ou um servidor Linux da instituição. No GitHub, envie os arquivos do projeto para um repositório, preferencialmente privado, sem `.venv` nem caches. Abra **Code → Codespaces** e crie ou abra o ambiente autorizado para esse repositório. Confira a franquia da conta antes de criar recursos. O terminal aberto no navegador executa no Linux remoto. Consulte a [documentação oficial do GitHub Codespaces](https://docs.github.com/en/codespaces/developing-in-a-codespace/creating-a-codespace-for-a-repository).
+Consulte as [explicações técnicas](evidencias/observacoes.md), a [matriz de requisitos](evidencias/REQUISITOS.md) e os [arquivos brutos da coleta principal](evidencias/linux_20261113T205043Z_3277/). A primeira coleta também foi preservada. Os dados não justificam afirmar que houve swap out real no sistema.
 
-No terminal remoto, dentro da pasta do projeto:
+### Repetir no GitHub Actions
+
+1. Abra a aba **Actions** deste repositório.
+2. Selecione **Laboratorio GNU-Linux - Parte II**.
+3. Com permissão de escrita no repositório, clique em **Run workflow**, escolha `main` e confirme a execução. O parceiro pode consultar as evidências públicas sem iniciar uma nova coleta.
+4. Aguarde as etapas de preparação, execução, capturas e upload. O runner é Ubuntu; nenhum Linux é instalado no computador de quem inicia a execução.
+5. Abra a execução e baixe o artefato **laboratorio-gnu-linux**. Cada coleta tem uma pasta `linux_DATA_PID`, com data UTC. Guarde-a dentro de `evidencias/`, preservando as anteriores.
+6. Confira `comandos.tsv`, `execucao.txt`, `carga.txt` e `carga_exit_code.txt`. Um workflow concluído não elimina limitações registradas nos arquivos, como carga dispensada ou ferramenta indisponível.
+
+Para conferir os arquivos baixados, entre na pasta da coleta no terminal Linux e execute:
 
 ```bash
-uname -s
-python3 --version
-command -v pmap ps top strace free memstat
+sha256sum -c SHA256SUMS
 ```
 
-`uname -s` deve identificar Linux. Se faltarem dependências, em Ubuntu/Debian e com permissão administrativa **no ambiente remoto**:
+Os artefatos do Actions ficam disponíveis por 30 dias nesta configuração; as duas coletas publicadas em `evidencias/` permanecem no repositório. Não use a expiração de um artefato como motivo para perder os arquivos.
+
+### Repetir em outro Ubuntu remoto
+
+No terminal do Ubuntu remoto, dentro da pasta do projeto:
 
 ```bash
 sudo apt-get update
 sudo apt-get install -y python3 procps strace memstat
-```
-
-`pmap`, `ps`, `top` e `free` pertencem ao pacote `procps`; `strace` e `memstat` são pacotes separados. Se não houver `sudo`, se um pacote não estiver nos repositórios disponíveis ou se uma ferramenta for bloqueada, registre a mensagem e solicite o recurso ao responsável pelo ambiente. `htop` é opcional; este roteiro usa `top`.
-
-### 2. Fazer a coleta automática
-
-```bash
+bash -n laboratorio_linux.sh
 bash laboratorio_linux.sh
 ```
 
-O script cria uma pasta nova `evidencias/linux_DATA_PID/`, com data UTC no nome, e salva as saídas reais, erros e códigos de saída. Ele cria seus próprios processos e os encerra ao sair. Não instala pacotes nem habilita swap. Ao final, consulte `execucao.txt`; uma ferramenta ausente não significa que sua atividade foi realizada.
+`procps` fornece `pmap`, `ps`, `top` e `free`. O roteiro não instala pacotes; o comando `apt-get` acima prepara o ambiente. Sem permissão administrativa ou com alguma ferramenta bloqueada, preserve a mensagem real e registre a limitação.
 
-O teste de carga usa **no máximo 32 MiB durante 20 segundos**, limitado também a 10% da margem observada. Ele consulta `MemAvailable` e os limites visíveis de cgroup v2, exige margem mínima de 256 MiB e limita o espaço de endereçamento do processo. Se não conseguir verificar os limites, estiver em cgroup v1 ou houver pouca margem, registra a limitação e dispensa a carga. O objetivo é observar uma alocação pequena; a medição é momentânea e o restante do ambiente pode continuar consumindo memória.
+O script cria um processo Python pequeno para mapear memória e alterna computação/espera para amostrar estados. Depois rastreia outro Python com `strace -c`. A carga de memória é independente: **no máximo 32 MiB, durante 20 segundos**, limitada também a 10% da margem observada. Exige pelo menos 256 MiB de margem, consulta `MemAvailable` e cgroup v2, aplica `RLIMIT_AS=256 MiB` e toca as páginas alocadas.
 
-Não aumente a carga para provocar swap. A ausência de swap ou a ausência de movimentação durante uma carga pequena deve ser relatada como resultado/limitação. `free` pode refletir uma visão mais ampla que o limite do contêiner; por isso o script também consulta o cgroup. A descrição de `memory.current`, `memory.max` e `memory.high` está na [documentação do kernel](https://docs.kernel.org/admin-guide/cgroup-v2.html).
+Se não puder verificar os limites ou faltar margem, a carga é dispensada. O script não cria swap nem aumenta a carga para provocar paginação. Memória virtual relatada por `memstat`, RSS e RAM global do `free` são medidas diferentes; veja a interpretação dos valores realmente obtidos em `evidencias/observacoes.md`.
 
-### 3. Comandos para observar e capturar as telas
+### Capturas e limites da evidência
 
-O script já faz a coleta em texto. Para obter capturas reais interativas, execute também os comandos a seguir, no mesmo terminal Linux. Mantenha visíveis o comando, seu resultado e o PID. O processo de demonstração dura 180 segundos; se ele terminar, inicie outro e use o novo PID.
+Nas coletas publicadas, `scrot` capturou um **xterm real em Xvfb**, reexibindo as saídas já coletadas. Os cabeçalhos dizem isso explicitamente. Não são imagens geradas por IA, capturas de uma nova medição ao vivo ou testes de interação humana.
 
-**Atividade 1 — mapa de memória:**
-
-```bash
-python3 -u -c 'import os, time; dados = bytearray(1024 * 1024); print("PID:", os.getpid()); time.sleep(180)' &
-pid_teste=$!
-echo "$pid_teste"
-pmap -x "$pid_teste"
-cat "/proc/$pid_teste/maps"
-```
-
-Relacione código, dados, heap, stack e bibliotecas aos endereços e permissões. A seção 5.1 do relatório orienta a interpretação; não classifique toda região anônima como heap.
-
-**Atividade 2 — processos e chamadas de sistema:**
+Para reproduzir as capturas de uma coleta, instale as ferramentas **no Ubuntu remoto**:
 
 ```bash
-ps aux
-ps -p "$pid_teste" -o pid,ppid,stat,pcpu,pmem,rss,vsz,comm
-top -p "$pid_teste"
+sudo apt-get install -y xvfb xauth xterm scrot fonts-dejavu-core
 ```
 
-No `top`, pressione `q` para sair. Depois:
+Use o caminho da sua coleta como argumento. Exemplo com a coleta principal deste repositório:
 
 ```bash
-strace -c python3 -c 'from pathlib import Path; print("Bytes lidos:", len(Path("/proc/meminfo").read_bytes()))'
-kill "$pid_teste"
-wait "$pid_teste" 2>/dev/null
+xvfb-run -a -s '-screen 0 1600x1450x24' bash scripts/capturar_laboratorio.sh evidencias/linux_20261113T205043Z_3277
 ```
 
-O `kill` encerra apenas o processo de demonstração cujo PID foi guardado. Interprete os estados, CPU, RSS e VSZ com a seção 5.2 do relatório. Se `strace` retornar erro de `ptrace` ou permissão, salve o erro como limitação; não substitua por uma saída esperada.
+Esse comando salva PNGs na subpasta `capturas/`. Para preservar o manifesto de integridade de uma coleta publicada, faça essa reprodução em uma cópia da pasta; PNGs recapturados podem diferir dos originais.
 
-**Atividade 3 — RAM e swap:**
+### Pendências
 
-```bash
-free -h
-memstat
-cat /proc/swaps
-```
-
-Use os arquivos `free_antes.txt`, `free_durante.txt` e `free_depois.txt` gerados pelo script para comparar a carga controlada; o arquivo intermediário só existe se o processo de carga permanecer ativo. Confira em `carga.txt` se a alocação realmente ocorreu. O script também registra `pswpin` e `pswpout` de `/proc/vmstat`, contadores cumulativos de movimentação de páginas; alterações podem envolver outros processos. `memstat` informa memória **virtual**, conforme seu [manual](https://manpages.debian.org/trixie/memstat/memstat.1.en.html).
-
-### 4. Concluir as evidências
-
-1. Salve capturas reais em `evidencias/` com nomes como `atividade1_pmap.png`, `atividade1_maps.png`, `atividade2_ps_top.png`, `atividade2_strace.png` e `atividade3_memoria.png`.
-2. Preencha [evidencias/observacoes.md](evidencias/observacoes.md) e a seção 5 de [relatorio.md](relatorio.md), citando os arquivos efetivamente obtidos.
-3. Se `/proc/swaps` apresentar apenas o cabeçalho, registre ausência de swap. Se houver swap mas os contadores não mudarem, registre ausência de movimentação observada. Não afirme que toda alocação necessariamente utiliza swap.
-4. Baixe a pasta de evidências para juntar à entrega. Encerre o Codespace após o uso, pela área de gerenciamento do GitHub.
-
-## Validação e entrega do relatório
-
-Foram executados **25/25 testes com sucesso** no Windows, inclusive contadores por acesso, classes NRU, referência do Clock, Dirty, independência de estado, entradas inválidas, leitura do CSV e decodificação dos PNG. Veja [resultados/validacao_windows.txt](resultados/validacao_windows.txt). As duas imagens também foram inspecionadas visualmente. A sintaxe do Bash passou e a proteção contra execução fora do Linux foi verificada. **Não há evidências de execução dos experimentos Linux nem de execução do simulador nesse sistema.**
-
-O relatório está em Markdown, com tabelas e links relativos para as figuras. Preencha os nomes da dupla e conclua o laboratório antes da entrega final. Para transferir ao Google Docs, copie o texto e as tabelas e insira os dois PNG em suas posições; revise a paginação e exporte o documento em PDF. Alternativamente, use um editor que exporte Markdown com imagens para PDF. O PDF ainda não foi gerado ou revisado.
+- A observação de **swap em uso e seu impacto de E/S sob pressão elevada** não foi obtida. Não aumentar perigosamente a carga para forçar esse resultado.
+- `R` agrupa execução e prontidão no Linux; as amostras não distinguem individualmente Running/Ready. O estado de espera observado foi `S`, com temporizador, não `D` por disco.
+- O `memstat` foi executado como `runner`, com visibilidade dos processos permitidos a esse usuário.
+- O arquivo `relatorio.md` é um rascunho antigo e **não foi atualizado**, por solicitação do usuário. Não o considerar entrega final; o estado técnico atual está neste README e em `evidencias/`.

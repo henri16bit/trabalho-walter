@@ -1,0 +1,54 @@
+3311:   python3 -u -
+Address           Kbytes     RSS   Dirty Mode  Mapping
+0000000000400000     128     128       0 r---- python3.12
+0000000000420000    2956    2516       0 r-x-- python3.12
+0000000000703000    3220    1228       0 r---- python3.12
+0000000000a28000       4       4       4 r---- python3.12
+0000000000a29000    1528    1332    1184 rw--- python3.12
+0000000000ba7000      16       4       4 rw---   [ anon ]
+00000000083a4000    1020     896     896 rw---   [ anon ]
+00007fba7e8ff000    3076    2584    2584 rw---   [ anon ]
+00007fba7ec00000    2988      64       0 r---- locale-archive
+00007fba7ef45000     392      16      16 rw---   [ anon ]
+00007fba7efa7000     356     128       0 r---- LC_CTYPE
+00007fba7f000000     160     160       0 r---- libc.so.6
+00007fba7f028000    1572    1184       0 r-x-- libc.so.6
+00007fba7f1b1000     316     188       0 r---- libc.so.6
+00007fba7f200000      16      16      16 r---- libc.so.6
+00007fba7f204000       8       8       8 rw--- libc.so.6
+00007fba7f206000      52      20      20 rw---   [ anon ]
+00007fba7f224000       8       8       0 r---- resource.cpython-312-x86_64-linux-gnu.so
+00007fba7f226000       4       4       0 r-x-- resource.cpython-312-x86_64-linux-gnu.so
+00007fba7f227000       4       4       0 r---- resource.cpython-312-x86_64-linux-gnu.so
+00007fba7f228000       4       4       4 r---- resource.cpython-312-x86_64-linux-gnu.so
+00007fba7f229000       4       4       4 rw--- resource.cpython-312-x86_64-linux-gnu.so
+00007fba7f22a000      24      16      16 rw---   [ anon ]
+00007fba7f230000      16      16       0 r---- libexpat.so.1.9.1
+00007fba7f234000     124      64       0 r-x-- libexpat.so.1.9.1
+00007fba7f253000      32       0       0 r---- libexpat.so.1.9.1
+00007fba7f25b000       8       8       8 r---- libexpat.so.1.9.1
+00007fba7f25d000       4       4       4 rw--- libexpat.so.1.9.1
+00007fba7f25e000       8       8       0 r---- libz.so.1.3
+00007fba7f260000      72      64       0 r-x-- libz.so.1.3
+00007fba7f272000      24       0       0 r---- libz.so.1.3
+00007fba7f278000       4       4       4 r---- libz.so.1.3
+00007fba7f279000       4       4       4 rw--- libz.so.1.3
+00007fba7f27a000      64      64       0 r---- libm.so.6
+00007fba7f28a000     508     328       0 r-x-- libm.so.6
+00007fba7f309000     352       0       0 r---- libm.so.6
+00007fba7f361000       4       4       4 r---- libm.so.6
+00007fba7f362000       4       4       4 rw--- libm.so.6
+00007fba7f366000      28      28       0 r--s- gconv-modules.cache
+00007fba7f36d000       8       8       8 rw---   [ anon ]
+00007fba7f36f000      16       0       0 r----   [ anon ]
+00007fba7f373000       8       0       0 r----   [ anon ]
+00007fba7f375000       8       8       0 r-x--   [ anon ]
+00007fba7f377000       4       4       0 r---- ld-linux-x86-64.so.2
+00007fba7f378000     172     172       0 r-x-- ld-linux-x86-64.so.2
+00007fba7f3a3000      40      40       0 r---- ld-linux-x86-64.so.2
+00007fba7f3ad000       8       8       8 r---- ld-linux-x86-64.so.2
+00007fba7f3af000       8       8       8 rw--- ld-linux-x86-64.so.2
+00007ffd29a34000     136      80      80 rw---   [ stack ]
+ffffffffff600000       4       0       0 --x--   [ anon ]
+---------------- ------- ------- ------- 
+total kB           19524   11444    4888

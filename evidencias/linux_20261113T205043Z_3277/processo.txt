@@ -1,0 +1,9 @@
+PID observado: 3311
+ciclo=1 fase=computacao monotonic=35.318774
+ciclo=1 fase=espera monotonic=36.318790
+ciclo=2 fase=computacao monotonic=38.318925
+ciclo=2 fase=espera monotonic=39.318974
+ciclo=3 fase=computacao monotonic=41.319126
+ciclo=3 fase=espera monotonic=42.319178
+ciclo=4 fase=computacao monotonic=44.319317
+ciclo=4 fase=espera monotonic=45.319365

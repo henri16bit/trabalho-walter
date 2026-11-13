@@ -1,0 +1,36 @@
+arquivo	codigo_saida	inicio_utc	comando
+data.txt	0	2026-11-13T20:50:43Z	date -Is 
+sistema.txt	0	2026-11-13T20:50:43Z	uname -a 
+distribuicao.txt	0	2026-11-13T20:50:43Z	cat /etc/os-release 
+versoes.txt	0	2026-11-13T20:50:43Z	dpkg-query -W python3 procps strace memstat 
+virtualizacao.txt	0	2026-11-13T20:50:43Z	systemd-detect-virt 
+cpu.txt	0	2026-11-13T20:50:43Z	lscpu 
+pagina_bytes.txt	0	2026-11-13T20:50:43Z	getconf PAGESIZE 
+cgroup.txt	0	2026-11-13T20:50:43Z	cat /proc/self/cgroup 
+cgroup_mount.txt	0	2026-11-13T20:50:43Z	findmnt -t cgroup2 
+pmap.txt	0	2026-11-13T20:50:44Z	pmap -x 3311 
+maps.txt	0	2026-11-13T20:50:44Z	cat /proc/3311/maps 
+status_processo.txt	0	2026-11-13T20:50:44Z	cat /proc/3311/status 
+ps_aux.txt	0	2026-11-13T20:50:44Z	ps aux 
+ps_processo.txt	0	2026-11-13T20:50:44Z	ps -p 3311 -o pid\,ppid\,stat\,pcpu\,pmem\,rss\,vsz\,comm 
+estados.txt	0	2026-11-13T20:50:44Z	bash -c for\ i\ in\ \{1..12\}\;\ do\ date\ -u\ +%FT%T.%NZ\;\ ps\ -p\ \"\$1\"\ -o\ pid\,stat\,pcpu\,pmem\,rss\,vsz\,wchan:24\,comm\;\ sleep\ 0.5\;\ done _ 3311 
+top.txt	0	2026-11-13T20:50:50Z	top -b -n 5 -d 1 -p 3311 
+strace.txt	0	2026-11-13T20:50:55Z	strace -c python3 -c from\ pathlib\ import\ Path\;\ print\(\"Bytes\ lidos:\"\,\ len\(Path\(\"/proc/meminfo\"\).read_bytes\(\)\)\) 
+free_antes.txt	0	2026-11-13T20:50:55Z	free -h 
+free_bytes_antes.txt	0	2026-11-13T20:50:55Z	free -b 
+memstat.txt	0	2026-11-13T20:50:55Z	memstat 
+swaps_antes.txt	0	2026-11-13T20:50:55Z	cat /proc/swaps 
+contadores_swap_antes.txt	0	2026-11-13T20:50:55Z	awk /\^\(pswpin\|pswpout\)\ / /proc/vmstat 
+free_durante.txt	0	2026-11-13T20:50:57Z	free -h 
+free_bytes_durante.txt	0	2026-11-13T20:50:57Z	free -b 
+ps_carga.txt	0	2026-11-13T20:50:57Z	ps -p 3398 -o pid\,ppid\,stat\,pcpu\,pmem\,rss\,vsz\,comm 
+status_carga.txt	0	2026-11-13T20:50:57Z	cat /proc/3398/status 
+memstat_durante.txt	0	2026-11-13T20:50:57Z	memstat 
+pmap_carga.txt	0	2026-11-13T20:50:57Z	pmap -x 3398 
+swaps_durante.txt	0	2026-11-13T20:50:57Z	cat /proc/swaps 
+contadores_swap_durante.txt	0	2026-11-13T20:50:57Z	awk /\^\(pswpin\|pswpout\)\ / /proc/vmstat 
+free_depois.txt	0	2026-11-13T20:51:15Z	free -h 
+free_bytes_depois.txt	0	2026-11-13T20:51:15Z	free -b 
+memstat_depois.txt	0	2026-11-13T20:51:15Z	memstat 
+swaps_depois.txt	0	2026-11-13T20:51:15Z	cat /proc/swaps 
+contadores_swap_depois.txt	0	2026-11-13T20:51:15Z	awk /\^\(pswpin\|pswpout\)\ / /proc/vmstat 

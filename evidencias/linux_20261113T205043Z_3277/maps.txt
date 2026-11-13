@@ -1,0 +1,50 @@
+00400000-00420000 r--p 00000000 08:01 2110                               /usr/bin/python3.12
+00420000-00703000 r-xp 00020000 08:01 2110                               /usr/bin/python3.12
+00703000-00a28000 r--p 00303000 08:01 2110                               /usr/bin/python3.12
+00a28000-00a29000 r--p 00627000 08:01 2110                               /usr/bin/python3.12
+00a29000-00ba7000 rw-p 00628000 08:01 2110                               /usr/bin/python3.12
+00ba7000-00bab000 rw-p 00000000 00:00 0 
+083a4000-084a3000 rw-p 00000000 00:00 0                                  [heap]
+7fba7e8ff000-7fba7ec00000 rw-p 00000000 00:00 0 
+7fba7ec00000-7fba7eeeb000 r--p 00000000 08:01 7695                       /usr/lib/locale/locale-archive
+7fba7ef45000-7fba7efa7000 rw-p 00000000 00:00 0 
+7fba7efa7000-7fba7f000000 r--p 00000000 08:01 7701                       /usr/lib/locale/C.utf8/LC_CTYPE
+7fba7f000000-7fba7f028000 r--p 00000000 08:01 6455                       /usr/lib/x86_64-linux-gnu/libc.so.6
+7fba7f028000-7fba7f1b1000 r-xp 00028000 08:01 6455                       /usr/lib/x86_64-linux-gnu/libc.so.6
+7fba7f1b1000-7fba7f200000 r--p 001b1000 08:01 6455                       /usr/lib/x86_64-linux-gnu/libc.so.6
+7fba7f200000-7fba7f204000 r--p 001ff000 08:01 6455                       /usr/lib/x86_64-linux-gnu/libc.so.6
+7fba7f204000-7fba7f206000 rw-p 00203000 08:01 6455                       /usr/lib/x86_64-linux-gnu/libc.so.6
+7fba7f206000-7fba7f213000 rw-p 00000000 00:00 0 
+7fba7f224000-7fba7f226000 r--p 00000000 08:01 8225                       /usr/lib/python3.12/lib-dynload/resource.cpython-312-x86_64-linux-gnu.so
+7fba7f226000-7fba7f227000 r-xp 00002000 08:01 8225                       /usr/lib/python3.12/lib-dynload/resource.cpython-312-x86_64-linux-gnu.so
+7fba7f227000-7fba7f228000 r--p 00003000 08:01 8225                       /usr/lib/python3.12/lib-dynload/resource.cpython-312-x86_64-linux-gnu.so
+7fba7f228000-7fba7f229000 r--p 00003000 08:01 8225                       /usr/lib/python3.12/lib-dynload/resource.cpython-312-x86_64-linux-gnu.so
+7fba7f229000-7fba7f22a000 rw-p 00004000 08:01 8225                       /usr/lib/python3.12/lib-dynload/resource.cpython-312-x86_64-linux-gnu.so
+7fba7f22a000-7fba7f230000 rw-p 00000000 00:00 0 
+7fba7f230000-7fba7f234000 r--p 00000000 08:01 6191                       /usr/lib/x86_64-linux-gnu/libexpat.so.1.9.1
+7fba7f234000-7fba7f253000 r-xp 00004000 08:01 6191                       /usr/lib/x86_64-linux-gnu/libexpat.so.1.9.1
+7fba7f253000-7fba7f25b000 r--p 00023000 08:01 6191                       /usr/lib/x86_64-linux-gnu/libexpat.so.1.9.1
+7fba7f25b000-7fba7f25d000 r--p 0002b000 08:01 6191                       /usr/lib/x86_64-linux-gnu/libexpat.so.1.9.1
+7fba7f25d000-7fba7f25e000 rw-p 0002d000 08:01 6191                       /usr/lib/x86_64-linux-gnu/libexpat.so.1.9.1
+7fba7f25e000-7fba7f260000 r--p 00000000 08:01 5104                       /usr/lib/x86_64-linux-gnu/libz.so.1.3
+7fba7f260000-7fba7f272000 r-xp 00002000 08:01 5104                       /usr/lib/x86_64-linux-gnu/libz.so.1.3
+7fba7f272000-7fba7f278000 r--p 00014000 08:01 5104                       /usr/lib/x86_64-linux-gnu/libz.so.1.3
+7fba7f278000-7fba7f279000 r--p 0001a000 08:01 5104                       /usr/lib/x86_64-linux-gnu/libz.so.1.3
+7fba7f279000-7fba7f27a000 rw-p 0001b000 08:01 5104                       /usr/lib/x86_64-linux-gnu/libz.so.1.3
+7fba7f27a000-7fba7f28a000 r--p 00000000 08:01 6458                       /usr/lib/x86_64-linux-gnu/libm.so.6
+7fba7f28a000-7fba7f309000 r-xp 00010000 08:01 6458                       /usr/lib/x86_64-linux-gnu/libm.so.6
+7fba7f309000-7fba7f361000 r--p 0008f000 08:01 6458                       /usr/lib/x86_64-linux-gnu/libm.so.6
+7fba7f361000-7fba7f362000 r--p 000e7000 08:01 6458                       /usr/lib/x86_64-linux-gnu/libm.so.6
+7fba7f362000-7fba7f363000 rw-p 000e8000 08:01 6458                       /usr/lib/x86_64-linux-gnu/libm.so.6
+7fba7f366000-7fba7f36d000 r--s 00000000 08:01 5367                       /usr/lib/x86_64-linux-gnu/gconv/gconv-modules.cache
+7fba7f36d000-7fba7f36f000 rw-p 00000000 00:00 0 
+7fba7f36f000-7fba7f373000 r--p 00000000 00:00 0                          [vvar]
+7fba7f373000-7fba7f375000 r--p 00000000 00:00 0                          [vvar_vclock]
+7fba7f375000-7fba7f377000 r-xp 00000000 00:00 0                          [vdso]
+7fba7f377000-7fba7f378000 r--p 00000000 08:01 6452                       /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+7fba7f378000-7fba7f3a3000 r-xp 00001000 08:01 6452                       /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+7fba7f3a3000-7fba7f3ad000 r--p 0002c000 08:01 6452                       /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+7fba7f3ad000-7fba7f3af000 r--p 00036000 08:01 6452                       /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+7fba7f3af000-7fba7f3b1000 rw-p 00038000 08:01 6452                       /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+7ffd29a34000-7ffd29a56000 rw-p 00000000 00:00 0                          [stack]
+ffffffffff600000-ffffffffff601000 --xp 00000000 00:00 0                  [vsyscall]

@@ -1,0 +1,13 @@
+MemAvailable inicial (bytes): 15776653312
+cgroup=/sys/fs/cgroup/system.slice/hosted-compute-agent.service memory.max=max memory.current=937897984
+cgroup=/sys/fs/cgroup/system.slice/hosted-compute-agent.service memory.high=max
+cgroup=/sys/fs/cgroup/system.slice memory.max=max memory.current=1748008960
+cgroup=/sys/fs/cgroup/system.slice memory.high=max
+Margem disponível considerada (MiB): 15045
+RLIMIT_AS soft (bytes): 268435456
+VmRSS antes: VmRSS:	   12004 kB
+Carga ativa: PID=3398, 32 MiB, duração=20 segundos.
+VmRSS durante: VmRSS:	   44780 kB
+Duração observada (s): 20.002
+VmRSS depois: VmRSS:	   12008 kB
+Carga liberada; processo encerrando.

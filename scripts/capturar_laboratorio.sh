@@ -16,6 +16,10 @@ if [[ "${2:-}" == "--mostrar" ]]; then
     for arquivo in "$@"; do
         printf '\n--- %s ---\n' "$arquivo"
         awk -F '\t' -v alvo="$arquivo" '$1 == alvo {print "Comando: " $4 " | saída=" $2}' "$coleta/comandos.tsv"
+        if [[ ! -f "$coleta/$arquivo" ]]; then
+            printf 'Arquivo não gerado; consulte execucao.txt para a limitação registrada.\n'
+            continue
+        fi
         if [[ "$arquivo" == "top.txt" ]]; then
             printf 'Trecho: últimas 16 linhas; arquivo completo preservado.\n'
             tail -n 16 "$coleta/$arquivo"

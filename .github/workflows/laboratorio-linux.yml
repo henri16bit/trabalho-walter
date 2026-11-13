@@ -27,7 +27,7 @@ jobs:
         run: |
           coleta=$(find evidencias -maxdepth 1 -type d -name 'linux_*' | sort | tail -n 1)
           test -n "$coleta"
-          xvfb-run -a -s '-screen 0 1600x1100x24' bash scripts/capturar_laboratorio.sh "$coleta"
+          xvfb-run -a -s '-screen 0 1600x1450x24' bash scripts/capturar_laboratorio.sh "$coleta"
       - name: Registrar integridade dos arquivos brutos
         if: always()
         run: |

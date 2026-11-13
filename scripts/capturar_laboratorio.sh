@@ -34,7 +34,7 @@ fi
 capturar() {
     local nome="$1"
     shift
-    xterm -geometry 155x53+0+0 -fa 'DejaVu Sans Mono' -fs 12 \
+    xterm -geometry 155x70+0+0 -fa 'DejaVu Sans Mono' -fs 12 \
         -bg '#101418' -fg '#e8edf2' -title "Laboratório: $nome" \
         -e bash "$base/scripts/capturar_laboratorio.sh" "$coleta" --mostrar "$nome" "$@" &
     local pid_terminal=$!

@@ -1,0 +1,45 @@
+name: Laboratorio GNU-Linux - Parte II
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  laboratorio:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Preparar ferramentas somente no Ubuntu remoto
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y python3 procps strace memstat xvfb xauth xterm scrot fonts-dejavu-core
+      - name: Conferir sintaxe e executar as tres atividades reais
+        run: |
+          bash -n laboratorio_linux.sh
+          bash -n scripts/capturar_laboratorio.sh
+          timeout 150 bash laboratorio_linux.sh
+      - name: Capturar terminal real com as saidas coletadas
+        run: |
+          coleta=$(find evidencias -maxdepth 1 -type d -name 'linux_*' | sort | tail -n 1)
+          test -n "$coleta"
+          xvfb-run -a -s '-screen 0 1600x1100x24' bash scripts/capturar_laboratorio.sh "$coleta"
+      - name: Registrar integridade dos arquivos brutos
+        if: always()
+        run: |
+          for coleta in evidencias/linux_*/; do
+            test -d "$coleta" || continue
+            (cd "$coleta" && find . -type f ! -name SHA256SUMS ! -name '.pronto_*' -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS)
+          done
+      - name: Disponibilizar evidencias reais
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: laboratorio-gnu-linux
+          path: evidencias/linux_*/
+          retention-days: 30
+          if-no-files-found: error

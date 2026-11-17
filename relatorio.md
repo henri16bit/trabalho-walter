@@ -7,8 +7,8 @@
 **Disciplina:** Sistemas Operacionais  
 **Professor:** Walter Gomes Pedroso Junior  
 **Trabalho:** Projeto semestral — gerência de memória virtual  
-**Integrante 1:** [preencher nome e RA]  
-**Integrante 2:** [preencher nome e RA]  
+**Integrante 1:** Henrique Caliari Fuzeto — RA 20252889  
+**Integrante 2:** Murillo Alves Augusto — RA 20251873  
 **Data de revisão:** 17/11/2026  
 **Data de entrega:** [preencher]
 

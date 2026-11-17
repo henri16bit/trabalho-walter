@@ -1,0 +1,46 @@
+name: Laboratorio GNU-Linux - Swap isolado
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  swap:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Preparar ferramentas no Ubuntu remoto
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y python3 procps memstat xvfb xauth xterm scrot fonts-dejavu-core
+      - name: Conferir sintaxe e executar carga isolada
+        run: |
+          python3 -m py_compile scripts/laboratorio_swap.py
+          timeout --signal=TERM --kill-after=10 180 python3 -u scripts/laboratorio_swap.py
+      - name: Capturar terminal real reexibindo a coleta
+        if: always()
+        run: |
+          if test -f .coleta_swap; then
+            coleta=$(cat .coleta_swap)
+            xvfb-run -a -s '-screen 0 1600x1200x24' bash scripts/capturar_swap.sh "$coleta"
+          fi
+      - name: Registrar integridade da nova coleta
+        if: always()
+        run: |
+          if test -f .coleta_swap; then
+            coleta=$(cat .coleta_swap)
+            (cd "$coleta" && find . -type f ! -name SHA256SUMS ! -name '.*' -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS)
+          fi
+      - name: Disponibilizar evidencias do swap
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: laboratorio-swap-isolado
+          path: evidencias/swap_linux_*/
+          retention-days: 30
+          if-no-files-found: error

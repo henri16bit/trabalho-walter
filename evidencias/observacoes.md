@@ -1,6 +1,6 @@
 # Registro técnico do laboratório GNU/Linux
 
-As três atividades foram executadas em um Ubuntu remoto, incluindo a carga real de memória. **Não houve movimentação de swap**: a exigência de observar E/S de swap sob pressão elevada não foi demonstrada. Este registro acompanha as evidências; o relatório acadêmico não foi editado, conforme a orientação mais recente.
+As três atividades foram executadas em um Ubuntu remoto, incluindo a carga real de memória. **Não houve movimentação de swap**: a exigência de observar E/S de swap sob pressão elevada não foi demonstrada. Este registro acompanha as evidências. Após autorização, seus resultados e capturas foram incorporados ao [relatório](../relatorio.md) na revisão de 17/11/2026.
 
 ## Origem e integridade
 
@@ -94,4 +94,4 @@ O `memstat` retornou 0, mas sua visão é limitada aos processos acessíveis ao 
 - Cgroup v2 estava acessível, sem teto numérico nos níveis lidos; a carga usou `MemAvailable` e seu próprio limite virtual. Isso não autoriza cargas maiores em outro ambiente. Referência: [documentação do kernel](https://docs.kernel.org/admin-guide/cgroup-v2.html).
 - Running/Ready não foram distinguidos individualmente; as transições observadas foram `R`/`S`. Estado `D` não foi demonstrado.
 - O requisito de observar swap sob carga elevada permanece não demonstrado. Não aumentar a carga automaticamente para preencher essa lacuna.
-- O relatório acadêmico e sua exportação não foram alterados. A [matriz de requisitos](REQUISITOS.md) separa essas pendências das evidências técnicas.
+- O [relatório acadêmico](../relatorio.md) incorpora as evidências e limitações desta coleta. Identificação, revisão pela dupla e exportação final continuam pendentes. A [matriz de requisitos](REQUISITOS.md) separa essas pendências das evidências técnicas.

@@ -1,0 +1,13 @@
+{
+  "run_url": "https://github.com/henri16bit/trabalho-walter/actions/runs/44179462467",
+  "head_sha": "02190dc5b331d977eb8c3992258e9a9805604e7c",
+  "run_created_at_utc": "2026-11-17T21:24:20Z",
+  "artifact_id": 14371038355,
+  "artifact_name": "validacao-linux",
+  "artifact_zip_sha256": "baa808a77762f149f7f786b04af140d550bdb3e8cf4d6528f2234f63d9c80885",
+  "manifest_verified_files": 12,
+  "tests_logic_passed": 33,
+  "tests_gui_passed": 9,
+  "capture_method": "scrot no display Xvfb do runner Ubuntu. Janela Tkinter real, com simulacao e navegacao acionadas por codigo. Terminal xterm executa os comandos de identificacao e le os totais dos testes nos logs do mesmo job.",
+  "note": "Metadados adicionados apos download; os 12 arquivos cobertos por SHA256SUMS foram preservados sem alteracoes. O manifesto nao cobre a si mesmo nem este JSON. Nao comprova interacao humana. Esta execucao valida o simulador; o laboratorio e uma coleta separada."
+}

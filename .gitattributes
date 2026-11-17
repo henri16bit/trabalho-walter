@@ -3,3 +3,4 @@
 *.md whitespace=-blank-at-eol
 # Preservar bytes e espaços das saídas brutas, inclusive seus hashes SHA-256.
 evidencias/linux_*/** -text -whitespace
+evidencias/simulador_linux_*/** -text -whitespace

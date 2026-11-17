@@ -9,10 +9,12 @@
 **Trabalho:** Projeto semestral — gerência de memória virtual  
 **Integrante 1:** [preencher nome e RA]  
 **Integrante 2:** [preencher nome e RA]  
-**Data de preparação:** 07/11/2026  
+**Data de revisão:** 17/11/2026  
 **Data de entrega:** [preencher]
 
-**Situação do trabalho:** simulador implementado e testado no Windows, com CSV e gráficos reais. Laboratório GNU/Linux preparado, mas ainda não executado. As evidências e interpretações dessa etapa devem ser acrescentadas antes da entrega final.
+**Ambiente de referência:** GNU/Linux, distribuição Ubuntu 24.04.5 LTS. O simulador com interface gráfica e terminal foi executado no Ubuntu remoto, assim como os comandos do laboratório. A compatibilidade adicional com Windows não altera o ambiente utilizado para as evidências deste relatório.
+
+**Situação do trabalho:** 33 testes sem janela e 9 testes gráficos aprovados no Ubuntu em 17/11/2026. As três atividades do laboratório foram executadas em 13/11/2026, com capturas e saídas reais. A carga controlada consumiu RAM, mas **não provocou uso de swap**; o impacto de E/S sob pressão permanece não demonstrado. Faltam a identificação da dupla, sua revisão final e a exportação para PDF ou Google Docs.
 
 ## 2. Fundamentação teórica
 
@@ -40,11 +42,19 @@ No Linux, o código `R` engloba execução e prontidão; uma captura do `ps` nã
 
 ### 3.1. Organização
 
-O programa foi desenvolvido em Python 3, com execução pelo terminal. Foram utilizadas funções, listas, dicionários e laços. A biblioteca padrão cuida da entrada, dos arquivos e do CSV; matplotlib é a única dependência direta externa e gera imagens PNG sem abrir janelas.
+O programa foi desenvolvido em Python 3, com **interface gráfica Tkinter/ttk e execução pelo terminal**. As duas formas de uso compartilham as mesmas funções de simulação. A biblioteca padrão cuida das entradas, arquivos, CSV e widgets; matplotlib é a única dependência direta externa e produz os gráficos PNG. O pacote `python3-tk` fornece o Tkinter no Ubuntu. Tkinter está disponível também em Windows, conforme a [documentação do Python](https://docs.python.org/3/library/tkinter.html); essa portabilidade não significa exclusividade de plataforma.
 
-`main.py` recebe a configuração, executa os algoritmos e apresenta a tabela. `algoritmos.py` contém as políticas de substituição. `graficos.py` exporta os resultados. `testes.py` verifica o funcionamento. O programa aceita a sequência pronta ou páginas e operações digitadas pelo usuário, além de uma ou mais quantidades de molduras.
+| Arquivo | Responsabilidade |
+|---|---|
+| [interface.py](interface.py) | `main()` abre a janela; `Interface.executar()` calcula a simulação; `selecionar_passo()` atualiza RAM e histórico; `comparar()` gera as 16 combinações; `salvar()` e `visualizar_graficos()` exportam e exibem resultados |
+| [main.py](main.py) | `main()` recebe opções do terminal; `executar_simulacoes()` chama os algoritmos; `exibir_tabela()` imprime os resultados |
+| [algoritmos.py](algoritmos.py) | `fifo()`, `lru()`, `segunda_chance()` e `nru()` calculam faltas, gravações e histórico opcional; `registrar_etapa()` copia o estado de cada acesso |
+| [graficos.py](graficos.py) | `salvar_csv()` e `salvar_graficos()` gravam o CSV e os dois PNG a partir dos resultados calculados |
+| [testes.py](testes.py) | Verificações dos algoritmos, entradas, histórico, CLI, exportação e widgets reais |
 
-Cada moldura ocupada é representada por um dicionário. Todos os algoritmos guardam o número da página e M; LRU também guarda o índice do último acesso, enquanto Clock e NRU utilizam R. A memória é uma lista limitada pela quantidade de molduras. Os contadores e a memória são criados novamente em cada chamada, sem compartilhar estado entre algoritmos.
+Os campos permitem escolher páginas, operações L/E, algoritmo e molduras. A aba Simulação mostra os totais, uma tabela de histórico, o estado de cada moldura e os botões de navegação. A aba Comparação usa a mesma sequência para os quatro algoritmos com 3, 4, 8 e 16 molduras, permitindo visualizar gráficos e salvar CSV/PNG.
+
+Cada moldura ocupada é representada por um dicionário. Todos os algoritmos guardam a página e M; LRU também guarda o último acesso, enquanto Clock e NRU utilizam R. FIFO mantém a ordem de chegada separada dos índices de moldura exibidos. O histórico contém cópias independentes dos estados e preserva as posições físicas simuladas. Os contadores e a memória são recriados em cada chamada.
 
 ### 3.2. Políticas implementadas
 
@@ -72,16 +82,35 @@ No Clock, R é zerado durante o percurso do ponteiro; não se aplica a limpeza p
 
 A memória começa vazia. Os quatro algoritmos recebem as mesmas páginas e operações. O programa rejeita molduras menores que 1, páginas negativas ou não inteiras, sequência vazia, operações desconhecidas e quantidades diferentes de páginas e operações.
 
-A validação foi executada em **Windows 10, Python 3.12.14, matplotlib 3.11.2**. Foram aprovados **25/25 testes**, incluindo:
+A validação documentada aqui foi executada em **Ubuntu 24.04.5 LTS, kernel `7.0.0-1014-aws`, Python 3.12.3 e matplotlib 3.11.2**, em 17/11/2026. O [registro do ambiente](evidencias/simulador_linux_20261117_44179462467/ambiente.txt) identifica a distribuição, o kernel, a data e o commit `02190dc5b331d977eb8c3992258e9a9805604e7c`. A [execução 44179462467 no GitHub Actions](https://github.com/henri16bit/trabalho-walter/actions/runs/44179462467) terminou com sucesso.
 
-- Contadores conferidos por acesso e sequência conhecida somente de leitura.
-- Ordem do FIFO, atualização do LRU, ponteiro e referência do Clock e quatro classes do NRU.
-- Escrita em página residente, preservação de Dirty em leituras e retirada de páginas limpas ou modificadas.
-- Independência de estado, uma moldura e comparações com 3, 4, 8 e 16 molduras.
-- Rejeição de entradas inválidas, entrada manual, pasta com espaços, conteúdo do CSV e decodificação dos dois PNG.
-- Análise de sintaxe do Python embutido no roteiro Linux, sem executar a carga.
+| Conjunto | Resultado real | Componentes validados |
+|---|---|---|
+| [Testes sem janela](evidencias/simulador_linux_20261117_44179462467/testes_logica.txt) | **33/33** | Regras dos quatro algoritmos, Dirty, classes/limpeza do NRU, contadores por acesso, entradas inválidas, independência, histórico e molduras fixas, parsing da GUI, CLI manual, CSV e decodificação de PNG |
+| [Testes gráficos](evidencias/simulador_linux_20261117_44179462467/testes_interface.txt) | **9/9** | Campos e seleção dos quatro algoritmos, acionamento dos botões, navegação e RAM, histórico, reinício, comparação com 16 linhas, exportação/cancelamento, janela dos gráficos e dimensões de widgets |
 
-As imagens foram inspecionadas visualmente. O comando `bash -n laboratorio_linux.sh` passou no Git Bash do Windows, e a tentativa de executar o script nesse sistema foi recusada pela verificação de plataforma. O registro real está em [resultados/validacao_windows.txt](resultados/validacao_windows.txt). **A execução dos comandos Linux e a execução do simulador no Linux não foram validadas nesta sessão.**
+Os nove testes gráficos criam **janelas Tk reais em Xvfb**, um display virtual no Ubuntu. Os campos, seleções e callbacks são acionados por código; os diálogos de escolha de pasta e confirmação têm respostas programadas. Isso valida comportamento dos widgets, mas **não equivale a uma sessão humana de cliques e digitação**. O teste de sintaxe do roteiro Linux, incluído no primeiro conjunto, também não executa o laboratório; a execução efetiva está na seção 5.
+
+O [registro antigo do Windows](resultados/validacao_windows.txt), com 25 testes, foi conservado como histórico. Os 25 casos originais integram o conjunto atual de 33; esse arquivo antigo não é utilizado como comprovação de Linux.
+
+### 3.4. Comprovação visual e reprodução no Linux
+
+![Janela real do simulador e terminal identificando o Ubuntu, o commit e os testes](evidencias/simulador_linux_20261117_44179462467/comprovacao_ubuntu.png)
+
+*Figura 1 — Captura real obtida por `scrot` no display Xvfb do Ubuntu remoto, em 17/11/2026 às 21:25 UTC (18:25 em São Paulo). À esquerda, FIFO com três molduras, 12 acessos, nove faltas e três swap outs simulados; o histórico está no quarto acesso. À direita, xterm executando os comandos de identificação do sistema e exibindo os totais lidos dos logs desse mesmo job. Simulação e navegação acionadas por código. Fonte: execução 44179462467.*
+
+Há também capturas da [comparação dos 16 resultados](evidencias/simulador_linux_20261117_44179462467/interface_comparacao.png) e da [simulação com 16 molduras](evidencias/simulador_linux_20261117_44179462467/interface_16_molduras.png). Os PNGs preservam os pixels capturados no runner; não são montagens ou imagens geradas por IA.
+
+Para conferir a origem, o leitor pode cruzar a Figura 1 com `ambiente.txt`, os dois logs de testes, o [workflow de captura](.github/workflows/validar-linux.yml) e o link da execução. O [manifesto SHA256SUMS](evidencias/simulador_linux_20261117_44179462467/SHA256SUMS) cobre 12 arquivos e permite verificar sua integridade. A [proveniência](evidencias/simulador_linux_20261117_44179462467/proveniencia.json) registra o artefato original e seu hash. O hash verifica igualdade dos arquivos; o vínculo com a execução documenta sua origem.
+
+Após a instalação descrita no [README](README.md), o comando para uso normal em uma sessão gráfica Ubuntu é:
+
+```bash
+cd ~/Projetos/trabalho-walter
+.venv/bin/python interface.py
+```
+
+O runner remoto usado para estas evidências não instala WSL, Docker ou máquina virtual no computador Windows da dupla. A janela da Figura 1 está sendo renderizada no Linux remoto.
 
 ## 4. Resultados da simulação
 
@@ -94,7 +123,7 @@ Páginas:   1 2 3 4 1 2 5 1 2 3 4 5
 Operações: E L E L L E E L L E L L
 ```
 
-L representa leitura; E representa escrita. O CSV completo está em [resultados/comparacao.csv](resultados/comparacao.csv).
+L representa leitura; E representa escrita. O [CSV desta execução Ubuntu](evidencias/simulador_linux_20261117_44179462467/comparacao.csv) e a [saída do terminal](evidencias/simulador_linux_20261117_44179462467/terminal.txt) contêm os mesmos 16 resultados abaixo. Foram produzidos por `.venv/bin/python main.py --saida resultados/validacao_linux`: `executar_simulacoes()` calcula os valores, `exibir_tabela()` os imprime e as funções de `graficos.py` gravam CSV e PNG. Esses arquivos foram copiados do artefato sem edição dos valores.
 
 **Tabela 1 — Quantidade de page faults.**
 
@@ -114,13 +143,13 @@ L representa leitura; E representa escrita. O CSV completo está em [resultados/
 | Segunda Chance | 3 | 4 | 0 | 0 |
 | NRU | 3 | 1 | 0 | 0 |
 
-![Gráfico de page faults em função da quantidade de molduras](resultados/page_faults.png)
+![Gráfico de page faults em função da quantidade de molduras](evidencias/simulador_linux_20261117_44179462467/page_faults.png)
 
-*Figura 1 — Page faults. Fonte: execução do simulador desenvolvido neste trabalho.*
+*Figura 2 — Page faults. Fonte: simulador executado no Ubuntu, execução 44179462467 de 17/11/2026.*
 
-![Gráfico de swap outs em função da quantidade de molduras](resultados/swap_outs.png)
+![Gráfico de swap outs em função da quantidade de molduras](evidencias/simulador_linux_20261117_44179462467/swap_outs.png)
 
-*Figura 2 — Swap outs. Fonte: execução do simulador desenvolvido neste trabalho. Linhas coincidentes representam resultados iguais.*
+*Figura 3 — Swap outs simulados. Fonte: mesma execução Ubuntu. Linhas coincidentes representam resultados iguais. Esses números não medem o uso de swap do kernel.*
 
 ### 4.2. Conferência manual
 
@@ -159,63 +188,121 @@ Os resultados dependem da sequência, das operações e da configuração. O bom
 
 ## 5. Laboratório GNU/Linux
 
-**Etapa pendente de execução.** Não há capturas ou saídas Linux anexadas. Os campos abaixo deverão ser preenchidos com evidências reais. O [README](README.md) contém o procedimento para usar um Linux remoto, os pacotes necessários e os comandos completos. O script `laboratorio_linux.sh` reúne as três atividades e salva as saídas em uma subpasta datada de `evidencias/`.
+O [roteiro `laboratorio_linux.sh`](laboratorio_linux.sh) foi executado em **13/11/2026, a partir de 20:50:43 UTC (17:50:43 em São Paulo)**, em um Ubuntu remoto do GitHub Actions. A [execução 43505223640](https://github.com/henri16bit/trabalho-walter/actions/runs/43505223640) usou o commit `0d9b57c6f068a195ba1c7160b805e49a7428b6bd`. Os [35 comandos registrados](evidencias/linux_20261113T205043Z_3277/comandos.tsv) retornaram código 0, assim como o [processo da carga](evidencias/linux_20261113T205043Z_3277/carga_exit_code.txt).
 
-**Ambiente remoto/distribuição:** [preencher]  
-**Kernel e data da coleta:** [preencher]  
-**Responsáveis:** [preencher]  
-**Pasta das saídas reais:** [preencher]
-
-### 5.1. Atividade 1 — mapa de memória
-
-Será iniciado um processo Python no Linux, seu PID será registrado e serão executados `pmap -x <PID>` e `cat /proc/<PID>/maps`. `pmap` apresenta os mapeamentos do processo; a opção `-x` solicita a saída estendida. Deve-se diferenciar tamanho virtual e páginas residentes ao interpretar as colunas. Referência: [manual de pmap](https://man7.org/linux/man-pages/man1/pmap.1.html).
-
-Para identificar as regiões, serão usadas as seguintes orientações:
-
-| Região | Indício a procurar nos mapeamentos reais |
+| Informação da coleta | Valor / fonte |
 |---|---|
-| Text/Código | Mapeamento executável, normalmente `r-xp`, associado ao executável Python ou a uma biblioteca. O código de máquina observado é o do interpretador. |
-| Data/BSS | Regiões graváveis ligadas ao executável e regiões anônimas relacionadas; a identificação é aproximada sem examinar as seções ELF. |
-| Heap | Região identificada como `[heap]`. Alocações dinâmicas também podem usar outros mapeamentos anônimos. |
-| Stack | Região identificada como `[stack]`, associada à pilha principal. |
-| Bibliotecas | Caminhos de arquivos compartilhados, como arquivos `.so`, possivelmente com vários mapeamentos e permissões. |
+| Distribuição | Ubuntu 24.04.5 LTS — [distribuicao.txt](evidencias/linux_20261113T205043Z_3277/distribuicao.txt) |
+| Kernel | `7.0.0-1017-azure`, x86_64 — [sistema.txt](evidencias/linux_20261113T205043Z_3277/sistema.txt) |
+| Virtualização remota | `microsoft` — [virtualizacao.txt](evidencias/linux_20261113T205043Z_3277/virtualizacao.txt) |
+| Ferramentas | Python 3.12.3, procps 4.0.4, strace 6.8 e memstat 1.1 — [versoes.txt](evidencias/linux_20261113T205043Z_3277/versoes.txt) |
+| CPU e páginas | Quatro CPUs lógicas; página de 4096 bytes — [cpu.txt](evidencias/linux_20261113T205043Z_3277/cpu.txt) e [pagina_bytes.txt](evidencias/linux_20261113T205043Z_3277/pagina_bytes.txt) |
+| Coleta e integridade | [Transcrição](evidencias/linux_20261113T205043Z_3277/execucao.txt), [proveniência](evidencias/linux_20261113T205043Z_3277/proveniencia.json) e [SHA256SUMS](evidencias/linux_20261113T205043Z_3277/SHA256SUMS), com 49 arquivos conferidos |
 
-Em `/proc/<PID>/maps`, `r` significa leitura, `w` escrita e `x` execução; `p` indica mapeamento privado e `s`, compartilhado. Um traço indica ausência da permissão naquela posição. Se a saída de `pmap -x` não mostrar permissões, elas serão consultadas em `maps`. Nem toda região anônima é o heap. Referência: [manual de proc_pid_maps](https://man7.org/linux/man-pages/man5/proc_pid_maps.5.html).
+Esta coleta do laboratório é distinta da validação do simulador em 17/11/2026. Os runners têm kernels diferentes; os PIDs e valores desta seção pertencem exclusivamente à coleta `linux_20261113T205043Z_3277`. A primeira coleta do laboratório também foi preservada no repositório, mas não foi misturada aos dados abaixo.
 
-**Capturas reais:** [inserir pmap e maps, com PID legível]  
-**Interpretação dos endereços e permissões observados:** [preencher]  
-**Limitações encontradas:** [preencher, se houver]
+As Figuras 4–11 são **capturas reais de xterm por `scrot` em Xvfb**, reexibindo as saídas previamente coletadas nesse Ubuntu. Os cabeçalhos informam esse procedimento. Os recortes de `top` e `memstat` são identificados na tela; os TXT completos continuam disponíveis. São evidências visuais dos registros, não medições novas no instante da captura nem demonstrações de interação humana.
+
+O roteiro teve sua sintaxe Bash e Python verificada antes da execução. O processo de demonstração alternou computação e espera, com limite de CPU, e a carga teve limites de memória e duração. O script encerrou apenas os processos que criou. Nenhuma ferramenta exigida esteve ausente ou foi bloqueada nessa coleta.
+
+### 5.1. Atividade 1 — segmentos e permissões
+
+Foram executados `pmap -x 3311` e `cat /proc/3311/maps`: [pmap.txt](evidencias/linux_20261113T205043Z_3277/pmap.txt) e [maps.txt](evidencias/linux_20261113T205043Z_3277/maps.txt). Capturas: [pmap](evidencias/linux_20261113T205043Z_3277/capturas/atividade1_pmap.png) e [maps](evidencias/linux_20261113T205043Z_3277/capturas/atividade1_maps.png).
+
+| Região | Intervalo virtual observado | Interpretação |
+|---|---|---|
+| Código | `00420000-00703000` | `r-xp`, código do interpretador `/usr/bin/python3.12` |
+| Dados | `00a29000-00ba7000` | `rw-p`, região gravável associada ao executável |
+| Heap | `083a4000-084a3000` | `rw-p`, identificado como `[heap]` |
+| Stack | `7ffd29a34000-7ffd29a56000` | `rw-p`, pilha principal `[stack]` |
+| Biblioteca libc | `7fba7f028000-7fba7f1b1000` | `r-xp`, região executável de `libc.so.6`; o mesmo arquivo tem outras regiões de leitura/dados |
+
+`r`, `w` e `x` indicam leitura, escrita e execução; `p` indica mapeamento privado e `s`, compartilhado. Os endereços são virtuais e podem mudar em outra execução. A identificação de dados baseia-se no mapeamento gravável; não foram examinadas as seções ELF para separar `.data` e `.bss`. Regiões anônimas fora de `[heap]` também podem conter alocações dinâmicas. Referência: [proc_pid_maps(5)](https://man7.org/linux/man-pages/man5/proc_pid_maps.5.html).
+
+O `pmap -x` totalizou **19.524 KiB virtuais, 11.444 KiB residentes e 4.888 KiB Dirty**. Nem todo espaço virtual estava residente. Dirty descreve páginas modificadas; não é contador de swap out e não comprova gravação em disco. Referência: [pmap(1)](https://man7.org/linux/man-pages/man1/pmap.1.html).
+
+![Mapa estendido do processo 3311, obtido com pmap -x](evidencias/linux_20261113T205043Z_3277/capturas/atividade1_pmap.png)
+
+*Figura 4 — Mapa estendido do processo 3311, obtido com pmap -x. Captura de reexibição das saídas reais, coleta Ubuntu de 13/11/2026, execução 43505223640.*
+
+![Regiões e permissões em /proc/3311/maps](evidencias/linux_20261113T205043Z_3277/capturas/atividade1_maps.png)
+
+*Figura 5 — Regiões e permissões em /proc/3311/maps. Captura de reexibição das saídas reais, coleta Ubuntu de 13/11/2026, execução 43505223640.*
 
 ### 5.2. Atividade 2 — processos e chamadas de sistema
 
-Serão utilizados `ps aux`, `top` e `strace -c <comando>`. No `ps`, serão anotados PID, `STAT`, `%CPU`, `%MEM`, RSS e VSZ. RSS representa memória residente; VSZ, tamanho virtual, ambos normalmente expressos em KiB nessa ferramenta. `%CPU` no `ps` corresponde à utilização média durante a vida do processo. O estado será interpretado conforme a seção 2.3. Referência: [manual de ps](https://man7.org/linux/man-pages/man1/ps.1.html).
+Saídas completas: [ps aux](evidencias/linux_20261113T205043Z_3277/ps_aux.txt), [ps do processo](evidencias/linux_20261113T205043Z_3277/ps_processo.txt), [12 amostras de estados](evidencias/linux_20261113T205043Z_3277/estados.txt), [5 amostras de top](evidencias/linux_20261113T205043Z_3277/top.txt), [strace](evidencias/linux_20261113T205043Z_3277/strace.txt). Capturas: [estados](evidencias/linux_20261113T205043Z_3277/capturas/atividade2_estados.png), [top](evidencias/linux_20261113T205043Z_3277/capturas/atividade2_top.png) e [strace](evidencias/linux_20261113T205043Z_3277/capturas/atividade2_strace.png).
 
-O `top` permite acompanhar atualizações sucessivas. Serão comparados CPU e memória do processo observado, anotando o intervalo e as unidades exibidas. O script usa `top -b -n 2 -d 1` para salvar duas amostras em texto; a versão interativa permite uma captura de tela e é encerrada com `q`. Referência: [manual de top](https://man7.org/linux/man-pages/man1/top.1.html).
+O PID **3311** passou de `S` às 20:50:44.426 UTC para `R` às 20:50:46.459 e voltou a `S` às 20:50:47.476. Em espera, `WCHAN=hrtimer_nanosleep`, compatível com o temporizador do programa. `S` é espera interrompível; `R` abrange execução e prontidão. **Não foi possível separar Running de Ready por essas amostras, nem foi demonstrado estado `D` de espera não interrompível.** Referência: [ps(1)](https://man7.org/linux/man-pages/man1/ps.1.html).
 
-O `strace -c` resume as chamadas ao kernel, suas contagens, erros e tempos. Serão explicadas as chamadas que efetivamente aparecerem; `read`, `openat` e `mmap` são exemplos possíveis, não resultados já observados. O resumo não conta todas as funções Python. Se o ambiente impedir rastreamento por `ptrace`, a mensagem real será preservada. Referência: [manual de strace](https://man7.org/linux/man-pages/man1/strace.1.html).
+A primeira amostra de `ps` apresentou RSS **11.444 KiB**, VSZ **19.520 KiB** e `%CPU=93,5`, mesmo estando em `S`: o percentual considera a vida do processo. No `top`, houve `R` com 64,0% no intervalo, depois `S` com 35,6% e 0,0%. Estado instantâneo e utilização no intervalo são medidas diferentes. Foi utilizado `top -b -n 5 -d 1`, não uma sessão humana interativa. Referência: [top(1)](https://man7.org/linux/man-pages/man1/top.1.html).
 
-**Capturas reais:** [inserir ps/top e strace]  
-**PID, estado, CPU e memória observados:** [preencher com unidades]  
-**Chamadas de sistema e interpretação:** [preencher]  
-**Limitações encontradas:** [preencher, se houver]
+O `strace -c` iniciou e rastreou um Python que leu `/proc/meminfo`: **1.674 bytes**, **769 chamadas**, **90 retornos de erro de syscalls**, soma de tempos **0,003841 s**, código final do comando **0**. Não houve bloqueio de ptrace.
 
-### 5.3. Atividade 3 — memória RAM e swap
+| Chamada | Quantidade | Função |
+|---|---:|---|
+| `newfstatat` | 211 | Consultar metadados |
+| `read` | 72 | Ler descritores |
+| `openat` | 59 | Abrir arquivos |
+| `mmap` | 29 | Criar mapeamentos virtuais |
+| `brk` | 15 | Ajustar o limite da área de dados |
+| `close` | 53 | Fechar descritores |
 
-Serão executados `free -h`, `memstat` e `cat /proc/swaps`. No `free`, **total** é a memória utilizável informada pelo sistema; **free** é a parcela livre; **available** estima quanto pode ser usado por novas aplicações sem recorrer a swap. A memória usada deve ser interpretada conforme a versão da ferramenta; no manual consultado, é calculada como total menos disponível. Buffers e caches ajudam a explicar por que memória livre e disponível diferem. A linha Swap informa capacidade, uso e espaço livre. Referência: [manual de free](https://man7.org/linux/man-pages/man1/free.1.html).
+O resumo inclui inicialização e importações do Python, não apenas a leitura final. Os 90 retornos de erro não significam 90 falhas do laboratório. Sem argumentos e errno de cada chamada, não se atribui causa específica a esses retornos. Os tempos não constituem benchmark. Referência: [strace(1)](https://man7.org/linux/man-pages/man1/strace.1.html).
 
-O `memstat` apresenta uso de memória virtual por processos e objetos compartilhados, e não um total equivalente à RAM residente. A visibilidade dos processos pode ser limitada por permissões. Ausência do comando ou acesso incompleto deve ser registrado. Referência: [manual de memstat](https://manpages.debian.org/trixie/memstat/memstat.1.en.html).
+![Amostras de estados do processo 3311 no ps](evidencias/linux_20261113T205043Z_3277/capturas/atividade2_estados.png)
 
-O arquivo `/proc/swaps` lista as áreas de swap. Se houver somente cabeçalho, será registrada a ausência de uma área disponível no ambiente, impedindo observar seu uso. Não será criado swap apenas para produzir uma evidência. Referência: [manual de proc_swaps](https://man7.org/linux/man-pages/man5/proc_swaps.5.html).
+*Figura 6 — Amostras de estados do processo 3311 no ps. Captura de reexibição das saídas reais, coleta Ubuntu de 13/11/2026, execução 43505223640.*
 
-O script propõe uma carga de **até 32 MiB por 20 segundos**, tocando as páginas alocadas. A quantidade fica também limitada a 10% da margem verificada. Antes de alocar, exige pelo menos 256 MiB disponíveis, considera `MemAvailable` e os limites visíveis de cgroup v2, e aplica um limite de espaço virtual ao próprio processo. Se a verificação não for possível ou a margem for insuficiente, a carga é dispensada com uma mensagem. O script não altera limites de cgroup ou configurações de swap. Os arquivos do controlador são descritos na [documentação do kernel sobre cgroup v2](https://docs.kernel.org/admin-guide/cgroup-v2.html).
+![Atualizações de CPU, memória e estado no top](evidencias/linux_20261113T205043Z_3277/capturas/atividade2_top.png)
 
-Serão comparadas as medições antes, durante e depois. Uma carga pequena pode não causar movimentação de swap mesmo quando ele existe. Os contadores `pswpin` e `pswpout` de `/proc/vmstat`, também registrados, ajudam a observar movimentação de páginas, mas incluem atividade de outros processos. Portanto, mudanças globais não serão atribuídas exclusivamente ao teste. Referência: [manual de proc_vmstat](https://man7.org/linux/man-pages/man5/proc_vmstat.5.html).
+*Figura 7 — Atualizações de CPU, memória e estado no top. Captura de reexibição das saídas reais, coleta Ubuntu de 13/11/2026, execução 43505223640.*
 
-**Capturas reais:** [inserir free, memstat e /proc/swaps]  
-**Carga executada ou dispensada, com motivo:** [preencher]  
-**Comparação de RAM antes/durante/depois:** [preencher]  
-**Swap configurado e movimentação observada:** [preencher]  
-**Limitações de ferramentas, permissões ou contêiner:** [preencher]
+![Resumo real das chamadas de sistema pelo strace -c](evidencias/linux_20261113T205043Z_3277/capturas/atividade2_strace.png)
+
+*Figura 8 — Resumo real das chamadas de sistema pelo strace -c. Captura de reexibição das saídas reais, coleta Ubuntu de 13/11/2026, execução 43505223640.*
+
+### 5.3. Atividade 3 — RAM, carga e swap
+
+Saídas: [carga](evidencias/linux_20261113T205043Z_3277/carga.txt), [pmap da carga](evidencias/linux_20261113T205043Z_3277/pmap_carga.txt), [ps da carga](evidencias/linux_20261113T205043Z_3277/ps_carga.txt), [memstat antes](evidencias/linux_20261113T205043Z_3277/memstat.txt), [memstat durante](evidencias/linux_20261113T205043Z_3277/memstat_durante.txt), [memstat depois](evidencias/linux_20261113T205043Z_3277/memstat_depois.txt). Capturas: [RAM/swap](evidencias/linux_20261113T205043Z_3277/capturas/atividade3_ram.png), [carga](evidencias/linux_20261113T205043Z_3277/capturas/atividade3_carga.png), [memstat](evidencias/linux_20261113T205043Z_3277/capturas/atividade3_memstat.png).
+
+A carga foi limitada a 32 MiB por 20 segundos e a 10% da margem disponível, exigindo ao menos 256 MiB de margem. O processo aplicou `RLIMIT_AS=256 MiB` e verificou `MemAvailable` e os níveis visíveis de cgroup v2. Os limites `memory.max` e `memory.high` estavam em `max` nos dois níveis lidos. Se não fosse possível verificar os limites, a alocação seria dispensada. O roteiro não criou swap nem aumentou a carga para forçar paginação. Referência dos controles: [documentação de cgroup v2](https://docs.kernel.org/admin-guide/cgroup-v2.html).
+
+A margem inicial considerada foi **15.045 MiB**. O PID **3398** alocou e tocou **32 MiB**, esperou **20,002 s** e liberou a alocação. Seu RSS foi **12.004 → 44.780 → 12.008 KiB**. O aumento de 32.776 KiB é compatível com 32.768 KiB alocados mais pequenas diferenças do próprio processo. Isso comprova a carga independentemente da oscilação global do sistema.
+
+Valores abaixo convertidos de `free -b` por divisão por 1.048.576 e arredondados para três casas. Os arquivos `free_antes.txt`, `free_durante.txt` e `free_depois.txt` preservam também `free -h`; são chamadas consecutivas, não amostras simultâneas.
+
+| Momento / fonte | RAM total (MiB) | Usada (MiB) | Disponível (MiB) | Swap usado | pswpin / pswpout |
+|---|---:|---:|---:|---:|---|
+| [Antes](evidencias/linux_20261113T205043Z_3277/free_bytes_antes.txt) | 15.982,910 | 932,090 | 15.050,820 | 0 B | 0 / 0 |
+| [Durante](evidencias/linux_20261113T205043Z_3277/free_bytes_durante.txt) | 15.982,910 | 973,629 | 15.009,281 | 0 B | 0 / 0 |
+| [Depois](evidencias/linux_20261113T205043Z_3277/free_bytes_depois.txt) | 15.982,910 | 945,250 | 15.037,660 | 0 B | 0 / 0 |
+
+O aumento global de aproximadamente **41,539 MiB** supera a carga de 32 MiB: outros processos e caches também variaram. Não atribuir toda a diferença à carga. `available` estima memória disponível para novas aplicações, enquanto `free` conta memória livre. Referência: [free(1)](https://man7.org/linux/man-pages/man1/free.1.html).
+
+O `memstat` retornou 0, mas sua visão é limitada aos processos acessíveis ao usuário `runner`, pois não foi usado como root. O total antes da carga, **550.118.920k**, é memória **virtual**, não RAM ocupada. Durante a carga, indicou **37.988k** privados no PID 3398, separadamente dos objetos compartilhados; esse número não é diretamente equivalente ao RSS de 44.780 KiB. A ferramenta abrevia caminhos longos na saída padrão. Referência: [memstat(1)](https://manpages.debian.org/trixie/memstat/memstat.1.en.html).
+
+[swaps_depois.txt](evidencias/linux_20261113T205043Z_3277/swaps_depois.txt) lista `/swapfile`, tipo `file`, **3.145.724 KiB**, uso 0 e prioridade -1. `free -b` informa **3.221.221.376 bytes**, aproximadamente 3 GiB. A área já existia no runner. Os contadores [antes](evidencias/linux_20261113T205043Z_3277/contadores_swap_antes.txt), [durante](evidencias/linux_20261113T205043Z_3277/contadores_swap_durante.txt) e [depois](evidencias/linux_20261113T205043Z_3277/contadores_swap_depois.txt) ficaram em zero.
+
+**Limitação:** não houve início de uso de swap nem medição de impacto de E/S por paginação. A memória disponível permaneceu ampla. Transferências ao armazenamento podem acrescentar latência e disputar E/S, mas isso é discussão conceitual, não medição desta coleta. Os contadores são globais do kernel. Referências: [proc_swaps(5)](https://man7.org/linux/man-pages/man5/proc_swaps.5.html) e [proc_vmstat(5)](https://man7.org/linux/man-pages/man5/proc_vmstat.5.html).
+
+![RAM, swap e contadores antes, durante e depois da carga](evidencias/linux_20261113T205043Z_3277/capturas/atividade3_ram.png)
+
+*Figura 9 — RAM, swap e contadores antes, durante e depois da carga. Captura de reexibição das saídas reais, coleta Ubuntu de 13/11/2026, execução 43505223640.*
+
+![Alocação de 32 MiB e RSS do processo 3398](evidencias/linux_20261113T205043Z_3277/capturas/atividade3_carga.png)
+
+*Figura 10 — Alocação de 32 MiB e RSS do processo 3398. Captura de reexibição das saídas reais, coleta Ubuntu de 13/11/2026, execução 43505223640.*
+
+![Memória virtual dos processos acessíveis no memstat](evidencias/linux_20261113T205043Z_3277/capturas/atividade3_memstat.png)
+
+*Figura 11 — Memória virtual dos processos acessíveis no memstat. Captura de reexibição das saídas reais, coleta Ubuntu de 13/11/2026, execução 43505223640.*
+
+### 5.4. Limites do atendimento ao enunciado
+
+Os comandos das três atividades e a carga controlada foram executados. A exigência de observar **início de uso de swap e impacto de E/S sob carga elevada permanece não demonstrada**: a memória disponível continuou ampla e os contadores ficaram em zero. Não é possível declarar atendimento integral dessa parte apenas com um workflow bem-sucedido.
+
+Os demais limites são a visibilidade de `memstat` como usuário `runner`, a identificação aproximada de Data/BSS sem análise de ELF e a ausência de distinção individual de Running/Ready nas amostras `R`. A [matriz de requisitos](evidencias/REQUISITOS.md) relaciona cada exigência às evidências e pendências.
 
 ## 6. Conclusão
 
@@ -223,11 +310,15 @@ O desenvolvimento do simulador permitiu representar decisões de substituição 
 
 A comparação mostrou que a quantidade de molduras e o padrão de acessos influenciam os resultados. O caso do FIFO evidenciou que aumentar a capacidade nem sempre reduz faltas nessa política. Quando todas as páginas distintas couberam na memória, as diferenças entre algoritmos desapareceram para a sequência utilizada.
 
-O roteiro GNU/Linux foi preparado para relacionar esses conceitos aos mapeamentos e às ferramentas de monitoramento. **Essa etapa permanece pendente**, e ainda não é possível concluir algo sobre a RAM, o swap ou as chamadas de sistema de um ambiente Linux observado. Após a execução remota, a dupla deverá acrescentar as evidências, interpretações e limitações à seção 5 e atualizar esta conclusão.
+O laboratório GNU/Linux permitiu observar permissões e regiões do espaço virtual, transições reais R/S e chamadas ao kernel. A carga de 32 MiB elevou o RSS do processo e sua liberação o aproximou do valor inicial. As diferenças entre espaço virtual, memória residente e memória global disponível ficaram visíveis nas ferramentas utilizadas.
+
+Havia swap configurado, mas o uso e os contadores de movimentação permaneceram zerados. Portanto, esta coleta não demonstra paginação para swap sob pressão nem seu impacto de E/S. A validação do simulador e seus swap outs didáticos não preenchem essa lacuna do experimento real.
+
+As evidências apresentam a interface e o laboratório executados no Ubuntu, com saídas, imagens, commits e registros reproduzíveis. A compatibilidade com Windows é adicional. **A dupla ainda deve revisar as interpretações, preencher nomes/RAs e data de entrega, acrescentar suas próprias lições e divisão de responsabilidades e preparar a versão PDF ou Google Docs exigida.** Não foram atribuídas experiências pessoais ou atividades individuais sem confirmação.
 
 ## 7. Referências bibliográficas
 
-Fontes técnicas consultadas em 07/11/2026:
+Referências técnicas da preparação inicial em 07/11/2026 e da análise do laboratório de 13/11/2026. As referências de Python e GitHub e os manuais de `ps`, `free` e `memstat` foram consultados na revisão de 17/11/2026.
 
 1. ARPACI-DUSSEAU, Remzi H.; ARPACI-DUSSEAU, Andrea C. **Operating Systems: Three Easy Pieces**. Versão 1.10. Arpaci-Dusseau Books, novembro de 2023. [Página oficial do livro](https://pages.cs.wisc.edu/~remzi/OSTEP/). Capítulos utilizados: [4 — The Process](https://pages.cs.wisc.edu/~remzi/OSTEP/cpu-intro.pdf), [13 — Address Spaces](https://pages.cs.wisc.edu/~remzi/OSTEP/vm-intro.pdf), [18 — Paging](https://pages.cs.wisc.edu/~remzi/OSTEP/vm-paging.pdf), [21 — Beyond Physical Memory: Mechanisms](https://pages.cs.wisc.edu/~remzi/OSTEP/vm-beyondphys.pdf) e [22 — Beyond Physical Memory: Policies](https://pages.cs.wisc.edu/~remzi/OSTEP/vm-beyondphys-policy.pdf).
 2. PROCPS-NG. Manuais [pmap(1)](https://man7.org/linux/man-pages/man1/pmap.1.html), [ps(1)](https://man7.org/linux/man-pages/man1/ps.1.html), [top(1)](https://man7.org/linux/man-pages/man1/top.1.html) e [free(1)](https://man7.org/linux/man-pages/man1/free.1.html).
@@ -235,4 +326,6 @@ Fontes técnicas consultadas em 07/11/2026:
 4. STRACE PROJECT. [strace(1) — Linux manual page](https://man7.org/linux/man-pages/man1/strace.1.html).
 5. DEBIAN. [memstat(1) — manual do pacote memstat](https://manpages.debian.org/trixie/memstat/memstat.1.en.html).
 6. LINUX KERNEL DOCUMENTATION. [Control Group v2](https://docs.kernel.org/admin-guide/cgroup-v2.html).
-7. GITHUB DOCS. [Creating a codespace for a repository](https://docs.github.com/en/codespaces/developing-in-a-codespace/creating-a-codespace-for-a-repository). Referência para o procedimento de execução remota descrito no README.
+7. PYTHON SOFTWARE FOUNDATION. [tkinter — Python interface to Tcl/Tk](https://docs.python.org/3/library/tkinter.html). Referência da interface gráfica e de sua disponibilidade em diferentes sistemas.
+8. GITHUB DOCS. [Manually running a workflow](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/manually-run-a-workflow) e [Using workflow run logs](https://docs.github.com/en/actions/how-tos/monitor-workflows/use-workflow-run-logs). Referências para iniciar e consultar as execuções remotas.
+9. REPOSITÓRIO DO PROJETO. [Validação do simulador em Ubuntu, 17/11/2026](https://github.com/henri16bit/trabalho-walter/actions/runs/44179462467) e [laboratório GNU/Linux, 13/11/2026](https://github.com/henri16bit/trabalho-walter/actions/runs/43505223640). Dados primários preservados em [evidencias/](evidencias/), com [matriz de requisitos](evidencias/REQUISITOS.md).

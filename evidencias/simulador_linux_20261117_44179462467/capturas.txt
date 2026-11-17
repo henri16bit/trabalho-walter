@@ -1,0 +1,3 @@
+Capturas reais via scrot no display Xvfb do runner Ubuntu.
+comprovacao_ubuntu.png: janela Tkinter e xterm executando comandos de identificacao; os totais dos testes sao lidos dos logs deste mesmo job.
+As simulacoes e a navegacao foram acionadas por codigo; nao se trata de teste humano de cliques.

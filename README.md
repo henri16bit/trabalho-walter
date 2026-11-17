@@ -4,6 +4,24 @@ Trabalho de Sistemas Operacionais do curso de Análise e Desenvolvimento de Sist
 
 Repositório público: [henri16bit/trabalho-walter](https://github.com/henri16bit/trabalho-walter).
 
+## Comprovação de execução em GNU/Linux
+
+O simulador foi executado novamente no **Ubuntu 24.04.5 LTS em 17/11/2026**: **33/33 testes sem janela e 9/9 testes gráficos aprovados**. A imagem abaixo mostra a janela real com uma simulação, ao lado de um terminal que identifica Ubuntu, kernel, Python, data, commit e execução. A compatibilidade adicional com Windows não muda o ambiente das evidências apresentadas.
+
+![Simulador real e identificação do Ubuntu no mesmo display](evidencias/simulador_linux_20261117_44179462467/comprovacao_ubuntu.png)
+
+Captura real por `scrot` no display virtual Xvfb do Ubuntu remoto. A simulação foi acionada por código; os totais dos testes foram lidos dos logs do mesmo job. Isso comprova a execução e a renderização no Linux, mas não uma sessão humana de cliques. O teste da interface não substitui o laboratório.
+
+| O que conferir | Evidências |
+|---|---|
+| Simulador no Ubuntu, 17/11/2026 | [Execução e logs do Actions](https://github.com/henri16bit/trabalho-walter/actions/runs/44179462467), [ambiente](evidencias/simulador_linux_20261117_44179462467/ambiente.txt), [33 testes](evidencias/simulador_linux_20261117_44179462467/testes_logica.txt), [9 testes gráficos](evidencias/simulador_linux_20261117_44179462467/testes_interface.txt), [comparação na GUI](evidencias/simulador_linux_20261117_44179462467/interface_comparacao.png) |
+| Resultados gerados nessa execução | [Terminal](evidencias/simulador_linux_20261117_44179462467/terminal.txt), [CSV](evidencias/simulador_linux_20261117_44179462467/comparacao.csv), [page faults](evidencias/simulador_linux_20261117_44179462467/page_faults.png), [swap outs simulados](evidencias/simulador_linux_20261117_44179462467/swap_outs.png), [hashes](evidencias/simulador_linux_20261117_44179462467/SHA256SUMS) e [proveniência](evidencias/simulador_linux_20261117_44179462467/proveniencia.json) |
+| Laboratório no Ubuntu, 13/11/2026 | [Execução separada do laboratório](https://github.com/henri16bit/trabalho-walter/actions/runs/43505223640), [oito capturas](evidencias/linux_20261113T205043Z_3277/capturas/), [comandos e saídas](evidencias/linux_20261113T205043Z_3277/), [interpretações](evidencias/observacoes.md) |
+
+O [relatório revisado](relatorio.md) contém as sete seções, os resultados e as capturas com legendas. A [matriz de requisitos](evidencias/REQUISITOS.md) registra as pendências. **Swap sob pressão e impacto de E/S não foram demonstrados:** a carga real de 32 MiB foi segura e o swap permaneceu sem uso. Nomes/RAs, revisão da dupla e exportação final ainda precisam ser concluídos.
+
+Para conferir a origem, abra a execução do simulador, selecione o job **validar** e consulte as etapas de testes e captura; o commit deve corresponder ao de `ambiente.txt`. O GitHub pode exigir login para consultar os logs, conforme sua [documentação](https://docs.github.com/en/actions/how-tos/monitor-workflows/use-workflow-run-logs). Os TXT e PNG já estão publicados nesta pasta pública e podem ser acessados diretamente. O registro `resultados/validacao_windows.txt`, com 25 testes, é histórico e não é a comprovação Linux.
+
 ## Comece por aqui — passo a passo para a dupla no Linux
 
 O roteiro abaixo usa **Ubuntu 24.04**, ambiente em que o código foi validado com Python **3.12.3** e matplotlib **3.11.2**. O projeto exige Python **3.11 ou superior**. Os comandos devem ser executados no terminal do Linux. Para ver e usar a janela, abra o terminal em uma sessão Linux com ambiente gráfico.
@@ -94,7 +112,7 @@ Na pasta do projeto, execute os dois comandos separadamente:
 
 O primeiro executa **33 testes sem abrir janelas**; o segundo executa **9 testes gráficos**, que abrem e fecham janelas automaticamente e precisam de uma sessão gráfica. O primeiro conjunto também importa o Tkinter, por isso o pacote `python3-tk` é necessário mesmo sem abrir uma janela.
 
-Na [validação do código no Ubuntu 24.04](https://github.com/henri16bit/trabalho-walter/actions/runs/43100556246), os resultados foram **33/33** e **9/9**, totalizando **42 testes aprovados** no commit `97c3264`. Os testes gráficos usaram um display virtual Xvfb. Confira a saída real na sua máquina para confirmar a instalação.
+Na [validação de 17/11/2026 no Ubuntu 24.04.5](https://github.com/henri16bit/trabalho-walter/actions/runs/44179462467), os resultados foram **33/33** e **9/9**, totalizando **42 testes aprovados** no commit `02190dc`. Os testes gráficos usaram widgets reais em Xvfb, acionados automaticamente, com respostas programadas aos diálogos. Confira a saída real na sua máquina para confirmar a instalação.
 
 ### 7. Abrir novamente e atualizar
 
@@ -193,7 +211,8 @@ Rode .venv/bin/python testes.py (33 testes) e, com display disponível,
 estão preservados dentro do primeiro conjunto. Não invente testes executados
 ou resultados: informe os comandos que realmente rodou e suas saídas.
 
-Ajude com instalação, execução e código, preservando o relatório acadêmico.
+Ajude com instalação, execução e código. Para revisar o relatório, use apenas
+evidências verificáveis e mantenha explícitas as limitações do laboratório.
 Para o laboratório, leia evidencias/observacoes.md e use o workflow
 laboratorio-linux.yml em um Ubuntu remoto. As evidências existentes são reais;
 se repetir, preserve a nova coleta separadamente e registre suas limitações.
@@ -240,10 +259,11 @@ Esses contadores representam um modelo didático. O programa não modifica a mem
 | `testes.py` | 33 testes sem janela e 9 testes gráficos |
 | `requirements.txt` | Dependência matplotlib |
 | `laboratorio_linux.sh` | Coleta dos três exercícios em GNU/Linux |
-| `relatorio.md` | Rascunho acadêmico anterior; não atualizado nesta etapa |
+| `relatorio.md` | Sete seções revisadas, com resultados Ubuntu, capturas e limitações; identificação e revisão da dupla pendentes |
 | `resultados/` | CSV e gráficos; também conserva o registro histórico da validação no Windows |
 | `evidencias/observacoes.md` | Saídas reais, interpretação técnica e limitações do laboratório |
 | `evidencias/REQUISITOS.md` | Relação entre requisitos, evidências e pendências |
+| `evidencias/simulador_linux_20261117_44179462467/` | Capturas reais, 33+9 testes, CLI, CSV/PNG, ambiente e hashes da validação Ubuntu |
 | `.github/workflows/laboratorio-linux.yml` | Executa a Parte II em um Ubuntu remoto |
 | `scripts/capturar_laboratorio.sh` | Captura um terminal real reexibindo as saídas coletadas |
 | `.github/workflows/validar-linux.yml` | Validação no Ubuntu com testes, CLI e capturas reais da interface |
@@ -280,7 +300,7 @@ Para conferir os arquivos baixados, entre na pasta da coleta no terminal Linux e
 sha256sum -c SHA256SUMS
 ```
 
-Os artefatos do Actions ficam disponíveis por 30 dias nesta configuração; as duas coletas publicadas em `evidencias/` permanecem no repositório. Não use a expiração de um artefato como motivo para perder os arquivos.
+Os artefatos do Actions ficam disponíveis por 30 dias nesta configuração; as coletas do laboratório e a validação do simulador publicadas em `evidencias/` permanecem no repositório. Não use a expiração de um artefato como motivo para perder os arquivos.
 
 ### Repetir em outro Ubuntu remoto
 
@@ -322,4 +342,4 @@ Esse comando salva PNGs na subpasta `capturas/`. Para preservar o manifesto de i
 - A observação de **swap em uso e seu impacto de E/S sob pressão elevada** não foi obtida. Não aumentar perigosamente a carga para forçar esse resultado.
 - `R` agrupa execução e prontidão no Linux; as amostras não distinguem individualmente Running/Ready. O estado de espera observado foi `S`, com temporizador, não `D` por disco.
 - O `memstat` foi executado como `runner`, com visibilidade dos processos permitidos a esse usuário.
-- O arquivo `relatorio.md` é um rascunho antigo e **não foi atualizado**, por solicitação do usuário. Não o considerar entrega final; o estado técnico atual está neste README e em `evidencias/`.
+- O [relatório](relatorio.md) foi atualizado com as evidências reais. Faltam nomes/RAs, data de entrega, revisão e lições da dupla, além da exportação para PDF ou Google Docs exigida pelo enunciado.

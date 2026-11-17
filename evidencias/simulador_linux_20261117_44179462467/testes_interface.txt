@@ -1,0 +1,11 @@
+OK: teste_gui_quatro_algoritmos_usam_entradas
+OK: teste_gui_navegacao_atualiza_ram_e_historico
+OK: teste_gui_entradas_invalidas_mostram_mensagem
+OK: teste_gui_repeticao_e_reinicio_sem_estado_antigo
+OK: teste_gui_comparacao_mesmas_entradas_16_linhas
+OK: teste_gui_exportacao_e_cancelamento
+OK: teste_gui_visualizacao_real_dos_png
+OK: teste_gui_layout_minimo_sem_cortar_botoes
+OK: teste_gui_estado_com_16_molduras_cabe_na_coluna
+
+9/9 testes passaram.

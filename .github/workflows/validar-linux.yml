@@ -12,25 +12,36 @@ jobs:
     timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - name: Preparar Python, Tk e display de testes
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y python3-venv python3-tk xvfb xauth scrot fonts-dejavu-core
+          sudo apt-get install -y python3-venv python3-tk xvfb xauth xterm scrot fonts-dejavu-core
           /usr/bin/python3 -m venv .venv
           .venv/bin/python -m pip install -r requirements.txt
       - name: Testar logica, interface real e terminal
         run: |
           mkdir -p resultados/validacao_linux
-          uname -a | tee resultados/validacao_linux/ambiente.txt
-          .venv/bin/python --version | tee -a resultados/validacao_linux/ambiente.txt
+          {
+            date -u -Is
+            cat /etc/os-release
+            uname -a
+            .venv/bin/python --version
+            .venv/bin/python -m pip show matplotlib
+            printf 'Commit: '
+            git rev-parse HEAD
+            printf 'Execucao: %s/%s/actions/runs/%s\n' "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID"
+          } | tee resultados/validacao_linux/ambiente.txt
           .venv/bin/python testes.py | tee resultados/validacao_linux/testes_logica.txt
           xvfb-run -a -s '-screen 0 1280x900x24' .venv/bin/python testes.py --interface | tee resultados/validacao_linux/testes_interface.txt
           .venv/bin/python main.py --saida resultados/validacao_linux | tee resultados/validacao_linux/terminal.txt
       - name: Capturar a janela real do simulador no Linux
         run: |
-          xvfb-run -a -s '-screen 0 1280x900x24' .venv/bin/python - <<'PY'
+          xvfb-run -a -s '-screen 0 2048x1100x24' .venv/bin/python - <<'PY'
           from pathlib import Path
           import subprocess
+          import time
           import tkinter as tk
           from interface import Interface
 
@@ -40,6 +51,46 @@ jobs:
           raiz.geometry('1080x740+10+10')
           app.executar()
           app.selecionar_passo(3)
+          raiz.update()
+          pronto = destino / '.terminal_pronto'
+          comando = '''
+          printf 'COMPROVACAO DO AMBIENTE - comandos reais no runner\n\n'
+          printf '$ cat /etc/os-release\n'
+          cat /etc/os-release
+          printf '\n$ uname -a\n'
+          uname -a
+          printf '\n$ .venv/bin/python --version\n'
+          .venv/bin/python --version
+          printf '\n$ date -u -Is\n'
+          date -u -Is
+          printf '\n$ git rev-parse HEAD\n'
+          git rev-parse HEAD
+          printf '\nRESULTADOS DOS TESTES EXECUTADOS NESTE JOB\n'
+          tail -n 2 resultados/validacao_linux/testes_logica.txt
+          tail -n 2 resultados/validacao_linux/testes_interface.txt
+          printf '\nExecucao: %s/%s/actions/runs/%s\n' "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID"
+          printf '\nJanela real Tkinter em Xvfb. Acionamento automatizado.\n'
+          touch resultados/validacao_linux/.terminal_pronto
+          sleep 30
+          '''
+          terminal = subprocess.Popen(['xterm', '-geometry', '100x52+1110+10',
+              '-fa', 'DejaVu Sans Mono', '-fs', '10', '-bg', '#101418', '-fg', '#e8edf2',
+              '-title', 'Ambiente Ubuntu - evidencia real', '-e', 'bash', '-c', comando])
+          try:
+              for _ in range(100):
+                  raiz.update()
+                  if pronto.exists():
+                      break
+                  if terminal.poll() is not None:
+                      raise RuntimeError('O terminal de comprovacao encerrou antes da captura')
+                  time.sleep(0.1)
+              else:
+                  raise RuntimeError('O terminal de comprovacao nao ficou pronto')
+              time.sleep(0.5)
+              subprocess.run(['scrot', str(destino / 'comprovacao_ubuntu.png')], check=True)
+          finally:
+              terminal.terminate()
+              terminal.wait(timeout=5)
           raiz.update()
           subprocess.run(['scrot', str(destino / 'interface_simulacao.png')], check=True)
           app.molduras.set('16')
@@ -52,8 +103,19 @@ jobs:
           raiz.update()
           subprocess.run(['scrot', str(destino / 'interface_comparacao.png')], check=True)
           raiz.destroy()
+          (destino / 'capturas.txt').write_text(
+              'Capturas reais via scrot no display Xvfb do runner Ubuntu.\n'
+              'comprovacao_ubuntu.png: janela Tkinter e xterm executando comandos de identificacao; '
+              'os totais dos testes sao lidos dos logs deste mesmo job.\n'
+              'As simulacoes e a navegacao foram acionadas por codigo; nao se trata de teste humano de cliques.\n',
+              encoding='utf-8')
 
           PY
+      - name: Registrar integridade das evidencias
+        if: always()
+        run: |
+          cd resultados/validacao_linux
+          find . -type f ! -name SHA256SUMS ! -name '.*' -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS
       - name: Disponibilizar testes, capturas e resultados
         if: always()
         uses: actions/upload-artifact@v4

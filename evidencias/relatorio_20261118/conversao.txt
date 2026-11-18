@@ -1,0 +1,41 @@
+2026-11-18T18:15:20+00:00
+PRETTY_NAME="Ubuntu 24.04.5 LTS"
+NAME="Ubuntu"
+VERSION_ID="24.04"
+VERSION="24.04.5 LTS (Noble Numbat)"
+VERSION_CODENAME=noble
+ID=ubuntu
+ID_LIKE=debian
+HOME_URL="https://www.ubuntu.com/"
+SUPPORT_URL="https://help.ubuntu.com/"
+BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
+PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
+UBUNTU_CODENAME=noble
+LOGO=ubuntu-logo
+LibreOffice 24.2.7.2 420(Build:2)
+
+Title:           Gerência de memória virtual paginação e monitoramento no GNU Linux
+Subject:         Trabalho semestral de Sistemas Operacionais — UNIRP
+Keywords:        GNU/Linux, Ubuntu, paginação, FIFO, LRU, Clock, NRU, swap
+Author:          Henrique Caliari Fuzeto; Murillo Alves Augusto
+Creator:         Writer
+Producer:        LibreOffice 24.2
+CreationDate:    Wed Nov 18 18:15:08 2026 UTC
+Custom Metadata: no
+Metadata Stream: no
+Tagged:          yes
+UserProperties:  no
+Suspects:        no
+Form:            none
+JavaScript:      no
+Pages:           32
+Encrypted:       no
+Page size:       595.304 x 841.89 pts (A4)
+Page rot:        0
+File size:       2604727 bytes
+Optimized:       no
+PDF version:     1.7
+
+Commit do documento: fd2028f727a04acd405fb00d26b7e9e54276b36c
+53de8d1fe996807d2e4e4c502cba3f680dc9e6f43c0254c46b9baaab9c707b5c  output/docx/Relatorio_Sistemas_Operacionais_UNIRP.docx
+6f7c637f2ee88596f1f3953d8a5ee0dfabd4979f0230b4c8266614c01375bb78  output/pdf/Relatorio_Sistemas_Operacionais_UNIRP.pdf

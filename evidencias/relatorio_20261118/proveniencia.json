@@ -1,0 +1,24 @@
+{
+  "tipo": "Conversao e revisao editorial; nao e nova execucao do laboratorio ou do simulador",
+  "data": "2026-11-18",
+  "workflow_run": "https://github.com/henri16bit/trabalho-walter/actions/runs/44367444027",
+  "commit_do_word": "fd2028f727a04acd405fb00d26b7e9e54276b36c",
+  "artifact_id": 14457611016,
+  "artifact_sha256": "889476e84f12d0d53128aa09060a9c1c199f3e115f4be5d68f3c13bda9a5fd0a",
+  "arquivos": {
+    "output/docx/Relatorio_Sistemas_Operacionais_UNIRP.docx": {
+      "sha256": "53de8d1fe996807d2e4e4c502cba3f680dc9e6f43c0254c46b9baaab9c707b5c",
+      "bytes": 2103323
+    },
+    "output/pdf/Relatorio_Sistemas_Operacionais_UNIRP.pdf": {
+      "sha256": "6f7c637f2ee88596f1f3953d8a5ee0dfabd4979f0230b4c8266614c01375bb78",
+      "bytes": 2604727
+    }
+  },
+  "paginas_pdf": 32,
+  "figuras_originais_no_word": 14,
+  "links_no_pdf": 150,
+  "conferencia_visual": "Paginas 1 a 32 renderizadas em PNG e inspecionadas apos as correcoes de capa, comandos e enquadramento",
+  "imagens": "Os 14 PNG incorporados ao Word coincidem byte a byte com as evidencias originais. O enquadramento do Word oculta somente margens vazias e preserva os arquivos completos.",
+  "entrega_ao_professor": "Nao realizada; a dupla deve enviar pelo canal da disciplina."
+}

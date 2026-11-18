@@ -22,16 +22,16 @@ Conferência do enunciado do professor Walter, datado de 26/10/2026, páginas 1�
 
 ## Sete seções acadêmicas
 
-O [relatorio.md](../relatorio.md) foi atualizado para o estado efetivamente observado, com **Henrique Caliari Fuzeto — RA 20252889** e **Murillo Alves Augusto — RA 20251873**. O enunciado exige a versão final em **PDF ou Google Docs**; o Markdown ainda precisa ser revisado pela dupla e exportado. Não foram inventadas experiências pessoais ou divisão de atividades.
+O [relatorio.md](../relatorio.md) foi atualizado para o estado efetivamente observado, com **Henrique Caliari Fuzeto — RA 20252889** e **Murillo Alves Augusto — RA 20251873**. A divisão informada pela dupla é **Henrique no laboratório GNU/Linux** e **Murillo no simulador**, com análise e conclusões conjuntas. As lições foram desenvolvidas a partir do aprendizado em Linux e testes de memória informado pela dupla e dos resultados registrados. As versões de entrega são o [PDF](../output/pdf/Relatorio_Sistemas_Operacionais_UNIRP.pdf) e o [Word editável](../output/docx/Relatorio_Sistemas_Operacionais_UNIRP.docx).
 
-| Seção exigida | Evidência incorporada ao relatório | Pendência |
+| Seção exigida | Conteúdo incorporado ao relatório | Situação |
 |---|---|---|
-| 1. Capa e identificação | Nomes e RAs fornecidos pela dupla, ambiente Ubuntu e revisão de 18/11/2026 | Data efetiva de entrega |
-| 2. Fundamentação teórica | Contém memória virtual, MMU, tabela, faults e estados | Revisão acadêmica final pela dupla |
-| 3. Metodologia/modelagem | Tkinter, CLI, histórico, funções responsáveis, 33+9 testes e captura Ubuntu com procedência | Revisão final da dupla; testes de widgets estão identificados como automatizados |
-| 4. Resultados e comparação | Tabelas e gráficos ligados ao CSV e ao terminal da execução Ubuntu de 17/11 | Revisão final da dupla |
-| 5. Análise GNU/Linux | Três atividades, oito capturas iniciais e três capturas do complemento de swap, com interpretação | Revisão acadêmica; limites de cgroup, medição, estados e permissões explícitos |
-| 6. Conclusões e lições da dupla | Conclusões técnicas baseadas nas medições reais e nos limites do experimento | Acrescentar/revisar lições e divisão real das atividades pela dupla |
-| 7. Referências | Fontes de SO, manuais, Python, GitHub e links das execuções utilizadas | Revisão da apresentação acadêmica final |
+| 1. Capa e identificação | Instituição, curso, disciplina, professor, nomes/RAs e data de elaboração de 18/11/2026 | Incluída |
+| 2. Fundamentação teórica | Memória virtual, MMU, tabela, faults e estados | Incluída, com referências |
+| 3. Metodologia/modelagem | Papéis da dupla, Tkinter, CLI, histórico, funções, 33+9 testes e captura Ubuntu com procedência | Incluída; testes de widgets identificados como automatizados |
+| 4. Resultados e comparação | Tabelas e gráficos ligados ao CSV e ao terminal da execução Ubuntu de 17/11 | Incluída, com conferência por acesso e interpretação |
+| 5. Análise GNU/Linux | Três atividades, oito capturas iniciais e três do complemento de swap, com interpretação | Incluída; limites de cgroup, medição, estados e permissões explícitos |
+| 6. Conclusões e lições da dupla | Resultados, aprendizado em Linux, testes de memória, planejamento da carga e integração das duas partes | Incluída, conforme a divisão e o aprendizado informados |
+| 7. Referências | Livro de SO, manuais, Python, GitHub, fontes primárias das execuções e enunciado | Incluída, com links e datas de consulta |
 
-**Ainda pendente:** divisão real de papéis e lições da dupla, revisão conjunta, data efetiva de entrega, exportação PDF/Google Docs e entrega ao professor. Swap e E/S foram observados sob pressão de memória localizada no cgroup; as limitações do experimento devem acompanhar a apresentação. A portabilidade do simulador para Windows não invalida as evidências de sua execução no Ubuntu; o laboratório apresentado foi realizado em GNU/Linux.
+**Etapa externa pendente:** envio do PDF pela dupla ao professor pelo canal da disciplina, até **29/11/2026 às 23h59**. A data do documento é a de elaboração, não uma confirmação de entrega. O material inclui as sete seções e a exportação exigida; os limites experimentais continuam explícitos. Swap e E/S foram observados sob pressão localizada no cgroup. A portabilidade do simulador para Windows não invalida as evidências de sua execução no Ubuntu; o laboratório apresentado foi realizado em GNU/Linux.

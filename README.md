@@ -6,6 +6,20 @@ Repositório público: [henri16bit/trabalho-walter](https://github.com/henri16bi
 
 **Integrantes:** Henrique Caliari Fuzeto — RA **20252889**; Murillo Alves Augusto — RA **20251873**.
 
+## Arquivos para entrega
+
+- [Relatório final em PDF](output/pdf/Relatorio_Sistemas_Operacionais_UNIRP.pdf).
+- [Relatório editável em Word](output/docx/Relatorio_Sistemas_Operacionais_UNIRP.docx).
+- [Texto do relatório no GitHub](relatorio.md) e [conferência das exigências do enunciado](evidencias/REQUISITOS.md).
+
+O relatório está datado de **18/11/2026**, com as sete seções, referências, lições aprendidas e 14 figuras originais reunidas no apêndice. **Murillo** é o Integrante A, responsável pelo simulador; **Henrique** é o Integrante B, responsável pelo laboratório GNU/Linux. A análise e as conclusões são conjuntas.
+
+O PDF tem **32 páginas**, renderizadas e conferidas após a conversão no Ubuntu remoto. A [execução da exportação](https://github.com/henri16bit/trabalho-walter/actions/runs/44367444027), o [registro do conversor](evidencias/relatorio_20261118/conversao.txt) e a [proveniência com hashes](evidencias/relatorio_20261118/proveniencia.json) identificam o Word de origem e o PDF publicado. Essa etapa é editorial; as execuções do simulador e do laboratório estão documentadas separadamente abaixo.
+
+Para baixar, abra o link do PDF ou Word e use **Download raw file / Baixar arquivo**. O PDF é a versão de entrega; o Word permite alterações. O envio ao professor deve ser feito pela dupla pelo canal da disciplina, até **29/11/2026 às 23h59**, conforme o enunciado. A publicação neste GitHub não constitui esse envio.
+
+Se editar o Word, exporte novamente para PDF e confira todas as páginas. Também é possível salvar o Word atualizado no repositório, abrir **Actions → Exportar relatorio Word para PDF → Run workflow** e baixar o artefato `relatorio-pdf-e-revisao` quando terminar. Ele contém o PDF, as páginas renderizadas para revisão e o registro da conversão. A conversão ocorre no Ubuntu remoto. O workflow não altera automaticamente os arquivos publicados.
+
 ## Comprovação de execução em GNU/Linux
 
 O simulador foi executado novamente no **Ubuntu 24.04.5 LTS em 17/11/2026**: **33/33 testes sem janela e 9/9 testes gráficos aprovados**. A imagem abaixo mostra a janela real com uma simulação, ao lado de um terminal que identifica Ubuntu, kernel, Python, data, commit e execução. A compatibilidade adicional com Windows não muda o ambiente das evidências apresentadas.
@@ -21,7 +35,7 @@ Captura real por `scrot` no display virtual Xvfb do Ubuntu remoto. A simulação
 | Laboratório no Ubuntu, 13/11/2026 | [Execução separada do laboratório](https://github.com/henri16bit/trabalho-walter/actions/runs/43505223640), [oito capturas](evidencias/linux_20261113T205043Z_3277/capturas/), [comandos e saídas](evidencias/linux_20261113T205043Z_3277/), [interpretações](evidencias/observacoes.md) |
 | Swap sob pressão isolada, 17/11/2026 | [Execução real](https://github.com/henri16bit/trabalho-walter/actions/runs/44182556307), [três capturas](evidencias/swap_linux_20261117T214237Z_3360/capturas/), [comparação medida](evidencias/swap_linux_20261117T214237Z_3360/comparacao.csv), [análise e limites](evidencias/swap_observacoes.md) |
 
-O [relatório revisado](relatorio.md) contém as sete seções, os nomes/RAs, resultados e capturas com legendas. A [matriz de requisitos](evidencias/REQUISITOS.md) registra o atendimento e os limites. **Swap sob pressão e impacto de E/S foram demonstrados em 17/11:** a mesma carga de 128 MiB foi executada com limites de RAM de 256 e 64 MiB, em grupos isolados. A coleta inicial de 32 MiB sem swap continua preservada. Faltam a revisão da dupla, a data efetiva de entrega e a exportação final.
+O [relatório](relatorio.md) contém as sete seções, nomes/RAs, responsabilidades, lições aprendidas, resultados e capturas com legendas. A [matriz de requisitos](evidencias/REQUISITOS.md) registra o atendimento e os limites. **Swap sob pressão e impacto de E/S foram demonstrados em 17/11:** a mesma carga de 128 MiB foi executada com limites de RAM de 256 e 64 MiB, em grupos isolados. A coleta inicial de 32 MiB sem swap continua preservada. As versões Word e PDF estão nos links de entrega acima.
 
 Para conferir a origem, abra a execução do simulador, selecione o job **validar** e consulte as etapas de testes e captura; o commit deve corresponder ao de `ambiente.txt`. O GitHub pode exigir login para consultar os logs, conforme sua [documentação](https://docs.github.com/en/actions/how-tos/monitor-workflows/use-workflow-run-logs). Os TXT e PNG já estão publicados nesta pasta pública e podem ser acessados diretamente. O registro `resultados/validacao_windows.txt`, com 25 testes, é histórico e não é a comprovação Linux.
 
@@ -264,7 +278,10 @@ Esses contadores representam um modelo didático. O programa não modifica a mem
 | `testes.py` | 33 testes sem janela e 9 testes gráficos |
 | `requirements.txt` | Dependência matplotlib |
 | `laboratorio_linux.sh` | Coleta dos três exercícios em GNU/Linux |
-| `relatorio.md` | Sete seções, identificação da dupla, resultados Ubuntu, capturas e limites; revisão acadêmica final pendente |
+| `relatorio.md` | Sete seções, identificação e papéis da dupla, lições aprendidas, resultados Ubuntu, capturas e limites |
+| `output/docx/` e `output/pdf/` | Relatório editável e versão final para entrega |
+| `scripts/gerar_relatorio.py` | Ferramenta editorial opcional para gerar o Word a partir do Markdown; requer python-docx e Pillow |
+| `.github/workflows/exportar-relatorio.yml` | Conversão do Word em PDF no Ubuntu remoto e páginas para revisão |
 | `resultados/` | CSV e gráficos; também conserva o registro histórico da validação no Windows |
 | `evidencias/observacoes.md` | Saídas reais, interpretação técnica e limitações do laboratório |
 | `evidencias/swap_observacoes.md` | Complemento com uso real de swap e comparação de tempo/E/S sob pressão isolada |
@@ -366,9 +383,9 @@ xvfb-run -a -s '-screen 0 1600x1450x24' bash scripts/capturar_laboratorio.sh evi
 
 Esse comando salva PNGs na subpasta `capturas/`. Para preservar o manifesto de integridade de uma coleta publicada, faça essa reprodução em uma cópia da pasta; PNGs recapturados podem diferir dos originais.
 
-### Pendências
+### Limites e envio
 
 - Swap e impacto de E/S foram observados sob **limite de RAM no cgroup**. Os tempos são demonstrativos; não houve esgotamento da RAM global e não se deve ampliar a carga para tentar reproduzir um travamento.
 - `R` agrupa execução e prontidão no Linux; as amostras não distinguem individualmente Running/Ready. O estado de espera observado foi `S`, com temporizador, não `D` por disco.
 - O `memstat` foi executado como `runner`, com visibilidade dos processos permitidos a esse usuário.
-- O [relatório](relatorio.md) tem os nomes/RAs e as evidências reais. Faltam data efetiva de entrega, revisão e lições da dupla, além da exportação para PDF ou Google Docs exigida pelo enunciado.
+- O relatório tem nomes/RAs, data de elaboração, divisão de tarefas, lições aprendidas e evidências reais. O PDF e o Word estão publicados em `output/`. **Falta a dupla enviar o PDF ao professor pelo canal da disciplina**; a data da capa não é uma confirmação de envio.

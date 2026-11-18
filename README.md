@@ -4,6 +4,8 @@ Trabalho de Sistemas Operacionais do curso de Análise e Desenvolvimento de Sist
 
 Repositório público: [henri16bit/trabalho-walter](https://github.com/henri16bit/trabalho-walter).
 
+**Integrantes:** Henrique Caliari Fuzeto — RA **20252889**; Murillo Alves Augusto — RA **20251873**.
+
 ## Comprovação de execução em GNU/Linux
 
 O simulador foi executado novamente no **Ubuntu 24.04.5 LTS em 17/11/2026**: **33/33 testes sem janela e 9/9 testes gráficos aprovados**. A imagem abaixo mostra a janela real com uma simulação, ao lado de um terminal que identifica Ubuntu, kernel, Python, data, commit e execução. A compatibilidade adicional com Windows não muda o ambiente das evidências apresentadas.
@@ -17,8 +19,9 @@ Captura real por `scrot` no display virtual Xvfb do Ubuntu remoto. A simulação
 | Simulador no Ubuntu, 17/11/2026 | [Execução e logs do Actions](https://github.com/henri16bit/trabalho-walter/actions/runs/44179462467), [ambiente](evidencias/simulador_linux_20261117_44179462467/ambiente.txt), [33 testes](evidencias/simulador_linux_20261117_44179462467/testes_logica.txt), [9 testes gráficos](evidencias/simulador_linux_20261117_44179462467/testes_interface.txt), [comparação na GUI](evidencias/simulador_linux_20261117_44179462467/interface_comparacao.png) |
 | Resultados gerados nessa execução | [Terminal](evidencias/simulador_linux_20261117_44179462467/terminal.txt), [CSV](evidencias/simulador_linux_20261117_44179462467/comparacao.csv), [page faults](evidencias/simulador_linux_20261117_44179462467/page_faults.png), [swap outs simulados](evidencias/simulador_linux_20261117_44179462467/swap_outs.png), [hashes](evidencias/simulador_linux_20261117_44179462467/SHA256SUMS) e [proveniência](evidencias/simulador_linux_20261117_44179462467/proveniencia.json) |
 | Laboratório no Ubuntu, 13/11/2026 | [Execução separada do laboratório](https://github.com/henri16bit/trabalho-walter/actions/runs/43505223640), [oito capturas](evidencias/linux_20261113T205043Z_3277/capturas/), [comandos e saídas](evidencias/linux_20261113T205043Z_3277/), [interpretações](evidencias/observacoes.md) |
+| Swap sob pressão isolada, 17/11/2026 | [Execução real](https://github.com/henri16bit/trabalho-walter/actions/runs/44182556307), [três capturas](evidencias/swap_linux_20261117T214237Z_3360/capturas/), [comparação medida](evidencias/swap_linux_20261117T214237Z_3360/comparacao.csv), [análise e limites](evidencias/swap_observacoes.md) |
 
-O [relatório revisado](relatorio.md) contém as sete seções, os resultados e as capturas com legendas. A [matriz de requisitos](evidencias/REQUISITOS.md) registra as pendências. **Swap sob pressão e impacto de E/S não foram demonstrados:** a carga real de 32 MiB foi segura e o swap permaneceu sem uso. Nomes/RAs, revisão da dupla e exportação final ainda precisam ser concluídos.
+O [relatório revisado](relatorio.md) contém as sete seções, os nomes/RAs, resultados e capturas com legendas. A [matriz de requisitos](evidencias/REQUISITOS.md) registra o atendimento e os limites. **Swap sob pressão e impacto de E/S foram demonstrados em 17/11:** a mesma carga de 128 MiB foi executada com limites de RAM de 256 e 64 MiB, em grupos isolados. A coleta inicial de 32 MiB sem swap continua preservada. Faltam a revisão da dupla, a data efetiva de entrega e a exportação final.
 
 Para conferir a origem, abra a execução do simulador, selecione o job **validar** e consulte as etapas de testes e captura; o commit deve corresponder ao de `ambiente.txt`. O GitHub pode exigir login para consultar os logs, conforme sua [documentação](https://docs.github.com/en/actions/how-tos/monitor-workflows/use-workflow-run-logs). Os TXT e PNG já estão publicados nesta pasta pública e podem ser acessados diretamente. O registro `resultados/validacao_windows.txt`, com 25 testes, é histórico e não é a comprovação Linux.
 
@@ -216,6 +219,8 @@ evidências verificáveis e mantenha explícitas as limitações do laboratório
 Para o laboratório, leia evidencias/observacoes.md e use o workflow
 laboratorio-linux.yml em um Ubuntu remoto. As evidências existentes são reais;
 se repetir, preserve a nova coleta separadamente e registre suas limitações.
+Para o complemento de swap, leia evidencias/swap_observacoes.md e use
+swap-linux.yml: carga fixa de 128 MiB em cgroup limitado, sem esgotar RAM global.
 Não instale WSL, Docker ou máquinas virtuais no computador Windows.
 
 Preserve os quatro algoritmos: FIFO, LRU, Segunda Chance/Clock e NRU.
@@ -259,12 +264,16 @@ Esses contadores representam um modelo didático. O programa não modifica a mem
 | `testes.py` | 33 testes sem janela e 9 testes gráficos |
 | `requirements.txt` | Dependência matplotlib |
 | `laboratorio_linux.sh` | Coleta dos três exercícios em GNU/Linux |
-| `relatorio.md` | Sete seções revisadas, com resultados Ubuntu, capturas e limitações; identificação e revisão da dupla pendentes |
+| `relatorio.md` | Sete seções, identificação da dupla, resultados Ubuntu, capturas e limites; revisão acadêmica final pendente |
 | `resultados/` | CSV e gráficos; também conserva o registro histórico da validação no Windows |
 | `evidencias/observacoes.md` | Saídas reais, interpretação técnica e limitações do laboratório |
+| `evidencias/swap_observacoes.md` | Complemento com uso real de swap e comparação de tempo/E/S sob pressão isolada |
 | `evidencias/REQUISITOS.md` | Relação entre requisitos, evidências e pendências |
 | `evidencias/simulador_linux_20261117_44179462467/` | Capturas reais, 33+9 testes, CLI, CSV/PNG, ambiente e hashes da validação Ubuntu |
 | `.github/workflows/laboratorio-linux.yml` | Executa a Parte II em um Ubuntu remoto |
+| `.github/workflows/swap-linux.yml` | Executa o complemento de swap em dois cgroups limitados no Ubuntu remoto |
+| `scripts/laboratorio_swap.py` | Carga fixa, limites, medição, comparação e limpeza das unidades criadas |
+| `scripts/capturar_swap.sh` | Capturas reais de terminal reexibindo a coleta de swap |
 | `scripts/capturar_laboratorio.sh` | Captura um terminal real reexibindo as saídas coletadas |
 | `.github/workflows/validar-linux.yml` | Validação no Ubuntu com testes, CLI e capturas reais da interface |
 | `.gitignore` | Exclui ambiente Python e caches do controle de versão |
@@ -281,9 +290,29 @@ Para entregar o projeto, inclua os fontes, documentos, resultados e evidências;
 | `pmap -x` e `/proc/PID/maps` | Mapeamentos reais do PID 3311, com código, dados, heap, stack, bibliotecas e permissões |
 | `ps`, `top`, `strace -c` | Transições `R`/`S` e 769 chamadas de sistema; nenhuma ferramenta bloqueada |
 | `free -h`, `memstat`, `/proc/swaps` e carga | Alocação real de 32 MiB por 20 segundos; RSS antes/durante/depois registrado |
-| Uso de swap sob pressão elevada | **Não demonstrado:** havia aproximadamente 3 GiB de swap, mas uso e contadores ficaram zerados |
+| Uso de swap sob pressão elevada | A carga inicial de 13/11 não usou swap. O complemento de 17/11 demonstrou swap e E/S sob limite de RAM por cgroup; veja abaixo |
 
-Consulte as [explicações técnicas](evidencias/observacoes.md), a [matriz de requisitos](evidencias/REQUISITOS.md) e os [arquivos brutos da coleta principal](evidencias/linux_20261113T205043Z_3277/). A primeira coleta também foi preservada. Os dados não justificam afirmar que houve swap out real no sistema.
+Consulte as [explicações da coleta inicial](evidencias/observacoes.md), a [análise do swap](evidencias/swap_observacoes.md), a [matriz de requisitos](evidencias/REQUISITOS.md) e os [arquivos brutos de 13/11](evidencias/linux_20261113T205043Z_3277/). As coletas são separadas: os registros antigos continuam mostrando ausência de swap naquela execução.
+
+### Complemento: swap observado em 17/11/2026
+
+Na [execução 44182556307](https://github.com/henri16bit/trabalho-walter/actions/runs/44182556307), uma carga fixa de **128 MiB** foi executada primeiro com limite de RAM de **256 MiB**, depois de **64 MiB**. O limite se aplica ao grupo do processo, enquanto o servidor manteve aproximadamente 14 GiB disponíveis. Os dois processos terminaram com sucesso, sem OOM.
+
+| Medida real | Controle | Pressão no cgroup |
+|---|---:|---:|
+| Maior swap do grupo amostrado | 0 | 127,996 MiB |
+| Tempo das três passagens pela memória | 0,008239 s | 3,292881 s |
+| Major faults nas passagens | 0 | 12.832 |
+| E/S de leitura do grupo, Δ antes → após releituras | 0 B | 413.949.952 B |
+| E/S de escrita do grupo, mesmo intervalo | 16.384 B | 484.184.064 B |
+
+`/proc/swaps` registrou **0 → 75.032 → 131.068 → 0 KiB** antes, após alocar, após reler e depois do encerramento. Os [dados completos](evidencias/swap_linux_20261117T214237Z_3360/), [print do resumo](evidencias/swap_linux_20261117T214237Z_3360/capturas/swap_resumo.png) e [print de RAM/swap](evidencias/swap_linux_20261117T214237Z_3360/capturas/swap_ram.png) permitem conferir esses resultados.
+
+É uma demonstração de pressão limitada ao processo. Os tempos pertencem a esta execução; não representam custo universal de swap. A E/S do cgroup inclui logs/metadados, e os contadores `pswpin/out` são globais. A [análise técnica](evidencias/swap_observacoes.md) explica essas diferenças.
+
+Para repetir no GitHub, abra **Actions → Laboratorio GNU-Linux - Swap isolado → Run workflow → main**. É necessária permissão de escrita para iniciar a execução. Baixe o artefato **laboratorio-swap-isolado**, preserve a pasta datada em `evidencias/` e confira `resumo.txt`, `comandos.tsv`, os dois arquivos `*_resultado_unidade.txt` e `SHA256SUMS`.
+
+O roteiro só inicia no runner GNU/Linux remoto, verifica margens de memória e swap, usa serviços transitórios e limita cada um a **256 MiB de swap e 60 segundos**, além de CPU, espaço virtual e tarefas. A carga é sempre de 128 MiB; nenhum parâmetro permite ampliá-la pelo workflow. Ele usa o swap existente e não muda configurações globais. Se houver limitação, ela aparece em `limitacao.txt`; um job verde deve ser conferido junto aos valores medidos.
 
 ### Repetir no GitHub Actions
 
@@ -339,7 +368,7 @@ Esse comando salva PNGs na subpasta `capturas/`. Para preservar o manifesto de i
 
 ### Pendências
 
-- A observação de **swap em uso e seu impacto de E/S sob pressão elevada** não foi obtida. Não aumentar perigosamente a carga para forçar esse resultado.
+- Swap e impacto de E/S foram observados sob **limite de RAM no cgroup**. Os tempos são demonstrativos; não houve esgotamento da RAM global e não se deve ampliar a carga para tentar reproduzir um travamento.
 - `R` agrupa execução e prontidão no Linux; as amostras não distinguem individualmente Running/Ready. O estado de espera observado foi `S`, com temporizador, não `D` por disco.
 - O `memstat` foi executado como `runner`, com visibilidade dos processos permitidos a esse usuário.
-- O [relatório](relatorio.md) foi atualizado com as evidências reais. Faltam nomes/RAs, data de entrega, revisão e lições da dupla, além da exportação para PDF ou Google Docs exigida pelo enunciado.
+- O [relatório](relatorio.md) tem os nomes/RAs e as evidências reais. Faltam data efetiva de entrega, revisão e lições da dupla, além da exportação para PDF ou Google Docs exigida pelo enunciado.

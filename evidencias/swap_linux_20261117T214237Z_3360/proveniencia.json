@@ -1,0 +1,12 @@
+{
+  "run_url": "https://github.com/henri16bit/trabalho-walter/actions/runs/44182556307",
+  "head_sha": "1a422ec27a0240af708da2ce7be04ace581b725a",
+  "artifact_id": 14372712572,
+  "artifact_name": "laboratorio-swap-isolado",
+  "artifact_zip_sha256": "0eb9e414dc27f940fb1652baff4bc7b7dca816368635da6402ffb3d52dfc973c",
+  "manifest_verified_files": 75,
+  "logged_commands_exit_zero": 60,
+  "workloads_exit_zero": 2,
+  "capture_method": "scrot captura xterm real em Xvfb, reexibindo arquivos da coleta. Os cabecalhos identificam a reexibicao; nao sao novas medicoes ao vivo nem imagens geradas por IA.",
+  "note": "Metadados adicionados apos download. Arquivos cobertos por SHA256SUMS preservados byte a byte. O manifesto nao inclui a si mesmo nem este JSON. A execucao usou swap existente no Ubuntu remoto, sem alterar o Windows ou criar swap."
+}

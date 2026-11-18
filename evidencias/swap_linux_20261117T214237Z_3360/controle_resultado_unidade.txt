@@ -1,0 +1,5 @@
+Result=success
+ExecMainCode=1
+ExecMainStatus=0
+ControlGroup=
+SubState=exited

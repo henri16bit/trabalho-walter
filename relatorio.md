@@ -9,12 +9,12 @@
 **Trabalho:** Projeto semestral — gerência de memória virtual  
 **Integrante 1:** Henrique Caliari Fuzeto — RA 20252889  
 **Integrante 2:** Murillo Alves Augusto — RA 20251873  
-**Data de revisão:** 17/11/2026  
+**Data de revisão:** 18/11/2026  
 **Data de entrega:** [preencher]
 
 **Ambiente de referência:** GNU/Linux, distribuição Ubuntu 24.04.5 LTS. O simulador com interface gráfica e terminal foi executado no Ubuntu remoto, assim como os comandos do laboratório. A compatibilidade adicional com Windows não altera o ambiente utilizado para as evidências deste relatório.
 
-**Situação do trabalho:** 33 testes sem janela e 9 testes gráficos aprovados no Ubuntu em 17/11/2026. As três atividades do laboratório foram executadas em 13/11/2026, com capturas e saídas reais. A carga controlada consumiu RAM, mas **não provocou uso de swap**; o impacto de E/S sob pressão permanece não demonstrado. Faltam a identificação da dupla, sua revisão final e a exportação para PDF ou Google Docs.
+**Situação do trabalho:** 33 testes sem janela e 9 testes gráficos aprovados no Ubuntu em 17/11/2026. As três atividades do laboratório foram executadas em 13/11/2026. Um complemento em **17/11/2026 demonstrou uso real de swap e impacto de E/S sob pressão isolada em cgroup**, com capturas, comandos e saídas preservados. Os nomes e RAs foram informados pela dupla. Faltam sua revisão final, a data efetiva de entrega e a exportação para PDF ou Google Docs.
 
 ## 2. Fundamentação teórica
 
@@ -199,7 +199,7 @@ O [roteiro `laboratorio_linux.sh`](laboratorio_linux.sh) foi executado em **13/1
 | CPU e páginas | Quatro CPUs lógicas; página de 4096 bytes — [cpu.txt](evidencias/linux_20261113T205043Z_3277/cpu.txt) e [pagina_bytes.txt](evidencias/linux_20261113T205043Z_3277/pagina_bytes.txt) |
 | Coleta e integridade | [Transcrição](evidencias/linux_20261113T205043Z_3277/execucao.txt), [proveniência](evidencias/linux_20261113T205043Z_3277/proveniencia.json) e [SHA256SUMS](evidencias/linux_20261113T205043Z_3277/SHA256SUMS), com 49 arquivos conferidos |
 
-Esta coleta do laboratório é distinta da validação do simulador em 17/11/2026. Os runners têm kernels diferentes; os PIDs e valores desta seção pertencem exclusivamente à coleta `linux_20261113T205043Z_3277`. A primeira coleta do laboratório também foi preservada no repositório, mas não foi misturada aos dados abaixo.
+Esta coleta do laboratório é distinta da validação do simulador em 17/11/2026. Os runners têm kernels diferentes; os PIDs e valores das seções 5.1–5.3 pertencem exclusivamente à coleta `linux_20261113T205043Z_3277`. A primeira coleta do laboratório também foi preservada. O experimento adicional de swap de 17/11/2026 está separado na seção 5.4, com sua própria origem e medições.
 
 As Figuras 4–11 são **capturas reais de xterm por `scrot` em Xvfb**, reexibindo as saídas previamente coletadas nesse Ubuntu. Os cabeçalhos informam esse procedimento. Os recortes de `top` e `memstat` são identificados na tela; os TXT completos continuam disponíveis. São evidências visuais dos registros, não medições novas no instante da captura nem demonstrações de interação humana.
 
@@ -284,7 +284,7 @@ O `memstat` retornou 0, mas sua visão é limitada aos processos acessíveis ao 
 
 [swaps_depois.txt](evidencias/linux_20261113T205043Z_3277/swaps_depois.txt) lista `/swapfile`, tipo `file`, **3.145.724 KiB**, uso 0 e prioridade -1. `free -b` informa **3.221.221.376 bytes**, aproximadamente 3 GiB. A área já existia no runner. Os contadores [antes](evidencias/linux_20261113T205043Z_3277/contadores_swap_antes.txt), [durante](evidencias/linux_20261113T205043Z_3277/contadores_swap_durante.txt) e [depois](evidencias/linux_20261113T205043Z_3277/contadores_swap_depois.txt) ficaram em zero.
 
-**Limitação:** não houve início de uso de swap nem medição de impacto de E/S por paginação. A memória disponível permaneceu ampla. Transferências ao armazenamento podem acrescentar latência e disputar E/S, mas isso é discussão conceitual, não medição desta coleta. Os contadores são globais do kernel. Referências: [proc_swaps(5)](https://man7.org/linux/man-pages/man5/proc_swaps.5.html) e [proc_vmstat(5)](https://man7.org/linux/man-pages/man5/proc_vmstat.5.html).
+**Limitação da coleta de 13/11:** não houve início de uso de swap nem medição de impacto de E/S por paginação. A memória disponível permaneceu ampla. Esses registros foram preservados; a observação de swap foi obtida em um experimento adicional, descrito na seção 5.4. Os contadores de `/proc/vmstat` são globais do kernel. Referências: [proc_swaps(5)](https://man7.org/linux/man-pages/man5/proc_swaps.5.html) e [proc_vmstat(5)](https://man7.org/linux/man-pages/man5/proc_vmstat.5.html).
 
 ![RAM, swap e contadores antes, durante e depois da carga](evidencias/linux_20261113T205043Z_3277/capturas/atividade3_ram.png)
 
@@ -298,11 +298,54 @@ O `memstat` retornou 0, mas sua visão é limitada aos processos acessíveis ao 
 
 *Figura 11 — Memória virtual dos processos acessíveis no memstat. Captura de reexibição das saídas reais, coleta Ubuntu de 13/11/2026, execução 43505223640.*
 
-### 5.4. Limites do atendimento ao enunciado
+### 5.4. Complemento — uso real de swap sob pressão isolada
 
-Os comandos das três atividades e a carga controlada foram executados. A exigência de observar **início de uso de swap e impacto de E/S sob carga elevada permanece não demonstrada**: a memória disponível continuou ampla e os contadores ficaram em zero. Não é possível declarar atendimento integral dessa parte apenas com um workflow bem-sucedido.
+Em **17/11/2026 às 21:42:37 UTC (18:42:37 em São Paulo)**, foi executado o [experimento adicional 44182556307](https://github.com/henri16bit/trabalho-walter/actions/runs/44182556307), no commit `1a422ec27a0240af708da2ce7be04ace581b725a`. O ambiente foi Ubuntu 24.04.5 LTS, kernel `7.0.0-1017-azure`. A [coleta completa](evidencias/swap_linux_20261117T214237Z_3360/) contém 60 comandos registrados com saída 0, duas cargas encerradas normalmente e três capturas. O [manifesto](evidencias/swap_linux_20261117T214237Z_3360/SHA256SUMS) cobre 75 arquivos; a [proveniência](evidencias/swap_linux_20261117T214237Z_3360/proveniencia.json) registra o artefato e seu hash.
 
-Os demais limites são a visibilidade de `memstat` como usuário `runner`, a identificação aproximada de Data/BSS sem análise de ELF e a ausência de distinção individual de Running/Ready nas amostras `R`. A [matriz de requisitos](evidencias/REQUISITOS.md) relaciona cada exigência às evidências e pendências.
+O [script de swap](scripts/laboratorio_swap.py) executou dois processos sequenciais com a mesma alocação de **128 MiB anônimos privados**. Cada página de 4096 bytes recebeu um byte não nulo, seguido de três passagens de leitura e reescrita de um byte por página. Todos os checksums foram iguais a 4.120.971. O controle teve limite de RAM de 256 MiB; a fase de pressão teve **64 MiB**, configurados por `MemoryMax` em serviços transitórios do systemd. Portanto, a carga foi elevada em relação à RAM permitida ao grupo, sem esgotar a memória global. Referências: [cgroup v2](https://docs.kernel.org/admin-guide/cgroup-v2.html) e [controles do systemd](https://www.freedesktop.org/software/systemd/man/latest/systemd.resource-control.html).
+
+Cada grupo recebeu limite de 256 MiB de swap, 512 MiB de espaço virtual, 20 segundos de CPU, 60 segundos de duração e oito tarefas. O programa verificou a disponibilidade de RAM/swap e os limites dos ancestrais antes de iniciar. O swap existente foi utilizado sem criação de arquivo adicional, sem `swapoff` e sem alteração global de `swappiness`. Zswap estava desabilitado; os grupos tiveram `MemoryZSwapMax=0`. Os dois processos terminaram com código 0 e sem eventos OOM.
+
+**Tabela 3 — Comparação real sob limites de RAM diferentes.** Fontes: [CSV](evidencias/swap_linux_20261117T214237Z_3360/comparacao.csv), [resumo JSON](evidencias/swap_linux_20261117T214237Z_3360/resumo.json) e [amostras da pressão](evidencias/swap_linux_20261117T214237Z_3360/pressao_amostras.jsonl).
+
+| Medida | Controle — PID 3375 | Pressão — PID 3454 |
+|---|---:|---:|
+| Alocação / limite de RAM do cgroup | 128 / 256 MiB | 128 / 64 MiB |
+| Maior swap do cgroup amostrado | 0 B | 134.213.632 B ≈ 127,996 MiB |
+| Maior `VmSwap` amostrado | 0 KiB | 75.724 KiB ≈ 73,949 MiB |
+| Tempo das três passagens | 0,008239 s | 3,292881 s |
+| CPU nas três passagens | 0,006338 s | 1,073948 s |
+| Major faults nas três passagens | 0 | 12.832 |
+| Δ `pswpin` / `pswpout` global | 0 / 0 páginas | 101.052 / 118.184 páginas |
+| Δ E/S de leitura do cgroup | 0 B | 413.949.952 B ≈ 394,773 MiB |
+| Δ E/S de escrita do cgroup | 16.384 B | 484.184.064 B ≈ 461,754 MiB |
+| Eventos `oom` / `oom_kill` | 0 / 0 | 0 / 0 |
+
+Os tempos e major faults da tabela correspondem apenas aos três laços medidos, sem as pausas de coleta. Os deltas de swap e E/S abrangem de `antes` até `apos_releituras`, incluindo alocação e instrumentação. `pswpin/out` são globais, enquanto `io.stat` do grupo inclui também logs/metadados. A interpretação é sustentada pelo conjunto dessas medidas, não pela atribuição de todo byte de E/S ao swap.
+
+![Comparação real das duas cargas sob limites diferentes](evidencias/swap_linux_20261117T214237Z_3360/capturas/swap_resumo.png)
+
+*Figura 12 — Resultados do controle e da pressão em cgroup. Captura real de xterm reexibindo o resumo calculado a partir dos registros, execução 44182556307, Ubuntu, 17/11/2026. Fonte: amostras JSONL e resumo do experimento.*
+
+`/proc/swaps` mostrou uso de **0 → 75.032 → 131.068 → 0 KiB**, respectivamente [antes](evidencias/swap_linux_20261117T214237Z_3360/swaps_pressao_antes.txt), [após a alocação](evidencias/swap_linux_20261117T214237Z_3360/swaps_pressao_alocada.txt), [após as releituras](evidencias/swap_linux_20261117T214237Z_3360/swaps_pressao_apos_releituras.txt) e [depois do encerramento](evidencias/swap_linux_20261117T214237Z_3360/swaps_pressao_depois.txt). A RAM global disponível continuou em aproximadamente 14 GiB. A pressão foi localizada no grupo. A diferença entre `VmSwap` e swap contabilizado no grupo deve considerar abrangência, amostras consecutivas e páginas residentes que ainda mantêm espaço em swap; `SwapCached` consta nos registros. Referências: [proc_pid_status(5)](https://man7.org/linux/man-pages/man5/proc_pid_status.5.html) e [proc_meminfo(5)](https://man7.org/linux/man-pages/man5/proc_meminfo.5.html).
+
+![Swap real antes, durante a alocação e depois da carga](evidencias/swap_linux_20261117T214237Z_3360/capturas/swap_ram.png)
+
+*Figura 13 — `free -h` e `/proc/swaps` registram entrada em uso e liberação do swap. A captura exibe antes, após alocação e depois; a amostra adicional após as releituras está no TXT vinculado. Reexibição real dos registros da mesma execução Ubuntu.*
+
+O impacto foi observado por aumento do tempo, major faults e E/S. O PSI `io.pressure` apresentou `full total=1074919` microssegundos no grupo de pressão, na etapa `apos_releituras`, indicando espera acumulada por E/S. `memory.pressure` apresentou `full total=293515`. Os intervalos não são idênticos aos dos laços e essas medidas não devem ser somadas como decomposição do tempo total. Referência: [documentação de PSI](https://docs.kernel.org/accounting/psi.html).
+
+As passagens foram aproximadamente 399,7 vezes mais lentas **neste par de execuções**. A razão não é universal: o controle durou poucos milissegundos, os processos rodaram sequencialmente e o custo inclui recuperação de memória, E/S, faltas, código Python e escalonamento. Não se trata de benchmark isolado de disco. A [análise técnica completa](evidencias/swap_observacoes.md) detalha unidades, limites e fontes.
+
+![Logs de execução e verificação das páginas nas duas fases](evidencias/swap_linux_20261117T214237Z_3360/capturas/swap_carga.png)
+
+*Figura 14 — Logs dos dois processos com RSS, VmSwap, tempos, checksums e encerramento normal. Captura de reexibição dos arquivos reais, execução 44182556307.*
+
+### 5.5. Atendimento ao enunciado e limites
+
+As três atividades possuem saídas reais e interpretação. O complemento da seção 5.4 demonstra início de uso de swap, movimentação e impacto observado sobre tempo e E/S sob **pressão limitada ao cgroup**. Não houve esgotamento da RAM global. A carga de 32 MiB da coleta inicial continua registrada como experimento sem uso de swap.
+
+Permanecem os limites de visibilidade de `memstat` como usuário `runner`, identificação aproximada de Data/BSS sem análise de ELF e ausência de distinção individual de Running/Ready nas amostras `R`. Não foi demonstrado estado `D` por uma captura de estados. As capturas são automatizadas e não representam interação humana. A [matriz de requisitos](evidencias/REQUISITOS.md) relaciona as exigências às evidências e à revisão acadêmica pendente.
 
 ## 6. Conclusão
 
@@ -312,9 +355,9 @@ A comparação mostrou que a quantidade de molduras e o padrão de acessos influ
 
 O laboratório GNU/Linux permitiu observar permissões e regiões do espaço virtual, transições reais R/S e chamadas ao kernel. A carga de 32 MiB elevou o RSS do processo e sua liberação o aproximou do valor inicial. As diferenças entre espaço virtual, memória residente e memória global disponível ficaram visíveis nas ferramentas utilizadas.
 
-Havia swap configurado, mas o uso e os contadores de movimentação permaneceram zerados. Portanto, esta coleta não demonstra paginação para swap sob pressão nem seu impacto de E/S. A validação do simulador e seus swap outs didáticos não preenchem essa lacuna do experimento real.
+Na primeira coleta, o swap permaneceu sem uso. O experimento complementar impôs um limite de RAM somente ao processo de teste e demonstrou entrada em uso, movimentação de páginas e liberação do swap. A mesma carga apresentou mais major faults, E/S e maior tempo quando a RAM permitida ao grupo foi reduzida. Isso relaciona memória limitada e custo de paginação em um experimento real, separado dos swap outs didáticos do simulador.
 
-As evidências apresentam a interface e o laboratório executados no Ubuntu, com saídas, imagens, commits e registros reproduzíveis. A compatibilidade com Windows é adicional. **A dupla ainda deve revisar as interpretações, preencher nomes/RAs e data de entrega, acrescentar suas próprias lições e divisão de responsabilidades e preparar a versão PDF ou Google Docs exigida.** Não foram atribuídas experiências pessoais ou atividades individuais sem confirmação.
+As evidências apresentam a interface e o laboratório executados no Ubuntu, com saídas, imagens, commits e registros reproduzíveis. A compatibilidade com Windows é adicional. **A dupla ainda deve revisar as interpretações, preencher a data efetiva de entrega, acrescentar suas próprias lições e divisão de responsabilidades e preparar a versão PDF ou Google Docs exigida.** Os nomes e RAs foram fornecidos pelos integrantes; não foram atribuídas experiências pessoais ou atividades individuais sem confirmação.
 
 ## 7. Referências bibliográficas
 
@@ -328,4 +371,6 @@ Referências técnicas da preparação inicial em 07/11/2026 e da análise do la
 6. LINUX KERNEL DOCUMENTATION. [Control Group v2](https://docs.kernel.org/admin-guide/cgroup-v2.html).
 7. PYTHON SOFTWARE FOUNDATION. [tkinter — Python interface to Tcl/Tk](https://docs.python.org/3/library/tkinter.html). Referência da interface gráfica e de sua disponibilidade em diferentes sistemas.
 8. GITHUB DOCS. [Manually running a workflow](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/manually-run-a-workflow) e [Using workflow run logs](https://docs.github.com/en/actions/how-tos/monitor-workflows/use-workflow-run-logs). Referências para iniciar e consultar as execuções remotas.
-9. REPOSITÓRIO DO PROJETO. [Validação do simulador em Ubuntu, 17/11/2026](https://github.com/henri16bit/trabalho-walter/actions/runs/44179462467) e [laboratório GNU/Linux, 13/11/2026](https://github.com/henri16bit/trabalho-walter/actions/runs/43505223640). Dados primários preservados em [evidencias/](evidencias/), com [matriz de requisitos](evidencias/REQUISITOS.md).
+9. REPOSITÓRIO DO PROJETO. [Validação do simulador em Ubuntu, 17/11/2026](https://github.com/henri16bit/trabalho-walter/actions/runs/44179462467), [laboratório GNU/Linux, 13/11/2026](https://github.com/henri16bit/trabalho-walter/actions/runs/43505223640) e [experimento de swap isolado, 17/11/2026](https://github.com/henri16bit/trabalho-walter/actions/runs/44182556307). Dados primários preservados em [evidencias/](evidencias/), com [matriz de requisitos](evidencias/REQUISITOS.md).
+10. SYSTEMD PROJECT. [systemd.resource-control](https://www.freedesktop.org/software/systemd/man/latest/systemd.resource-control.html), [systemd-run](https://www.freedesktop.org/software/systemd/man/latest/systemd-run.html) e [systemd.service — OOMPolicy](https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html). Consultados em 17/11/2026 para o isolamento e os limites das cargas.
+11. LINUX KERNEL DOCUMENTATION. [PSI — Pressure Stall Information](https://docs.kernel.org/accounting/psi.html). LINUX MAN-PAGES PROJECT. [proc_meminfo(5)](https://man7.org/linux/man-pages/man5/proc_meminfo.5.html) e [proc_pid_status(5)](https://man7.org/linux/man-pages/man5/proc_pid_status.5.html). Consultados em 17/11/2026 para interpretar memória, swap e espera por E/S.

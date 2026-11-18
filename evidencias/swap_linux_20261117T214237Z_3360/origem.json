@@ -1,0 +1,12 @@
+{
+  "data_utc": "2026-11-17T21:42:37.207113+00:00",
+  "run_url": "https://github.com/henri16bit/trabalho-walter/actions/runs/44182556307",
+  "commit": "1a422ec27a0240af708da2ce7be04ace581b725a",
+  "carga_bytes": 134217728,
+  "limites_RAM": {
+    "controle": 268435456,
+    "pressao": 67108864
+  },
+  "limite_swap_por_unidade": 268435456,
+  "timeout_por_unidade_s": 60
+}

@@ -1,0 +1,39 @@
+EXPERIMENTO REAL DE SWAP - Ubuntu remoto / cgroup v2
+2026-11-17T21:42:59.322807+00:00
+Mesma carga: 128 MiB anonimos; tres releituras com escrita, uma por pagina.
+Sem esgotar RAM global. Limites: controle=256 MiB; pressao=64 MiB.
+Cada unidade: swap<=256 MiB, tempo<=60 s, CPU<=20 s, AS<=512 MiB.
+
+FASE CONTROLE - PID 3375
+carga_MiB: 128
+limite_RAM_MiB: 256
+pico_swap_cgroup_bytes_amostrado: 0
+pico_VmSwap_KiB_amostrado: 0
+releituras_segundos: 0.00823861599999276
+releituras_cpu_segundos: 0.006338356000000003
+major_faults_releituras: 0
+pswpin_global_delta: 0
+pswpout_global_delta: 0
+io_cgroup_rbytes_delta: 0
+io_cgroup_wbytes_delta: 16384
+oom_kill: 0
+
+FASE PRESSAO - PID 3454
+carga_MiB: 128
+limite_RAM_MiB: 64
+pico_swap_cgroup_bytes_amostrado: 134213632
+pico_VmSwap_KiB_amostrado: 75724
+releituras_segundos: 3.2928813970000093
+releituras_cpu_segundos: 1.0739476350000001
+major_faults_releituras: 12832
+pswpin_global_delta: 101052
+pswpout_global_delta: 118184
+io_cgroup_rbytes_delta: 413949952
+io_cgroup_wbytes_delta: 484184064
+oom_kill: 0
+
+Swap e movimentacao observados: SIM
+Razao de tempo pressao/controle: 399.689
+Tempos de uma execucao; nao sao benchmark geral nem isolam toda causa de espera.
+pswpin/out sao globais. io.stat e major faults apoiam a interpretacao,
+mas io.stat tambem inclui logs/metadados. Veja amostras e arquivos brutos.

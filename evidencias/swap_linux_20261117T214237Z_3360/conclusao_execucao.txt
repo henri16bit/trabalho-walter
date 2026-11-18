@@ -1,0 +1,1 @@
+Duas fases encerradas normalmente, sem OOM. Veja resumo e limitacoes.

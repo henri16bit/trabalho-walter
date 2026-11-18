@@ -1,0 +1,11 @@
+2026-11-17T21:42:46.494600+00:00 fase=pressao etapa=antes PID=3454 RSS_kB=13988 VmSwap_kB=0 swap_cgroup_bytes=0
+2026-11-17T21:42:46.727657+00:00 fase=pressao etapa=alocada PID=3454 RSS_kB=71796 VmSwap_kB=73304 swap_cgroup_bytes=76578816
+{"passagem": 1, "segundos": 1.1297876670000022, "cpu_segundos": 0.371136695, "major_faults": 4273, "checksum": 4120971}
+2026-11-17T21:42:51.932290+00:00 fase=pressao etapa=passagem_1 PID=3454 RSS_kB=71152 VmSwap_kB=73948 swap_cgroup_bytes=134213632
+{"passagem": 2, "segundos": 1.0735038910000014, "cpu_segundos": 0.342865871, "major_faults": 4258, "checksum": 4120971}
+2026-11-17T21:42:53.365531+00:00 fase=pressao etapa=passagem_2 PID=3454 RSS_kB=69800 VmSwap_kB=75304 swap_cgroup_bytes=134213632
+{"passagem": 3, "segundos": 1.0895898390000056, "cpu_segundos": 0.3599450690000001, "major_faults": 4301, "checksum": 4120971}
+2026-11-17T21:42:54.807301+00:00 fase=pressao etapa=passagem_3 PID=3454 RSS_kB=69384 VmSwap_kB=75724 swap_cgroup_bytes=134213632
+2026-11-17T21:42:55.117440+00:00 fase=pressao etapa=apos_releituras PID=3454 RSS_kB=69968 VmSwap_kB=75140 swap_cgroup_bytes=134213632
+2026-11-17T21:42:59.136209+00:00 fase=pressao etapa=liberada PID=3454 RSS_kB=9012 VmSwap_kB=5028 swap_cgroup_bytes=7049216
+Carga liberada; encerramento normal.

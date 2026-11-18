@@ -1,0 +1,61 @@
+arquivo	codigo_saida	inicio_utc	comando
+distribuicao.txt	0	2026-11-17T21:42:37.207237+00:00	cat /etc/os-release
+sistema.txt	0	2026-11-17T21:42:37.209725+00:00	uname -a
+systemd.txt	0	2026-11-17T21:42:37.211792+00:00	systemd-run --version
+zswap.txt	0	2026-11-17T21:42:37.215718+00:00	cat /sys/module/zswap/parameters/enabled
+swappiness.txt	0	2026-11-17T21:42:37.217755+00:00	cat /proc/sys/vm/swappiness
+sudo.txt	0	2026-11-17T21:42:37.219807+00:00	sudo -n true
+free_controle_antes.txt	0	2026-11-17T21:42:37.227349+00:00	free -h
+free_bytes_controle_antes.txt	0	2026-11-17T21:42:37.230088+00:00	free -b
+swaps_controle_antes.txt	0	2026-11-17T21:42:37.232678+00:00	cat /proc/swaps
+vmstat_controle_antes.txt	0	2026-11-17T21:42:37.234683+00:00	cat /proc/vmstat
+memstat_controle_antes.txt	0	2026-11-17T21:42:37.236758+00:00	memstat
+controle_iniciar.txt	0	2026-11-17T21:42:37.243474+00:00	sudo -n systemd-run --unit=unirp-swap-controle-3360.service --uid=1001 --gid=1001 --property=Type=exec --property=RemainAfterExit=yes --property=MemoryAccounting=yes --property=IOAccounting=yes --property=MemoryMax=268435456 --property=MemorySwapMax=268435456 --property=OOMPolicy=kill --property=TasksMax=8 --property=RuntimeMaxSec=60 --property=TimeoutStopSec=3 --property=NoNewPrivileges=yes --property=PrivateTmp=yes --property=LimitAS=536870912 --property=LimitCPU=20 --property=StandardOutput=append:/home/runner/work/trabalho-walter/trabalho-walter/evidencias/swap_linux_20261117T214237Z_3360/controle_carga.txt --property=StandardError=append:/home/runner/work/trabalho-walter/trabalho-walter/evidencias/swap_linux_20261117T214237Z_3360/controle_carga.txt --property=MemoryZSwapMax=0 /usr/bin/python3 -u /home/runner/work/trabalho-walter/trabalho-walter/scripts/laboratorio_swap.py --carga controle /home/runner/work/trabalho-walter/trabalho-walter/evidencias/swap_linux_20261117T214237Z_3360
+controle_configuracao.txt	0	2026-11-17T21:42:37.272947+00:00	systemctl show unirp-swap-controle-3360.service
+free_controle_alocada.txt	0	2026-11-17T21:42:37.484567+00:00	free -h
+free_bytes_controle_alocada.txt	0	2026-11-17T21:42:37.487806+00:00	free -b
+swaps_controle_alocada.txt	0	2026-11-17T21:42:37.490623+00:00	cat /proc/swaps
+vmstat_controle_alocada.txt	0	2026-11-17T21:42:37.492708+00:00	cat /proc/vmstat
+memstat_controle_alocada.txt	0	2026-11-17T21:42:37.494782+00:00	memstat
+controle_alocada_unidade.txt	0	2026-11-17T21:42:37.501343+00:00	systemctl show unirp-swap-controle-3360.service
+free_controle_apos_releituras.txt	0	2026-11-17T21:42:42.442857+00:00	free -h
+free_bytes_controle_apos_releituras.txt	0	2026-11-17T21:42:42.446224+00:00	free -b
+swaps_controle_apos_releituras.txt	0	2026-11-17T21:42:42.448929+00:00	cat /proc/swaps
+vmstat_controle_apos_releituras.txt	0	2026-11-17T21:42:42.450958+00:00	cat /proc/vmstat
+memstat_controle_apos_releituras.txt	0	2026-11-17T21:42:42.453023+00:00	memstat
+controle_apos_releituras_unidade.txt	0	2026-11-17T21:42:42.459596+00:00	systemctl show unirp-swap-controle-3360.service
+controle_resultado_unidade.txt	0	2026-11-17T21:42:46.376638+00:00	systemctl show unirp-swap-controle-3360.service --property=Result,ExecMainCode,ExecMainStatus,SubState,ControlGroup
+controle_journal.txt	0	2026-11-17T21:42:46.380945+00:00	sudo -n journalctl -u unirp-swap-controle-3360.service --no-pager
+controle_parar.txt	0	2026-11-17T21:42:46.391856+00:00	sudo -n systemctl stop unirp-swap-controle-3360.service
+free_controle_depois.txt	0	2026-11-17T21:42:46.405456+00:00	free -h
+free_bytes_controle_depois.txt	0	2026-11-17T21:42:46.408153+00:00	free -b
+swaps_controle_depois.txt	0	2026-11-17T21:42:46.410744+00:00	cat /proc/swaps
+vmstat_controle_depois.txt	0	2026-11-17T21:42:46.412766+00:00	cat /proc/vmstat
+memstat_controle_depois.txt	0	2026-11-17T21:42:46.414798+00:00	memstat
+free_pressao_antes.txt	0	2026-11-17T21:42:46.421144+00:00	free -h
+free_bytes_pressao_antes.txt	0	2026-11-17T21:42:46.423789+00:00	free -b
+swaps_pressao_antes.txt	0	2026-11-17T21:42:46.426319+00:00	cat /proc/swaps
+vmstat_pressao_antes.txt	0	2026-11-17T21:42:46.428303+00:00	cat /proc/vmstat
+memstat_pressao_antes.txt	0	2026-11-17T21:42:46.430319+00:00	memstat
+pressao_iniciar.txt	0	2026-11-17T21:42:46.436614+00:00	sudo -n systemd-run --unit=unirp-swap-pressao-3360.service --uid=1001 --gid=1001 --property=Type=exec --property=RemainAfterExit=yes --property=MemoryAccounting=yes --property=IOAccounting=yes --property=MemoryMax=67108864 --property=MemorySwapMax=268435456 --property=OOMPolicy=kill --property=TasksMax=8 --property=RuntimeMaxSec=60 --property=TimeoutStopSec=3 --property=NoNewPrivileges=yes --property=PrivateTmp=yes --property=LimitAS=536870912 --property=LimitCPU=20 --property=StandardOutput=append:/home/runner/work/trabalho-walter/trabalho-walter/evidencias/swap_linux_20261117T214237Z_3360/pressao_carga.txt --property=StandardError=append:/home/runner/work/trabalho-walter/trabalho-walter/evidencias/swap_linux_20261117T214237Z_3360/pressao_carga.txt --property=MemoryZSwapMax=0 /usr/bin/python3 -u /home/runner/work/trabalho-walter/trabalho-walter/scripts/laboratorio_swap.py --carga pressao /home/runner/work/trabalho-walter/trabalho-walter/evidencias/swap_linux_20261117T214237Z_3360
+pressao_configuracao.txt	0	2026-11-17T21:42:46.462039+00:00	systemctl show unirp-swap-pressao-3360.service
+free_pressao_alocada.txt	0	2026-11-17T21:42:46.879744+00:00	free -h
+free_bytes_pressao_alocada.txt	0	2026-11-17T21:42:46.882933+00:00	free -b
+swaps_pressao_alocada.txt	0	2026-11-17T21:42:46.885624+00:00	cat /proc/swaps
+vmstat_pressao_alocada.txt	0	2026-11-17T21:42:46.887635+00:00	cat /proc/vmstat
+memstat_pressao_alocada.txt	0	2026-11-17T21:42:46.889682+00:00	memstat
+pressao_alocada_unidade.txt	0	2026-11-17T21:42:46.896210+00:00	systemctl show unirp-swap-pressao-3360.service
+free_pressao_apos_releituras.txt	0	2026-11-17T21:42:55.135712+00:00	free -h
+free_bytes_pressao_apos_releituras.txt	0	2026-11-17T21:42:55.138846+00:00	free -b
+swaps_pressao_apos_releituras.txt	0	2026-11-17T21:42:55.141486+00:00	cat /proc/swaps
+vmstat_pressao_apos_releituras.txt	0	2026-11-17T21:42:55.143475+00:00	cat /proc/vmstat
+memstat_pressao_apos_releituras.txt	0	2026-11-17T21:42:55.145513+00:00	memstat
+pressao_apos_releituras_unidade.txt	0	2026-11-17T21:42:55.151973+00:00	systemctl show unirp-swap-pressao-3360.service
+pressao_resultado_unidade.txt	0	2026-11-17T21:42:59.275314+00:00	systemctl show unirp-swap-pressao-3360.service --property=Result,ExecMainCode,ExecMainStatus,SubState,ControlGroup
+pressao_journal.txt	0	2026-11-17T21:42:59.280234+00:00	sudo -n journalctl -u unirp-swap-pressao-3360.service --no-pager
+pressao_parar.txt	0	2026-11-17T21:42:59.291875+00:00	sudo -n systemctl stop unirp-swap-pressao-3360.service
+free_pressao_depois.txt	0	2026-11-17T21:42:59.305593+00:00	free -h
+free_bytes_pressao_depois.txt	0	2026-11-17T21:42:59.308332+00:00	free -b
+swaps_pressao_depois.txt	0	2026-11-17T21:42:59.311038+00:00	cat /proc/swaps
+vmstat_pressao_depois.txt	0	2026-11-17T21:42:59.313139+00:00	cat /proc/vmstat
+memstat_pressao_depois.txt	0	2026-11-17T21:42:59.315231+00:00	memstat

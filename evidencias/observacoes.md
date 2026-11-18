@@ -1,6 +1,6 @@
 # Registro técnico do laboratório GNU/Linux
 
-As três atividades foram executadas em um Ubuntu remoto, incluindo a carga real de memória. **Não houve movimentação de swap**: a exigência de observar E/S de swap sob pressão elevada não foi demonstrada. Este registro acompanha as evidências. Após autorização, seus resultados e capturas foram incorporados ao [relatório](../relatorio.md) na revisão de 17/11/2026.
+Este documento descreve a **coleta inicial de 13/11/2026**, em Ubuntu remoto. Nessa coleta, as três atividades e a carga de 32 MiB foram executadas, mas **não houve movimentação de swap**. Um [complemento em 17/11/2026](swap_observacoes.md) posteriormente demonstrou swap e impacto de E/S sob pressão isolada em cgroup. Os registros de cada coleta permanecem separados, e seus resultados foram incorporados ao [relatório](../relatorio.md).
 
 ## Origem e integridade
 
@@ -86,12 +86,12 @@ O `memstat` retornou 0, mas sua visão é limitada aos processos acessíveis ao 
 
 [swaps_depois.txt](linux_20261113T205043Z_3277/swaps_depois.txt) lista `/swapfile`, tipo `file`, **3.145.724 KiB**, uso 0 e prioridade -1. `free -b` informa **3.221.221.376 bytes**, aproximadamente 3 GiB. A área já existia no runner. Os contadores [antes](linux_20261113T205043Z_3277/contadores_swap_antes.txt), [durante](linux_20261113T205043Z_3277/contadores_swap_durante.txt) e [depois](linux_20261113T205043Z_3277/contadores_swap_depois.txt) ficaram em zero.
 
-**Limitação:** não houve início de uso de swap nem medição de impacto de E/S por paginação. A memória disponível permaneceu ampla. Transferências ao armazenamento podem acrescentar latência e disputar E/S, mas isso é discussão conceitual, não medição desta coleta. Os contadores são globais do kernel. Referências: [proc_swaps(5)](https://man7.org/linux/man-pages/man5/proc_swaps.5.html) e [proc_vmstat(5)](https://man7.org/linux/man-pages/man5/proc_vmstat.5.html).
+**Limitação desta coleta de 13/11:** não houve início de uso de swap nem medição de impacto de E/S por paginação. A memória disponível permaneceu ampla. A medição dessa situação foi obtida no [experimento separado de 17/11](swap_observacoes.md), sem modificar estes registros. Os contadores são globais do kernel. Referências: [proc_swaps(5)](https://man7.org/linux/man-pages/man5/proc_swaps.5.html) e [proc_vmstat(5)](https://man7.org/linux/man-pages/man5/proc_vmstat.5.html).
 
 ## Limitações e pendências
 
 - Nenhuma ferramenta exigida esteve ausente ou retornou falha nesta coleta. A abrangência do `memstat` é limitada pelas permissões do usuário.
 - Cgroup v2 estava acessível, sem teto numérico nos níveis lidos; a carga usou `MemAvailable` e seu próprio limite virtual. Isso não autoriza cargas maiores em outro ambiente. Referência: [documentação do kernel](https://docs.kernel.org/admin-guide/cgroup-v2.html).
 - Running/Ready não foram distinguidos individualmente; as transições observadas foram `R`/`S`. Estado `D` não foi demonstrado.
-- O requisito de observar swap sob carga elevada permanece não demonstrado. Não aumentar a carga automaticamente para preencher essa lacuna.
-- O [relatório acadêmico](../relatorio.md) incorpora as evidências e limitações desta coleta. Identificação, revisão pela dupla e exportação final continuam pendentes. A [matriz de requisitos](REQUISITOS.md) separa essas pendências das evidências técnicas.
+- O uso de swap sob pressão não ocorreu nesta coleta; foi demonstrado no [complemento isolado](swap_observacoes.md). O roteiro original de 32 MiB foi preservado.
+- O [relatório acadêmico](../relatorio.md) incorpora os nomes/RAs e as evidências das duas etapas. Revisão pela dupla, data efetiva de entrega e exportação final continuam pendentes. A [matriz de requisitos](REQUISITOS.md) separa essas pendências das evidências técnicas.

@@ -1,0 +1,11 @@
+2026-11-17T21:42:37.307752+00:00 fase=controle etapa=antes PID=3375 RSS_kB=13968 VmSwap_kB=0 swap_cgroup_bytes=0
+2026-11-17T21:42:37.374980+00:00 fase=controle etapa=alocada PID=3375 RSS_kB=145080 VmSwap_kB=0 swap_cgroup_bytes=0
+{"passagem": 1, "segundos": 0.003029288999996993, "cpu_segundos": 0.0026067679999999954, "major_faults": 0, "checksum": 4120971}
+2026-11-17T21:42:41.383159+00:00 fase=controle etapa=passagem_1 PID=3375 RSS_kB=145080 VmSwap_kB=0 swap_cgroup_bytes=0
+{"passagem": 2, "segundos": 0.0026920829999994567, "cpu_segundos": 0.001989425000000003, "major_faults": 0, "checksum": 4120971}
+2026-11-17T21:42:41.687417+00:00 fase=controle etapa=passagem_2 PID=3375 RSS_kB=145080 VmSwap_kB=0 swap_cgroup_bytes=0
+{"passagem": 3, "segundos": 0.0025172439999963103, "cpu_segundos": 0.001742163000000005, "major_faults": 0, "checksum": 4120971}
+2026-11-17T21:42:41.991490+00:00 fase=controle etapa=passagem_3 PID=3375 RSS_kB=145088 VmSwap_kB=0 swap_cgroup_bytes=0
+2026-11-17T21:42:42.293273+00:00 fase=controle etapa=apos_releituras PID=3375 RSS_kB=145088 VmSwap_kB=0 swap_cgroup_bytes=0
+2026-11-17T21:42:46.305627+00:00 fase=controle etapa=liberada PID=3375 RSS_kB=14016 VmSwap_kB=0 swap_cgroup_bytes=0
+Carga liberada; encerramento normal.

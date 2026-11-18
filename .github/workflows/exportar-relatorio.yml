@@ -1,0 +1,43 @@
+name: Exportar relatorio Word para PDF
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exportar:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Preparar conversor no Ubuntu remoto
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y libreoffice-writer poppler-utils fonts-liberation
+      - name: Converter o Word e renderizar cada pagina para revisao
+        run: |
+          mkdir -p output/pdf revisao-relatorio
+          libreoffice -env:UserInstallation=file:///tmp/unirp-lo --headless --convert-to pdf --outdir output/pdf output/docx/Relatorio_Sistemas_Operacionais_UNIRP.docx
+          test -s output/pdf/Relatorio_Sistemas_Operacionais_UNIRP.pdf
+          pdftoppm -r 150 -png output/pdf/Relatorio_Sistemas_Operacionais_UNIRP.pdf revisao-relatorio/page
+          {
+            date -u --iso-8601=seconds
+            cat /etc/os-release
+            libreoffice --version
+            pdfinfo output/pdf/Relatorio_Sistemas_Operacionais_UNIRP.pdf
+            printf '\nCommit do documento: %s\n' "$GITHUB_SHA"
+            sha256sum output/docx/Relatorio_Sistemas_Operacionais_UNIRP.docx output/pdf/Relatorio_Sistemas_Operacionais_UNIRP.pdf
+          } > revisao-relatorio/conversao.txt
+      - name: Disponibilizar PDF e paginas para conferencia
+        uses: actions/upload-artifact@v4
+        with:
+          name: relatorio-pdf-e-revisao
+          path: |
+            output/pdf/Relatorio_Sistemas_Operacionais_UNIRP.pdf
+            revisao-relatorio/
+          retention-days: 30
+          if-no-files-found: error

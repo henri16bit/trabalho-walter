@@ -2,19 +2,18 @@
 
 ## 1. Capa e identificação
 
-**Instituição:** UNIRP  
+**Instituição:** Centro Universitário de Rio Preto — UNIRP  
 **Curso:** Análise e Desenvolvimento de Sistemas  
 **Disciplina:** Sistemas Operacionais  
 **Professor:** Walter Gomes Pedroso Junior  
 **Trabalho:** Projeto semestral — gerência de memória virtual  
-**Integrante 1:** Henrique Caliari Fuzeto — RA 20252889  
-**Integrante 2:** Murillo Alves Augusto — RA 20251873  
-**Data de revisão:** 18/11/2026  
-**Data de entrega:** [preencher]
+**Integrante A — simulador:** Murillo Alves Augusto — RA 20251873  
+**Integrante B — laboratório GNU/Linux:** Henrique Caliari Fuzeto — RA 20252889  
+**Local e data:** São José do Rio Preto, 18 de novembro de 2026
 
 **Ambiente de referência:** GNU/Linux, distribuição Ubuntu 24.04.5 LTS. O simulador com interface gráfica e terminal foi executado no Ubuntu remoto, assim como os comandos do laboratório. A compatibilidade adicional com Windows não altera o ambiente utilizado para as evidências deste relatório.
 
-**Situação do trabalho:** 33 testes sem janela e 9 testes gráficos aprovados no Ubuntu em 17/11/2026. As três atividades do laboratório foram executadas em 13/11/2026. Um complemento em **17/11/2026 demonstrou uso real de swap e impacto de E/S sob pressão isolada em cgroup**, com capturas, comandos e saídas preservados. Os nomes e RAs foram informados pela dupla. Faltam sua revisão final, a data efetiva de entrega e a exportação para PDF ou Google Docs.
+**Síntese:** Este trabalho relaciona a simulação de políticas de substituição de páginas à observação da memória e dos processos em GNU/Linux. O simulador teve 33 testes sem janela e 9 testes gráficos aprovados no Ubuntu em 17/11/2026. As três atividades do laboratório foram executadas em 13/11/2026. Um complemento em **17/11/2026 demonstrou uso real de swap e impacto de E/S sob pressão isolada em cgroup**, com capturas, comandos e saídas preservados. Os resultados mostram tanto os efeitos das políticas sobre uma sequência de acessos quanto o custo da paginação sob memória limitada em um processo real.
 
 ## 2. Fundamentação teórica
 
@@ -41,6 +40,8 @@ No Linux, o código `R` engloba execução e prontidão; uma captura do `ps` nã
 ## 3. Metodologia e modelagem do simulador
 
 ### 3.1. Organização
+
+Murillo Alves Augusto ficou responsável pela Parte I, o simulador de substituição de páginas. Henrique Caliari Fuzeto ficou responsável pela Parte II, o laboratório GNU/Linux. A integração dos resultados, a análise comparativa e as conclusões compõem o trabalho conjunto da dupla.
 
 O programa foi desenvolvido em Python 3, com **interface gráfica Tkinter/ttk e execução pelo terminal**. As duas formas de uso compartilham as mesmas funções de simulação. A biblioteca padrão cuida das entradas, arquivos, CSV e widgets; matplotlib é a única dependência direta externa e produz os gráficos PNG. O pacote `python3-tk` fornece o Tkinter no Ubuntu. Tkinter está disponível também em Windows, conforme a [documentação do Python](https://docs.python.org/3/library/tkinter.html); essa portabilidade não significa exclusividade de plataforma.
 
@@ -345,9 +346,9 @@ As passagens foram aproximadamente 399,7 vezes mais lentas **neste par de execu�
 
 As três atividades possuem saídas reais e interpretação. O complemento da seção 5.4 demonstra início de uso de swap, movimentação e impacto observado sobre tempo e E/S sob **pressão limitada ao cgroup**. Não houve esgotamento da RAM global. A carga de 32 MiB da coleta inicial continua registrada como experimento sem uso de swap.
 
-Permanecem os limites de visibilidade de `memstat` como usuário `runner`, identificação aproximada de Data/BSS sem análise de ELF e ausência de distinção individual de Running/Ready nas amostras `R`. Não foi demonstrado estado `D` por uma captura de estados. As capturas são automatizadas e não representam interação humana. A [matriz de requisitos](evidencias/REQUISITOS.md) relaciona as exigências às evidências e à revisão acadêmica pendente.
+Permanecem os limites de visibilidade de `memstat` como usuário `runner`, identificação aproximada de Data/BSS sem análise de ELF e ausência de distinção individual de Running/Ready nas amostras `R`. Não foi demonstrado estado `D` por uma captura de estados. As capturas são automatizadas e não representam interação humana. A [matriz de requisitos](evidencias/REQUISITOS.md) relaciona as exigências às evidências e explicita esses limites.
 
-## 6. Conclusão
+## 6. Conclusões e lições aprendidas
 
 O desenvolvimento do simulador permitiu representar decisões de substituição de páginas com estruturas simples e verificar seus efeitos sobre faltas e gravações. Os testes confirmaram o funcionamento de FIFO, LRU, Segunda Chance e NRU nas entradas analisadas, incluindo a preservação do bit Dirty e a independência entre as execuções.
 
@@ -357,20 +358,36 @@ O laboratório GNU/Linux permitiu observar permissões e regiões do espaço vir
 
 Na primeira coleta, o swap permaneceu sem uso. O experimento complementar impôs um limite de RAM somente ao processo de teste e demonstrou entrada em uso, movimentação de páginas e liberação do swap. A mesma carga apresentou mais major faults, E/S e maior tempo quando a RAM permitida ao grupo foi reduzida. Isso relaciona memória limitada e custo de paginação em um experimento real, separado dos swap outs didáticos do simulador.
 
-As evidências apresentam a interface e o laboratório executados no Ubuntu, com saídas, imagens, commits e registros reproduzíveis. A compatibilidade com Windows é adicional. **A dupla ainda deve revisar as interpretações, preencher a data efetiva de entrega, acrescentar suas próprias lições e divisão de responsabilidades e preparar a versão PDF ou Google Docs exigida.** Os nomes e RAs foram fornecidos pelos integrantes; não foram atribuídas experiências pessoais ou atividades individuais sem confirmação.
+Para nós, foi muito positivo aprofundar o conhecimento em Linux e nos testes de memória. A leitura das saídas de `pmap`, `ps`, `top`, `strace`, `free` e `memstat` ajudou a aproximar os conceitos estudados do comportamento observado no sistema. Ficou mais claro por que memória virtual, RSS, RAM disponível e swap precisam ser interpretados separadamente, mesmo quando aparecem associados ao mesmo processo.
+
+Uma lição importante foi planejar o teste de acordo com o fenômeno que se deseja observar. A primeira carga confirmou a alocação e a liberação de memória, mas não produziu uso de swap. O complemento com limite de RAM no cgroup mostrou como investigar a paginação de forma controlada, preservando a estabilidade do ambiente e registrando tanto os resultados quanto as limitações. Também aprendemos a não tratar toda falta de página como acesso ao disco nem toda variação global de RAM como efeito exclusivo da carga.
+
+Na parte do simulador, a comparação entre algoritmos reforçou a importância de conferir os contadores a cada acesso, manter as mesmas condições de entrada e testar casos pequenos antes de interpretar os gráficos. A combinação do simulador, sob responsabilidade de Murillo, com o laboratório, sob responsabilidade de Henrique, permitiu relacionar as regras didáticas de substituição às medições do GNU/Linux. O registro dos comandos, dos arquivos e das condições de execução tornou a análise mais organizada e verificável.
+
+As evidências apresentam a interface e o laboratório executados no Ubuntu, com saídas, imagens, commits e registros reproduzíveis. A compatibilidade com Windows é adicional. Os testes automatizados, as capturas de janelas reais e as medições do laboratório têm funções distintas na validação; reunir essas evidências ajudou a compreender melhor o alcance de cada conclusão.
 
 ## 7. Referências bibliográficas
 
-Referências técnicas da preparação inicial em 07/11/2026 e da análise do laboratório de 13/11/2026. As referências de Python e GitHub e os manuais de `ps`, `free` e `memstat` foram consultados na revisão de 17/11/2026.
+1. ARPACI-DUSSEAU, Remzi H.; ARPACI-DUSSEAU, Andrea C. **Operating Systems: Three Easy Pieces**. Versão 1.10. Arpaci-Dusseau Books, novembro de 2023. [Página oficial do livro](https://pages.cs.wisc.edu/~remzi/OSTEP/). Capítulos utilizados: [4 — The Process](https://pages.cs.wisc.edu/~remzi/OSTEP/cpu-intro.pdf), [13 — Address Spaces](https://pages.cs.wisc.edu/~remzi/OSTEP/vm-intro.pdf), [18 — Paging](https://pages.cs.wisc.edu/~remzi/OSTEP/vm-paging.pdf), [21 — Beyond Physical Memory: Mechanisms](https://pages.cs.wisc.edu/~remzi/OSTEP/vm-beyondphys.pdf) e [22 — Beyond Physical Memory: Policies](https://pages.cs.wisc.edu/~remzi/OSTEP/vm-beyondphys-policy.pdf). Acesso em: 18 nov. 2026.
 
-1. ARPACI-DUSSEAU, Remzi H.; ARPACI-DUSSEAU, Andrea C. **Operating Systems: Three Easy Pieces**. Versão 1.10. Arpaci-Dusseau Books, novembro de 2023. [Página oficial do livro](https://pages.cs.wisc.edu/~remzi/OSTEP/). Capítulos utilizados: [4 — The Process](https://pages.cs.wisc.edu/~remzi/OSTEP/cpu-intro.pdf), [13 — Address Spaces](https://pages.cs.wisc.edu/~remzi/OSTEP/vm-intro.pdf), [18 — Paging](https://pages.cs.wisc.edu/~remzi/OSTEP/vm-paging.pdf), [21 — Beyond Physical Memory: Mechanisms](https://pages.cs.wisc.edu/~remzi/OSTEP/vm-beyondphys.pdf) e [22 — Beyond Physical Memory: Policies](https://pages.cs.wisc.edu/~remzi/OSTEP/vm-beyondphys-policy.pdf).
-2. PROCPS-NG. Manuais [pmap(1)](https://man7.org/linux/man-pages/man1/pmap.1.html), [ps(1)](https://man7.org/linux/man-pages/man1/ps.1.html), [top(1)](https://man7.org/linux/man-pages/man1/top.1.html) e [free(1)](https://man7.org/linux/man-pages/man1/free.1.html).
-3. LINUX MAN-PAGES PROJECT. Manuais [proc_pid_maps(5)](https://man7.org/linux/man-pages/man5/proc_pid_maps.5.html), [proc_swaps(5)](https://man7.org/linux/man-pages/man5/proc_swaps.5.html) e [proc_vmstat(5)](https://man7.org/linux/man-pages/man5/proc_vmstat.5.html).
-4. STRACE PROJECT. [strace(1) — Linux manual page](https://man7.org/linux/man-pages/man1/strace.1.html).
-5. DEBIAN. [memstat(1) — manual do pacote memstat](https://manpages.debian.org/trixie/memstat/memstat.1.en.html).
-6. LINUX KERNEL DOCUMENTATION. [Control Group v2](https://docs.kernel.org/admin-guide/cgroup-v2.html).
-7. PYTHON SOFTWARE FOUNDATION. [tkinter — Python interface to Tcl/Tk](https://docs.python.org/3/library/tkinter.html). Referência da interface gráfica e de sua disponibilidade em diferentes sistemas.
-8. GITHUB DOCS. [Manually running a workflow](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/manually-run-a-workflow) e [Using workflow run logs](https://docs.github.com/en/actions/how-tos/monitor-workflows/use-workflow-run-logs). Referências para iniciar e consultar as execuções remotas.
-9. REPOSITÓRIO DO PROJETO. [Validação do simulador em Ubuntu, 17/11/2026](https://github.com/henri16bit/trabalho-walter/actions/runs/44179462467), [laboratório GNU/Linux, 13/11/2026](https://github.com/henri16bit/trabalho-walter/actions/runs/43505223640) e [experimento de swap isolado, 17/11/2026](https://github.com/henri16bit/trabalho-walter/actions/runs/44182556307). Dados primários preservados em [evidencias/](evidencias/), com [matriz de requisitos](evidencias/REQUISITOS.md).
-10. SYSTEMD PROJECT. [systemd.resource-control](https://www.freedesktop.org/software/systemd/man/latest/systemd.resource-control.html), [systemd-run](https://www.freedesktop.org/software/systemd/man/latest/systemd-run.html) e [systemd.service — OOMPolicy](https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html). Consultados em 17/11/2026 para o isolamento e os limites das cargas.
-11. LINUX KERNEL DOCUMENTATION. [PSI — Pressure Stall Information](https://docs.kernel.org/accounting/psi.html). LINUX MAN-PAGES PROJECT. [proc_meminfo(5)](https://man7.org/linux/man-pages/man5/proc_meminfo.5.html) e [proc_pid_status(5)](https://man7.org/linux/man-pages/man5/proc_pid_status.5.html). Consultados em 17/11/2026 para interpretar memória, swap e espera por E/S.
+2. PROCPS-NG. Manuais [pmap(1)](https://man7.org/linux/man-pages/man1/pmap.1.html), [ps(1)](https://man7.org/linux/man-pages/man1/ps.1.html), [top(1)](https://man7.org/linux/man-pages/man1/top.1.html) e [free(1)](https://man7.org/linux/man-pages/man1/free.1.html). Acesso em: 17 nov. 2026.
+
+3. LINUX MAN-PAGES PROJECT. Manuais [proc_pid_maps(5)](https://man7.org/linux/man-pages/man5/proc_pid_maps.5.html), [proc_swaps(5)](https://man7.org/linux/man-pages/man5/proc_swaps.5.html) e [proc_vmstat(5)](https://man7.org/linux/man-pages/man5/proc_vmstat.5.html). Acesso em: 13 nov. 2026.
+
+4. STRACE PROJECT. [strace(1) — Linux manual page](https://man7.org/linux/man-pages/man1/strace.1.html). Acesso em: 13 nov. 2026.
+
+5. DEBIAN. [memstat(1) — manual do pacote memstat](https://manpages.debian.org/trixie/memstat/memstat.1.en.html). Acesso em: 17 nov. 2026.
+
+6. LINUX KERNEL DOCUMENTATION. [Control Group v2](https://docs.kernel.org/admin-guide/cgroup-v2.html). Acesso em: 18 nov. 2026.
+
+7. PYTHON SOFTWARE FOUNDATION. [tkinter — Python interface to Tcl/Tk](https://docs.python.org/3/library/tkinter.html). Referência da interface gráfica e de sua disponibilidade em diferentes sistemas. Acesso em: 17 nov. 2026.
+
+8. GITHUB DOCS. [Manually running a workflow](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/manually-run-a-workflow) e [Using workflow run logs](https://docs.github.com/en/actions/how-tos/monitor-workflows/use-workflow-run-logs). Referências para iniciar e consultar as execuções remotas. Acesso em: 17 nov. 2026.
+
+9. REPOSITÓRIO DO PROJETO. [Validação do simulador em Ubuntu, 17/11/2026](https://github.com/henri16bit/trabalho-walter/actions/runs/44179462467), [laboratório GNU/Linux, 13/11/2026](https://github.com/henri16bit/trabalho-walter/actions/runs/43505223640) e [experimento de swap isolado, 17/11/2026](https://github.com/henri16bit/trabalho-walter/actions/runs/44182556307). Dados primários preservados em [evidencias/](evidencias/), com [matriz de requisitos](evidencias/REQUISITOS.md). Acesso em: 17 nov. 2026.
+
+10. SYSTEMD PROJECT. [systemd.resource-control](https://www.freedesktop.org/software/systemd/man/latest/systemd.resource-control.html), [systemd-run](https://www.freedesktop.org/software/systemd/man/latest/systemd-run.html) e [systemd.service — OOMPolicy](https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html). Acesso em: 17 nov. 2026.
+
+11. LINUX KERNEL DOCUMENTATION. [PSI — Pressure Stall Information](https://docs.kernel.org/accounting/psi.html). LINUX MAN-PAGES PROJECT. [proc_meminfo(5)](https://man7.org/linux/man-pages/man5/proc_meminfo.5.html) e [proc_pid_status(5)](https://man7.org/linux/man-pages/man5/proc_pid_status.5.html). Acesso em: 18 nov. 2026.
+
+12. PEDROSO JUNIOR, Walter Gomes. **Trabalho semestral: Gerência de Memória Virtual, Paginação e Monitoramento no GNU/Linux**. São José do Rio Preto: UNIRP, 26 out. 2026. Enunciado da disciplina de Sistemas Operacionais fornecido em PDF.

@@ -350,13 +350,9 @@ Permanecem os limites de visibilidade de `memstat` como usuário `runner`, ident
 
 ## 6. Conclusões e lições aprendidas
 
-O desenvolvimento do simulador permitiu representar decisões de substituição de páginas com estruturas simples e verificar seus efeitos sobre faltas e gravações. Os testes confirmaram o funcionamento de FIFO, LRU, Segunda Chance e NRU nas entradas analisadas, incluindo a preservação do bit Dirty e a independência entre as execuções.
+A comparação de FIFO, LRU, Segunda Chance e NRU mostrou que os resultados dependem da sequência e das molduras disponíveis. A anomalia de Belady e a preservação de Dirty foram verificadas nas entradas analisadas. Quando todas as páginas distintas couberam na memória, restaram apenas as faltas de primeira referência.
 
-A comparação mostrou que a quantidade de molduras e o padrão de acessos influenciam os resultados. O caso do FIFO evidenciou que aumentar a capacidade nem sempre reduz faltas nessa política. Quando todas as páginas distintas couberam na memória, as diferenças entre algoritmos desapareceram para a sequência utilizada.
-
-O laboratório GNU/Linux permitiu observar permissões e regiões do espaço virtual, transições reais R/S e chamadas ao kernel. A carga de 32 MiB elevou o RSS do processo e sua liberação o aproximou do valor inicial. As diferenças entre espaço virtual, memória residente e memória global disponível ficaram visíveis nas ferramentas utilizadas.
-
-Na primeira coleta, o swap permaneceu sem uso. O experimento complementar impôs um limite de RAM somente ao processo de teste e demonstrou entrada em uso, movimentação de páginas e liberação do swap. A mesma carga apresentou mais major faults, E/S e maior tempo quando a RAM permitida ao grupo foi reduzida. Isso relaciona memória limitada e custo de paginação em um experimento real, separado dos swap outs didáticos do simulador.
+No Ubuntu, foram observadas regiões de memória, transições R/S e chamadas de sistema. A primeira carga comprovou a alocação e a liberação de RAM; o complemento com memória limitada no cgroup demonstrou swap real e aumento de major faults, E/S e tempo. Essas medições são distintas dos swap outs didáticos do simulador.
 
 Para nós, foi muito positivo aprofundar o conhecimento em Linux e nos testes de memória. A leitura das saídas de `pmap`, `ps`, `top`, `strace`, `free` e `memstat` ajudou a aproximar os conceitos estudados do comportamento observado no sistema. Ficou mais claro por que memória virtual, RSS, RAM disponível e swap precisam ser interpretados separadamente, mesmo quando aparecem associados ao mesmo processo.
 

@@ -16,6 +16,7 @@ from docx import Document
 from docx.enum.section import WD_ORIENT, WD_SECTION_START
 from docx.enum.table import WD_CELL_VERTICAL_ALIGNMENT
 from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.enum.style import WD_STYLE_TYPE
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Cm, Pt, RGBColor
@@ -69,7 +70,7 @@ def inline(paragraph, text, ref):
         if label is not None:
             hyperlink(paragraph, label, url_for(target, ref))
         else:
-            run = paragraph.add_run(bold or code or italic)
+            run = paragraph.add_run((bold or code or italic).replace("`", ""))
             if bold is not None:
                 run.bold = True
             elif code is not None:
@@ -102,13 +103,22 @@ def clean_heading(text):
 
 def set_styles(document):
     styles = document.styles
+    # Elimina resíduos do tema do modelo padrão, incluindo a linha azul de Title.
+    for style in styles:
+        for element in list(style.element.iter()):
+            if element.tag in (qn("w:pBdr"), qn("w:contextualSpacing")):
+                element.getparent().remove(element)
+            elif element.tag == qn("w:rFonts"):
+                for attribute in list(element.attrib):
+                    if "theme" in attribute.lower():
+                        del element.attrib[attribute]
     for name in ("Normal", "Title", "Subtitle", "Heading 1", "Heading 2", "Heading 3", "Caption"):
         styles[name].font.name = "Times New Roman"
         styles[name].font.color.rgb = RGBColor(0, 0, 0)
     normal = styles["Normal"]
     normal.font.size = Pt(12)
-    normal.paragraph_format.line_spacing = 1.5
-    normal.paragraph_format.space_after = Pt(8)
+    normal.paragraph_format.line_spacing = 1.35
+    normal.paragraph_format.space_after = Pt(7)
     normal.paragraph_format.widow_control = True
     normal.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
     for name, size in (("Title", 20), ("Heading 1", 14), ("Heading 2", 12), ("Heading 3", 12)):
@@ -121,10 +131,14 @@ def set_styles(document):
         style.paragraph_format.line_spacing = 1.15
         style.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.LEFT
     styles["Caption"].font.size = Pt(10)
+    styles["Caption"].font.bold = False
     styles["Caption"].font.italic = False
     styles["Caption"].paragraph_format.line_spacing = 1.15
     styles["Caption"].paragraph_format.space_after = Pt(8)
     styles["Caption"].paragraph_format.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    table_text = styles.add_style("Texto de tabela", WD_STYLE_TYPE.PARAGRAPH)
+    table_text.base_style = normal
+    table_text.font.size = Pt(10)
     defaults = styles.element.find(qn("w:docDefaults"))
     if defaults is not None:
         for lang in defaults.iter(qn("w:lang")):
@@ -175,6 +189,7 @@ def make_table(document, lines, ref):
             cell.width = Cm(widths[j])
             cell.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.CENTER
             p = cell.paragraphs[0]
+            p.style = "Texto de tabela"
             p.paragraph_format.line_spacing = 1.05
             p.paragraph_format.space_after = Pt(0)
             p.paragraph_format.space_before = Pt(0)
@@ -212,6 +227,7 @@ def cover(document):
     p.paragraph_format.space_after = Pt(50)
     p = document.add_paragraph("Trabalho semestral apresentado à disciplina de Sistemas Operacionais do curso de Análise e Desenvolvimento de Sistemas.\n\nProfessor Walter Gomes Pedroso Junior")
     p.paragraph_format.left_indent = Cm(7)
+    p.alignment = WD_ALIGN_PARAGRAPH.LEFT
     p.paragraph_format.line_spacing = 1.15
     p.paragraph_format.space_after = Pt(42)
     p = document.add_paragraph("São José do Rio Preto\n18 de novembro de 2026")
@@ -297,6 +313,7 @@ def build(output: Path, ref: str):
                 code.append(lines[i])
                 i += 1
             p = document.add_paragraph("\n".join(code))
+            p.alignment = WD_ALIGN_PARAGRAPH.LEFT
             p.paragraph_format.line_spacing = 1.15
             p.paragraph_format.keep_together = True
             p.paragraph_format.left_indent = Cm(0.3)
@@ -324,7 +341,15 @@ def build(output: Path, ref: str):
         image_path = ROOT / path
         with Image.open(image_path) as source:
             width, height = source.size
-        landscape = width / height > 1.5
+            visible_width, visible_height = width, height
+            if number not in (2, 3):
+                # Apenas calcula a janela de exibição no Word. O PNG incorporado
+                # permanece byte a byte igual ao original, sem edição raster.
+                bounds = source.convert("L").point(lambda value: 255 if value > 90 else 0).getbbox()
+                if bounds:
+                    visible_width = min(width, bounds[2] + 18)
+                    visible_height = min(height, bounds[3] + 18)
+        landscape = visible_width / visible_height > 1.5
         section = document.add_section(WD_SECTION_START.NEW_PAGE)
         page_setup(section, landscape=landscape, appendix=True)
         section.different_first_page_header_footer = False
@@ -333,17 +358,23 @@ def build(output: Path, ref: str):
         inline(document.add_paragraph(style="Caption"), caption, ref)
         max_width = 25.7 if landscape else 17.0
         max_height = 12.7 if landscape else 20.5
-        picture_width = min(max_width, max_height * width / height)
+        picture_width = min(max_width, max_height * visible_width / visible_height)
         p = document.add_paragraph()
         p.alignment = WD_ALIGN_PARAGRAPH.CENTER
         p.paragraph_format.line_spacing = 1
         p.paragraph_format.space_after = Pt(5)
         p.paragraph_format.keep_with_next = True
-        shape = p.add_run().add_picture(str(image_path), width=Cm(picture_width))
+        shape = p.add_run().add_picture(str(image_path), width=Cm(picture_width), height=Cm(picture_width * visible_height / visible_width))
+        if (visible_width, visible_height) != (width, height):
+            fill = shape._inline.graphic.graphicData.pic.blipFill
+            rect = OxmlElement("a:srcRect")
+            rect.set("r", str(round(100000 * (1 - visible_width / width))))
+            rect.set("b", str(round(100000 * (1 - visible_height / height))))
+            fill.insert(1, rect)
         shape._inline.docPr.set("descr", alt)
         p = document.add_paragraph(style="Caption")
         hyperlink(p, "Abrir a imagem original em resolução integral", url_for(path, ref))
-        p.add_run(". Conteúdo preservado; amplie a página ou o PNG para conferir os detalhes.")
+        p.add_run(". Apenas margens vazias do display podem estar ocultas na diagramação. O PNG integral está preservado no Word e no link.")
     assert len(figures) == 14
     document.core_properties.title = "Gerência de memória virtual paginação e monitoramento no GNU Linux"
     document.core_properties.subject = "Trabalho semestral de Sistemas Operacionais — UNIRP"
